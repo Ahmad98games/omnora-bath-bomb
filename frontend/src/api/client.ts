@@ -35,6 +35,11 @@ client.interceptors.request.use(
 // Add a response interceptor with retry logic
 client.interceptors.response.use(
   (response) => {
+    // Check if response is HTML (incorrectly returned for API requests)
+    const contentType = response.headers['content-type']
+    if (contentType && contentType.includes('text/html')) {
+      return Promise.reject(new Error('Received HTML instead of JSON'))
+    }
     return response
   },
   async (error: AxiosError) => {
