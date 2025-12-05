@@ -2,10 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import './Carousel.css';
 
 // Placeholder images – replace with your own bath bomb assets in src/assets/bathbomb
-import slide1 from '../assets/bathbomb/bomb1.png';
-import slide2 from '../assets/bathbomb/bomb2.png';
+import slide3 from '../assets/bathbomb/bomb3.png';
 
-const slides = [slide1, slide2];
+const slides = [slide3];
 
 const Carousel: React.FC = () => {
     const [current, setCurrent] = useState(0);

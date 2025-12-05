@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles, HandPlatter, Package, Flower } from 'lucide-react';
 import client from '../api/client';
 import { useToast } from '../context/ToastContext';
 import './Home.css';
 import Carousel from '../components/Carousel';
-import { SkeletonCard } from '../components/Skeleton';
-import '../components/Skeleton.css';
-import { FALLBACK_IMAGE } from '../constants';
+// import { SkeletonCard } from '../components/Skeleton'; // Removed
+// import '../components/Skeleton.css'; // Removed
+// import { FALLBACK_IMAGE } from '../constants'; // Removed
 
+/*
+// Product interface is no longer needed since featured products are removed
 interface Product {
     _id: string;
     name: string;
@@ -17,14 +19,17 @@ interface Product {
     category: string;
     bestseller?: boolean;
 }
+*/
 
 export default function Home() {
-    const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
-    const [loading, setLoading] = useState(true);
+    // const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]); // Removed
+    // const [loading, setLoading] = useState(true); // Removed
     const [email, setEmail] = useState('');
     const [subscribing, setSubscribing] = useState(false);
     const { showToast } = useToast();
 
+    /*
+    // useEffect for fetching products is removed
     useEffect(() => {
         const fetchProducts = async () => {
             try {
@@ -39,6 +44,7 @@ export default function Home() {
         };
         fetchProducts();
     }, []);
+    */
 
     const handleSubscribe = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -59,9 +65,6 @@ export default function Home() {
 
     return (
         <div className="home-page">
-            {/* Carousel */}
-            <Carousel />
-
             {/* Hero Section */}
             <section className="hero-section">
                 <div className="hero-visuals"></div>
@@ -76,11 +79,14 @@ export default function Home() {
                 </div>
             </section>
 
+            {/* Carousel */}
+            <Carousel />
+
             {/* Value Props */}
             <section className="values-section container">
                 <div className="value-card">
                     <div className="value-icon"><Flower size={32} /></div>
-                    <h3>Natural &amp; Organic</h3>
+                    <h3>Natural & Organic</h3>
                     <p>Infused with pure, plant-based botanicals, free from harsh chemicals.</p>
                 </div>
                 <div className="value-card">
@@ -107,56 +113,25 @@ export default function Home() {
                     <Link to="/collection?category=Relaxation" className="category-card relax-bg">
                         <div className="category-content">
                             <h3>Unwind</h3>
-                            <span>Midnight Lavender &amp; Chamomile</span>
+                            <span>Midnight Lavender & Chamomile</span>
                         </div>
                     </Link>
                     <Link to="/collection?category=Energy" className="category-card energy-bg">
                         <div className="category-content">
                             <h3>Revitalize</h3>
-                            <span>Zesty Citrus &amp; Peppermint</span>
+                            <span>Zesty Citrus & Peppermint</span>
                         </div>
                     </Link>
                     <Link to="/collection?category=Skincare" className="category-card skin-bg">
                         <div className="category-content">
                             <h3>Nourish</h3>
-                            <span>Oatmeal, Milk &amp; Shea Butter</span>
+                            <span>Oatmeal, Milk & Shea Butter</span>
                         </div>
                     </Link>
                 </div>
             </section>
 
-            {/* Featured Products */}
-            <section className="featured-products-section container">
-                <h2 className="section-title">Featured Collections</h2>
-                <div className="product-grid">
-                    {loading ? (
-                        <>
-                            <SkeletonCard />
-                            <SkeletonCard />
-                            <SkeletonCard />
-                            <SkeletonCard />
-                        </>
-                    ) : (
-                        featuredProducts.map((product) => (
-                            <div key={product._id} className="product-card">
-                                <Link to={`/product/${product._id}`}>
-                                    <div className="product-image-placeholder">
-                                        <img
-                                            src={product.image}
-                                            alt={product.name}
-                                            onError={(e) => (e.currentTarget.src = FALLBACK_IMAGE)}
-                                        />
-                                    </div>
-                                    <div className="product-info">
-                                        <h3>{product.name}</h3>
-                                        <p className="price">PKR {product.price.toLocaleString()}</p>
-                                    </div>
-                                </Link>
-                            </div>
-                        ))
-                    )}
-                </div>
-            </section>
+            {/* Featured Products section REMOVED */}
 
             {/* Newsletter */}
             <section className="newsletter-section">
@@ -182,3 +157,20 @@ export default function Home() {
         </div>
     );
 }
+
+/*
+// ProductCard component is no longer needed since featured products are removed
+const ProductCard = ({ product }: { product: Product }) => {
+    return (
+        <div className="product-card">
+            <Link to={`/product/${product._id}`}>
+                <div className="product-image-placeholder"><img src={product.image} alt={product.name} loading="lazy" /></div>
+                <div className="product-info">
+                    <h3>{product.name}</h3>
+                    <p className="price">PKR {product.price.toLocaleString()}</p>
+                </div>
+            </Link>
+        </div>
+    );
+};
+*/
