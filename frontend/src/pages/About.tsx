@@ -63,7 +63,7 @@ const AboutComponent: React.FC<AboutComponentProps> = ({ onBack }) => {
         <div ref={addToRefs} className="reveal-about section-mb">
           <h2 className="section-header-about text-center w-full">Our Mission</h2>
           <p style={{ color: 'var(--text-secondary)', lineHeight: '1.75', fontSize: '1.125rem', maxWidth: '768px', margin: '0 auto', textAlign: 'center' }}>
-            We aim to generate <span className="highlight-text">$100K–$200K</span> annually through ethical, halal ventures—think AI innovation, game development, and digital mastery—all while inspiring our generation to turn skills into impact.
+            We aim to generate  any amount of money <span className="highlight-text"> annually or Monthly </span> we have to go through it in  <span className="highlight-text">ethical, halal ventures</span>—think AI innovation, game development, and digital mastery—all while inspiring our generation to turn skills into impact.
           </p>
         </div>
 
@@ -140,6 +140,11 @@ const AboutComponent: React.FC<AboutComponentProps> = ({ onBack }) => {
           </p>
         </div>
       </section>
+      <a href="resume.pdf" className="btn-custom-about">Download</a>
+      
+      <footer>
+        <p>&copy; {new Date().getFullYear()} Omnora. All rights reserved.</p>
+      </footer>
     </div>
   );
 };
