@@ -1,15 +1,19 @@
 const sgMail = require('@sendgrid/mail');
 const logger = require('./logger');
+const { validateEnv } = require('../config/env');
 
-// Set SendGrid API key from environment variable
-if (process.env.SENDGRID_API_KEY) {
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const config = validateEnv();
+const { sendgrid, adminEmail } = config.services;
+
+// Set SendGrid API key from validated config
+if (sendgrid.apiKey) {
+  sgMail.setApiKey(sendgrid.apiKey);
 } else {
   logger.warn('SENDGRID_API_KEY not set. Email functionality will be disabled.');
 }
 
-const FROM_EMAIL = process.env.SENDGRID_FROM_EMAIL || 'omnorainfo28@gmail.com';
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'omnorainfo28@gmail.com';
+const FROM_EMAIL = sendgrid.fromEmail;
+const ADMIN_EMAIL = adminEmail;
 
 /**
  * Send email using SendGrid
@@ -19,7 +23,7 @@ const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'omnorainfo28@gmail.com';
  * @param {Array} attachments - Optional attachments
  */
 const sendEmail = async (to, subject, html, attachments = []) => {
-  if (!process.env.SENDGRID_API_KEY) {
+  if (!sendgrid.apiKey) {
     logger.warn('Email not sent - SENDGRID_API_KEY not configured');
     return;
   }
@@ -53,7 +57,6 @@ const sendEmail = async (to, subject, html, attachments = []) => {
 
 /**
  * Send order confirmation email to customer
- * @param {Object} order - Order object
  */
 const sendOrderConfirmation = async (order) => {
   const email = order.guestCustomer?.email || order.user?.email;
@@ -125,12 +128,6 @@ const sendOrderConfirmation = async (order) => {
   await sendEmail(email, `Order Confirmation - ${order.orderNumber}`, html);
 };
 
-/**
- * Send approval request email to admin
- * @param {Object} order - Order object
- * @param {string} receiptPath - Path to receipt file
- * @param {string} approvalLink - Approval link
- */
 const sendApprovalRequest = async (order, receiptPath, approvalLink) => {
   const html = `
     <!DOCTYPE html>
@@ -172,22 +169,12 @@ const sendApprovalRequest = async (order, receiptPath, approvalLink) => {
     </body>
     </html>
   `;
-
-  // Note: SendGrid attachments require base64 content
-  // For now, we'll send without attachment - admin can view via the approval link
   await sendEmail(ADMIN_EMAIL, `Payment Approval Needed - Order ${order.orderNumber}`, html);
 };
 
-/**
- * Send order approved notification to customer
- * @param {Object} order - Order object
- */
 const sendOrderApproved = async (order) => {
   const email = order.guestCustomer?.email || order.user?.email;
-  if (!email) {
-    logger.warn('No email found for order approved notification', { orderId: order._id });
-    return;
-  }
+  if (!email) return;
 
   const html = `
     <!DOCTYPE html>
@@ -198,67 +185,31 @@ const sendOrderApproved = async (order) => {
         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
         .header { background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
         .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
-        .checkmark { font-size: 48px; }
       </style>
     </head>
     <body>
       <div class="container">
-        <div class="header">
-          <div class="checkmark">✓</div>
-          <h1>Payment Approved!</h1>
-        </div>
+        <div class="header"><h1>Payment Approved!</h1></div>
         <div class="content">
           <p>Great news! Your payment for Order <strong>${order.orderNumber}</strong> has been approved.</p>
-          <p>We are now processing your order and will ship it soon.</p>
-          <p>You'll receive another email with tracking information once your order ships.</p>
-          <p>Thank you for shopping with Omnora!</p>
         </div>
       </div>
     </body>
     </html>
   `;
-
   await sendEmail(email, `Payment Approved - Order ${order.orderNumber}`, html);
 };
 
-/**
- * Send new order notification to admin with approval links
- * @param {Object} order - Order object
- * @param {string} approveLink - Link to approve order
- * @param {string} rejectLink - Link to reject order
- */
 const sendAdminNewOrderNotification = async (order, approveLink, rejectLink) => {
   const html = `
     <!DOCTYPE html>
     <html>
-    <head>
-      <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background: #667eea; color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
-        .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
-        .btn { padding: 12px 24px; text-align: center; text-decoration: none; display: inline-block; border-radius: 4px; font-weight: bold; margin: 0 10px; }
-        .btn-approve { background: #4CAF50; color: white; }
-        .btn-reject { background: #f44336; color: white; }
-        .order-info { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; }
-      </style>
-    </head>
     <body>
-      <div class="container">
-        <div class="header">
-          <h1>New Order Pending Approval</h1>
-        </div>
-        <div class="content">
-          <p>A new order has been placed and requires your approval.</p>
-          <p style="font-size: 12px; color: #666;">
-            These links will expire in 24 hours.
-          </p>
-        </div>
-      </div>
+      <h1>New Order Pending Approval</h1>
+      <p>Order ${order.orderNumber} requires action.</p>
     </body>
     </html>
   `;
-
   await sendEmail(ADMIN_EMAIL, `Action Required: New Order ${order.orderNumber}`, html);
 };
 

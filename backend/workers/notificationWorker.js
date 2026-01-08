@@ -1,17 +1,11 @@
 const { Worker } = require('bullmq');
-const IORedis = require('ioredis');
-const logger = require('../services/logger');
-const { emailDLQ, whatsappDLQ } = require('../services/queueService');
+const { emailDLQ, whatsappDLQ, connection } = require('../services/queueService');
 const MessageLog = require('../models/MessageLog');
+const { validateEnv } = require('../config/env');
 
-// Redis connection
-const connection = new IORedis({
-    host: process.env.REDIS_HOST || 'localhost',
-    port: process.env.REDIS_PORT || 6379,
-    password: process.env.REDIS_PASSWORD || undefined,
-    maxRetriesPerRequest: null,
-    enableReadyCheck: false
-});
+const config = validateEnv();
+
+// Redis connection is now shared from queueService.js to adhere to architectural invariants
 
 // ============================================
 // EMAIL WORKER
@@ -51,11 +45,6 @@ const emailWorker = new Worker('email-notifications', async (job) => {
             // If SendGrid fails with 5xx, try SMTP fallback
             if (sendgridError.code >= 500) {
                 logger.warn('SendGrid failed, trying SMTP fallback', { error: sendgridError.message });
-
-                // TODO: Implement SMTP fallback
-                // const nodemailer = require('nodemailer');
-                // await sendViaSMTP(type, data);
-
                 throw sendgridError; // For now, throw to trigger retry
             }
             throw sendgridError;
@@ -84,10 +73,10 @@ const emailWorker = new Worker('email-notifications', async (job) => {
     }
 }, {
     connection,
-    concurrency: 5, // Process 5 emails concurrently
+    concurrency: 5,
     limiter: {
-        max: 10, // Max 10 jobs
-        duration: 1000 // per second
+        max: 10,
+        duration: 1000
     }
 });
 
@@ -109,12 +98,10 @@ const whatsappWorker = new Worker('whatsapp-notifications', async (job) => {
 
         const response = await whatsappService.sendTemplateMessage(phone, templateName, "en_US", params);
 
-        // Check if response indicates error
         if (response && response.error) {
             throw new Error(response.message || 'WhatsApp API error');
         }
 
-        // Store message ID for tracking
         if (response && response.messages && response.messages[0]) {
             const messageId = response.messages[0].id;
 
@@ -146,7 +133,6 @@ const whatsappWorker = new Worker('whatsapp-notifications', async (job) => {
             attemptsMade: job.attemptsMade
         });
 
-        // If max attempts reached, push to DLQ
         if (job.attemptsMade >= 3) {
             await whatsappDLQ.add('failed-whatsapp', {
                 ...job.data,
@@ -157,14 +143,14 @@ const whatsappWorker = new Worker('whatsapp-notifications', async (job) => {
             logger.warn('WhatsApp job moved to DLQ', { jobId: job.id, templateName });
         }
 
-        throw error; // Re-throw to trigger retry
+        throw error;
     }
 }, {
     connection,
-    concurrency: 3, // Process 3 WhatsApp messages concurrently
+    concurrency: 3,
     limiter: {
-        max: 5, // Max 5 jobs
-        duration: 1000 // per second (respect WhatsApp rate limits)
+        max: 5,
+        duration: 1000
     }
 });
 
@@ -202,8 +188,7 @@ async function shutdown() {
     logger.info('Shutting down workers...');
     await Promise.all([
         emailWorker.close(),
-        whatsappWorker.close(),
-        connection.quit()
+        whatsappWorker.close()
     ]);
     logger.info('Workers shut down successfully');
     process.exit(0);

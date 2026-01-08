@@ -131,7 +131,7 @@ export default function OrderDetail() {
                             <div className="order-items-list">
                                 {order.items.map((item, idx) => (
                                     <div key={idx} className="order-item">
-                                        <img src={item.image || '/images/bath bomb.png'} alt={item.name} />
+                                        <img src={item.image || '/placeholder.png'} alt={item.name} />
                                         <div className="item-details">
                                             <h4>{item.name}</h4>
                                             <p>Quantity: {item.quantity}</p>

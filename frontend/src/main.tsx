@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom' // Correctly imports BrowserRouter
 import App from './App'
 import { trackEvent } from './api/client'
-import './styles/theme.css'
+import './index.css'
 import './index.css'
 
 function ensureSessionId() {

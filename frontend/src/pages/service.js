@@ -12,8 +12,8 @@ mongoose.connect('mongodb://localhost:27017/omnora', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('MongoDB connection error:', err));
+.then(() => console.log('Connected to MongoDB'))
+.catch(err => console.error('MongoDB connection error:', err));
 
 // Schemas
 const productSchema = new mongoose.Schema({
@@ -153,14 +153,14 @@ async function seedData() {
       {
         name: 'Lavender Bliss',
         price: 500,
-        image: '/images/main/calm lavender.png',
+        image: '/images/lavender.jpg',
         description: 'Calming lavender bath bomb',
         featured: true,
       },
       {
         name: 'Rose Glow',
         price: 600,
-        image: '/images/main/rose.png',
+        image: '/images/rose.jpg',
         description: 'Romantic rose infusion',
         newArrival: true,
       },

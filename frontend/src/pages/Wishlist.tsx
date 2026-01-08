@@ -103,11 +103,7 @@ export default function Wishlist() {
                                     ×
                                 </button>
                                 <Link to={`/product/${product._id}`}>
-                                    <img
-                                        src={product.image}
-                                        alt={product.name}
-                                        onError={(e) => e.currentTarget.src = '/images/bath bomb.png'}
-                                    />
+                                    <img src={product.image || '/placeholder.png'} alt={product.name} />
                                 </Link>
                                 <div className="card-content">
                                     <Link to={`/product/${product._id}`}>

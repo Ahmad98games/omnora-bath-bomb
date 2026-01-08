@@ -7,6 +7,10 @@ const { queueEmail, queueWhatsApp } = require('../services/queueService');
 const { sendOrderEmail } = require('../services/mailblusterService');
 const { generateApprovalToken, verifyApprovalToken } = require('../utils/tokenService');
 const { reserveStock, decrementStock, releaseStock, checkStock } = require('../utils/inventoryService');
+const { validateEnv } = require('../config/env');
+const { generateOrderHash } = require('../utils/orderHashService');
+
+const config = validateEnv();
 
 // ============================================
 // STATUS TRANSITION VALIDATION
@@ -96,8 +100,27 @@ exports.createOrder = async (req, res) => {
     // Validation
     validateOrder({ items, shippingAddress, paymentMethod, totalAmount });
 
-    // Check stock availability
-    const stockCheck = await checkStock(items);
+    // Circuit Breaker: Fail fast if DB is down to prevent hanging
+    const { isAvailable } = require('../services/queueService'); // Re-using availability check or direct import
+    // Better: use stateService directly as imported
+    const systemState = require('../services/stateService').getSnapshot();
+    if (!systemState.infra.db) {
+      logger.warn('Order rejected: Database unavailable');
+      return res.status(503).json({
+        success: false,
+        error: 'System is currently in maintenance mode (Database Unavailable). Please try again later.'
+      });
+    }
+
+    // Normalize items: frontend sends `productId`, backend expects `product` (ref: inventoryService.js)
+    const normalizedItems = items.map(i => ({
+      ...i,
+      product: i.productId || i.product, // Handle both cases for robustness
+      productId: i.productId || i.product
+    }));
+
+    // Check stock availability (but don't reserve yet for INITIATED orders)
+    const stockCheck = await checkStock(normalizedItems);
     if (!stockCheck.inStock) {
       return res.status(400).json({
         success: false,
@@ -106,18 +129,14 @@ exports.createOrder = async (req, res) => {
       });
     }
 
-    // Determine initial status
-    let initialStatus = 'pending';
-    let paymentStatus = 'unpaid';
-    let isApproved = false;
+    // WhatsApp flow: All orders start as INITIATED (no stock reservation)
+    const initialStatus = 'INITIATED';
 
-    if (paymentMethod === 'cod') {
-      initialStatus = 'approved';
-      paymentStatus = 'pending';
-      isApproved = true;
-    } else {
-      initialStatus = 'pending_admin_approval';
-    }
+    // Capture source metadata
+    const userAgent = req.get('User-Agent') || '';
+    const isMobile = /mobile|android|iphone|ipad/i.test(userAgent);
+    const source = isMobile ? 'whatsapp-mobile' : 'whatsapp-web';
+    const deviceType = isMobile ? 'mobile' : 'desktop';
 
     // Create order object
     const orderData = {
@@ -127,8 +146,9 @@ exports.createOrder = async (req, res) => {
       paymentMethod,
       totalAmount,
       status: initialStatus,
-      paymentStatus: paymentStatus,
-      isApproved: isApproved
+      source,
+      deviceType,
+      userAgentSnapshot: userAgent
     };
 
     // Add user ID if authenticated, otherwise use customer info
@@ -143,83 +163,25 @@ exports.createOrder = async (req, res) => {
     }
 
     const order = await Order.create(orderData);
-    logger.info('Order created', { orderId: order._id, status: initialStatus });
+    logger.info('Order created with INITIATED status', { orderId: order._id, status: initialStatus });
 
-    // Reserve stock for non-COD orders
-    if (paymentMethod !== 'cod') {
-      try {
-        await reserveStock(items);
-        logger.info('Stock reserved for order', { orderId: order._id });
-      } catch (stockError) {
-        // If stock reservation fails, delete the order
-        await Order.findByIdAndDelete(order._id);
-        logger.error('Stock reservation failed, order deleted', {
-          orderId: order._id,
-          error: stockError.message
-        });
-        return res.status(400).json({
-          success: false,
-          error: stockError.message
-        });
-      }
-    }
+    // Generate order hash for tamper detection
+    const orderHash = generateOrderHash({
+      orderId: order._id.toString(),
+      totalAmount: order.totalAmount,
+      items: order.items
+    });
 
-    // Handle Notifications based on Payment Method (QUEUE ONLY)
-    if (paymentMethod === 'cod') {
-      // COD Flow: Queue confirmation email
-      try {
-        await queueEmail('order_confirmation', {
-          order: order.toObject(),
-          orderId: order._id,
-          priority: 3
-        });
-        logger.info('COD confirmation email queued', { orderId: order._id });
-      } catch (queueError) {
-        logger.error('Failed to queue COD confirmation', { error: queueError.message });
-      }
+    order.orderHash = orderHash;
+    await order.save();
 
-      // Queue Mailbluster email
-      try {
-        await sendOrderEmail(order, 'OrderPlaced');
-      } catch (mbError) {
-        logger.error('Failed to send Mailbluster email', { error: mbError.message });
-      }
+    logger.info('Order hash generated', { orderId: order._id, orderHash });
 
-      // Note: WhatsApp skipped for COD
+    // NO stock reservation for INITIATED orders
+    // NO email/WhatsApp notifications for INITIATED orders
+    // User will be redirected to WhatsApp from frontend
 
-    } else {
-      // Non-COD Flow: Queue admin approval email
-      try {
-        const adminEmail = process.env.ADMIN_EMAIL || 'admin@omnora.com';
-        const adminIp = req.ip || 'unknown';
-
-        // Generate signed JWT approval token with admin binding
-        const approvalToken = generateApprovalToken(order._id, 'approve', adminEmail, adminIp);
-        const approvalTokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
-
-        order.approvalToken = approvalToken;
-        order.approvalTokenExpires = approvalTokenExpires;
-        await order.save();
-
-        const baseUrl = process.env.BACKEND_URL || `http://localhost:${process.env.PORT || 3000}`;
-        const approveLink = `${baseUrl}/api/orders/${order._id}/approve?token=${approvalToken}`;
-        const rejectLink = `${baseUrl}/api/orders/${order._id}/reject?token=${approvalToken}`;
-
-        await queueEmail('admin_new_order', {
-          order: order.toObject(),
-          approveLink,
-          rejectLink,
-          orderId: order._id,
-          priority: 1 // High priority
-        });
-
-        logger.info('Admin approval email queued', { orderId: order._id, adminEmail });
-
-      } catch (emailError) {
-        logger.error('Failed to queue admin approval email', { error: emailError.message });
-      }
-    }
-
+    // Return full order object so frontend has all details for WhatsApp
     res.status(201).json({
       success: true,
       message: 'Order created successfully',
@@ -500,13 +462,13 @@ exports.uploadPaymentProof = async (req, res) => {
     order.status = 'receipt_submitted';
 
     // Generate secure approval token
-    const adminEmail = process.env.ADMIN_EMAIL || 'admin@omnora.com';
+    const adminEmail = config.services.adminEmail;
     order.approvalToken = generateApprovalToken(order._id, 'approve', adminEmail, req.ip);
     order.approvalTokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
     await order.save();
 
     // Queue email to admin for approval
-    const approvalLink = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/admin/approve-order/${order._id}?token=${order.approvalToken}`;
+    const approvalLink = `${config.frontendUrl}/admin/approve-order/${order._id}?token=${order.approvalToken}`;
 
     await queueEmail('approval_request', {
       order: order.toObject(),

@@ -1,91 +1,90 @@
-const mongoose = require('mongoose');
+const LocalDB = require('../utils/LocalDB');
+const path = require('path');
+const fs = require('fs');
 
-const ProductSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-      minlength: 2,
-      maxlength: 120
-    },
-    price: {
-      type: Number,
-      required: true,
-      min: 0
-    },
-    description: {
-      type: String,
-      required: true,
-      minlength: 10,
-      maxlength: 2000
-    },
-    image: {
-      type: String,
-      required: true
-    },
-    category: {
-      type: String,
-      required: true,
-      index: true,
-      lowercase: true,
-      trim: true
-    },
-    isNew: {
-      type: Boolean,
-      default: false,
-      index: true
-    },
-    isFeatured: {
-      type: Boolean,
-      default: false,
-      index: true
-    },
-    inventoryCount: {
-      type: Number,
-      default: 0
-    },
-    stock: {
-      type: Number,
-      required: true,
-      default: 100,
-      min: 0
-    },
-    reservedStock: {
-      type: Number,
-      default: 0,
-      min: 0
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now
-    },
-    updatedAt: {
-      type: Date,
-      default: Date.now
+// Initialize LocalDB for Products with Schema Enforcement
+const Product = new LocalDB('products', {
+  name: { type: String, required: true },
+  price: { type: Number, required: true },
+  stock: { type: Number, required: true, min: 0 },
+  reservedStock: { type: Number, default: 0, min: 0 }, // STRICT DEFAULT
+  category: { type: String },
+  image: { type: String },
+  description: { type: String }
+});
+
+// Seed some initial data if empty (Optional, for instant usability)
+setTimeout(async () => {
+  const count = await Product.countDocuments();
+  if (count === 0) {
+    // Basic initial seed (Synced with frontend/src/data/fallbackProducts.ts)
+    const initialProducts = [
+      {
+        _id: "1",
+        name: "Calm Lavender Bath Bomb",
+        price: 899,
+        stock: 50,
+        reservedStock: 0,
+        category: "bath-bombs",
+        image: "/images/main/calm lavender.png",
+        description: "Soothing lavender with chamomile for a restful soak"
+      },
+      {
+        _id: "2",
+        name: "Breathe Eucalyptus Bath Bomb",
+        price: 949,
+        stock: 50,
+        reservedStock: 0,
+        category: "bath-bombs",
+        image: "/images/main/breath bath.png",
+        description: "Eucalyptus and peppermint for clarity and refresh"
+      },
+      {
+        _id: "3",
+        name: "Glow Citrus Bath Bomb",
+        price: 899,
+        stock: 50,
+        reservedStock: 0,
+        category: "bath-bombs",
+        image: "/images/main/Glow Citrus Bath Bomb.png",
+        description: "Bright citrus with vitamin E for a mood lift"
+      },
+      {
+        _id: "4",
+        name: "Rose Comfort Bath Bomb",
+        price: 999,
+        stock: 50,
+        reservedStock: 0,
+        category: "bath-bombs",
+        image: "/images/main/rose.png",
+        description: "Soft rose and vanilla for gentle comfort"
+      },
+      {
+        _id: "5",
+        name: "Balance Green Tea Bath Bomb",
+        price: 949,
+        stock: 50,
+        reservedStock: 0,
+        category: "bath-bombs",
+        image: "/images/main/green tea.png",
+        description: "Green tea antioxidants for balanced skin"
+      },
+      {
+        _id: "6",
+        name: "Unwind Chamomile Bath Bomb",
+        price: 899,
+        stock: 50,
+        reservedStock: 0,
+        category: "bath-bombs",
+        image: "/images/main/unvind.png",
+        description: "Chamomile and calendula for calming downtime"
+      }
+    ];
+    for (const p of initialProducts) {
+      await Product.create(p);
     }
-  },
-  {
-    timestamps: true,
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true }
+    console.log("LocalDB: Seeded initial products");
   }
-);
+}, 1000);
 
-// Virtual for available stock
-ProductSchema.virtual('availableStock').get(function () {
-  return this.stock - this.reservedStock;
-});
-
-// Indexes
-ProductSchema.index({ category: 1, isFeatured: 1 });
-ProductSchema.index({ createdAt: -1 });
-ProductSchema.index({ name: 'text', description: 'text' });
-
-// Pre-save hook
-ProductSchema.pre('save', function updateTimestamp(next) {
-  this.updatedAt = new Date();
-  next();
-});
-
-module.exports = mongoose.model('Product', ProductSchema);
+module.exports = Product;

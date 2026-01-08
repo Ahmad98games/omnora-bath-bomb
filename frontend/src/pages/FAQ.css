@@ -6,7 +6,7 @@
 }
 
 .faq-hero {
-    background-image: url('/images/main/calm lavender.png');
+    background-image: url('/images/hero-bg.jpg');
     background-size: cover;
     background-position: center;
     height: 300px;
@@ -163,12 +163,11 @@
     text-decoration: none;
     font-weight: 500;
 }
-
 /* In your FAQ.css or relevant stylesheet */
 
 .footer-bottom {
-
-    text-align: center;
-
+    
+    text-align: center; 
+    
     padding: 1rem 0;
 }

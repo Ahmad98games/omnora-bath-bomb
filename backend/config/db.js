@@ -1,18 +1,14 @@
-const mongoose = require('mongoose');
-require('dotenv').config();
+const { validateEnv } = require('../config/env');
+const dbService = require('../services/dbService');
 
+const config = validateEnv();
+
+/**
+ * Legacy connectDB for backward compatibility.
+ * Now uses the Singleton dbService.
+ */
 const connectDB = async () => {
-  try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
-  } catch (error) {
-    console.error(`Error connecting to MongoDB: ${error.message}`);
-    process.exit(1);
-  }
+  return dbService.connect(config.mongo.uri);
 };
 
-module.exports = connectDB; 
+module.exports = connectDB;

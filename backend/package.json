@@ -4,12 +4,17 @@
   "description": "Backend server for luxury women's clothing e-commerce website",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
+    "cleanup": "node scripts/cleanup-port.js",
+    "start": "npm run cleanup && node server.js",
+    "server": "npm run cleanup && node server.js",
+    "dev": "set NODE_ENV=development && npm run cleanup && node --watch server.js",
     "worker": "node workers/notificationWorker.js",
     "worker:dev": "nodemon workers/notificationWorker.js",
     "migrate:products": "node scripts/migrateProducts.js",
-    "test": "jest --verbose --detectOpenHandles"
+    "lint:env": "node scripts/check-env-leaks.js",
+    "test": "jest --verbose --detectOpenHandles",
+    "test:boundaries": "node test-boundaries.js",
+    "precheck": "node scripts/precheck.js"
   },
   "dependencies": {
     "@sendgrid/mail": "^8.1.6",

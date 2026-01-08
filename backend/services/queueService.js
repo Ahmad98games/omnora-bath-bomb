@@ -1,273 +1,146 @@
 const { Queue, Worker } = require('bullmq');
 const IORedis = require('ioredis');
 const logger = require('./logger');
+const { validateEnv } = require('../config/env');
+const stateService = require('./stateService');
+const { INFRA } = require('./stateService');
 
-// Redis connection
-// Redis connection
-let connection;
-try {
-    const redisOptions = {
-        host: process.env.REDIS_HOST || 'localhost',
-        port: process.env.REDIS_PORT || 6379,
-        password: process.env.REDIS_PASSWORD || undefined,
+const config = validateEnv();
+
+// Redis connection instance (Private to module)
+let connection = null;
+if (config.isProduction) {
+    connection = new IORedis({
+        host: config.redis.host,
+        port: config.redis.port,
+        password: config.redis.password,
         maxRetriesPerRequest: null,
         enableReadyCheck: false,
-        retryStrategy: (times) => {
-            if (times > 3) {
-                console.warn('Redis retry limit reached, giving up.');
-                return null;
-            }
-            return Math.min(times * 50, 2000);
-        },
-        lazyConnect: true // Fail silently if not connected, don't crash on boot
-    };
-
-    connection = new IORedis(redisOptions);
-
-    // Silent error handler
-    connection.on('error', (err) => {
-        // Log but don't crash
-        // logger may not be initialized if circular dep, use console
-        console.warn('Redis connection silent error:', err.message);
+        maxLoadingRetryTime: 5000,
+        retryStrategy(times) {
+            const delay = Math.min(times * 2000, 30000);
+            return delay;
+        }
     });
 
-} catch (error) {
-    console.error('Failed to initialize Redis connection:', error.message);
-    connection = null;
+    // Update SystemState on connection events
+    connection.on('connect', () => {
+        stateService.setInfraStatus(INFRA.REDIS, true);
+        logger.info('REDIS_SUCCESS: Connection established');
+    });
+    connection.on('error', (err) => {
+        stateService.setInfraStatus(INFRA.REDIS, false);
+        if (err.code === 'ECONNREFUSED') {
+            if (!process._redisRefused) {
+                logger.warn('REDIS_DEGRADED: Connection refused. Proceeding without queues.');
+                process._redisRefused = true;
+            }
+        } else {
+            logger.error('REDIS_FAILURE: Connection lost', { error: err.message });
+        }
+    });
+} else {
+    logger.info('DEV_MODE: Skipping Redis connection (Queues disabled)');
 }
 
-// Queue configurations
 const defaultJobOptions = {
     attempts: 3,
-    backoff: {
-        type: 'exponential',
-        delay: 2000 // 2s, 4s, 8s
-    },
-    removeOnComplete: {
-        age: 24 * 3600, // Keep completed jobs for 24 hours
-        count: 1000
-    },
-    removeOnFail: {
-        age: 7 * 24 * 3600 // Keep failed jobs for 7 days
-    }
+    backoff: { type: 'exponential', delay: 2000 },
+    removeOnComplete: { age: 24 * 3600, count: 1000 },
+    removeOnFail: { age: 7 * 24 * 3600 }
 };
 
-// ============================================
-// EMAIL QUEUE
-// ============================================
-
-let emailQueue, emailDLQ;
-// if (connection) {
-//     try {
-//         emailQueue = new Queue('email-notifications', {
-//             connection,
-//             defaultJobOptions
-//         });
-//
-//         emailDLQ = new Queue('email-dlq', {
-//             connection,
-//             defaultJobOptions: {
-//                 attempts: 1, // DLQ doesn't retry
-//                 removeOnComplete: false,
-//                 removeOnFail: false
-//             }
-//         });
-//     } catch (e) {
-//         logger.warn('Failed to create email queues:', e.message);
-//     }
-// }
+// Internal Queues (Private to module)
+const _queues = {};
+if (connection) {
+    _queues.email = new Queue('email-notifications', { connection, defaultJobOptions });
+    _queues.whatsapp = new Queue('whatsapp-notifications', { connection, defaultJobOptions });
+    _queues.emailDLQ = new Queue('email-dlq', { connection, defaultJobOptions });
+    _queues.whatsappDLQ = new Queue('whatsapp-dlq', { connection, defaultJobOptions });
+}
 
 /**
- * Add email job to queue
- * @param {string} type - Email type (order_confirmation, payment_approved, etc.)
- * @param {Object} data - Email data
- * @returns {Promise<Job>}
+ * .safeAdd() Pattern
+ * Enforces availability check and Result object pattern.
  */
-async function queueEmail(type, data) {
-    if (!emailQueue) {
-        logger.warn('Email queue not available, skipping email:', type);
-        return null;
+async function safeAdd(queueName, type, data, options = {}) {
+    const isAvailable = stateService.getSnapshot().infra.redis;
+
+    if (!isAvailable) {
+        logger.warn('QUEUE_DEGRADED: Redis unavailable, skipping queue operation', { queueName, type });
+        return { success: false, error: 'Redis unavailable - running in degraded mode' };
     }
+
+    const queue = _queues[queueName];
+    if (!queue) throw new Error(`INVALID_QUEUE: '${queueName}' does not exist.`);
+
     try {
-        const job = await emailQueue.add(type, {
-            type,
+        const job = await queue.add(type, {
             ...data,
             queuedAt: new Date()
-        }, {
-            priority: data.priority || 5, // Lower number = higher priority
-            jobId: `email-${type}-${data.orderId || Date.now()}`
-        });
+        }, options);
 
-        logger.info('Email queued', { jobId: job.id, type, orderId: data.orderId });
-        return job;
+        return { success: true, jobId: job.id };
     } catch (error) {
-        logger.error('Failed to queue email', { error: error.message, type });
-        // Don't throw, just log, so main flow continues
-        return null;
+        logger.error('QUEUE_FAILURE: Enqueue failed', { error: error.message, queueName });
+        return { success: false, error: error.message };
     }
 }
 
-// ============================================
-// WHATSAPP QUEUE
-// ============================================
-
-let whatsappQueue, whatsappDLQ;
-// if (connection) {
-//     try {
-//         whatsappQueue = new Queue('whatsapp-notifications', {
-//             connection,
-//             defaultJobOptions
-//         });
-//
-//         whatsappDLQ = new Queue('whatsapp-dlq', {
-//             connection,
-//             defaultJobOptions: {
-//                 attempts: 1,
-//                 removeOnComplete: false,
-//                 removeOnFail: false
-//             }
-//         });
-//     } catch (e) {
-//         logger.warn('Failed to create WhatsApp queues:', e.message);
-//     }
-// }
-
 /**
- * Add WhatsApp job to queue
- * @param {string} phone - Recipient phone number
- * @param {string} templateName - Template name
- * @param {Array} params - Template parameters
- * @param {Object} metadata - Additional metadata
- * @returns {Promise<Job>}
+ * Legacy Wrappers (Refactored to use safeAdd)
  */
-async function queueWhatsApp(phone, templateName, params, metadata = {}) {
-    if (!whatsappQueue) {
-        logger.warn('WhatsApp queue not available, skipping message:', templateName);
-        return null;
-    }
-    try {
-        const job = await whatsappQueue.add('send-template', {
-            phone,
-            templateName,
-            params,
-            metadata,
-            queuedAt: new Date()
-        }, {
-            priority: metadata.priority || 5,
-            jobId: `whatsapp-${templateName}-${metadata.orderId || Date.now()}`
-        });
-
-        logger.info('WhatsApp queued', { jobId: job.id, templateName, phone: phone.substring(0, 5) + '***' });
-        return job;
-    } catch (error) {
-        logger.error('Failed to queue WhatsApp', { error: error.message, templateName });
-        // Don't throw
-        return null;
-    }
+async function queueEmail(type, data) {
+    return safeAdd('email', type, data, {
+        priority: data.priority || 5,
+        jobId: `email-${type}-${data.orderId || Date.now()}`
+    });
 }
 
-// ============================================
-// QUEUE MONITORING
-// ============================================
+async function queueWhatsApp(phone, templateName, params, metadata = {}) {
+    return safeAdd('whatsapp', 'send-template', {
+        phone, templateName, params, metadata
+    }, {
+        priority: metadata.priority || 5,
+        jobId: `whatsapp-${templateName}-${metadata.orderId || Date.now()}`
+    });
+}
 
 /**
- * Get queue statistics
+ * Queue Monitoring (Using internal private queues)
  */
 async function getQueueStats(queueName) {
-    const queue = queueName === 'email' ? emailQueue : whatsappQueue;
-    const dlq = queueName === 'email' ? emailDLQ : whatsappDLQ;
+    const queue = _queues[queueName];
+    if (!queue) return null;
 
-    const [waiting, active, completed, failed, dlqCount] = await Promise.all([
+    const [waiting, active, completed, failed] = await Promise.all([
         queue.getWaitingCount(),
         queue.getActiveCount(),
         queue.getCompletedCount(),
-        queue.getFailedCount(),
-        dlq.getWaitingCount()
+        queue.getFailedCount()
     ]);
 
-    return {
-        queue: queueName,
-        waiting,
-        active,
-        completed,
-        failed,
-        dlq: dlqCount,
-        total: waiting + active + completed + failed
-    };
+    return { queue: queueName, waiting, active, completed, failed };
 }
-
-/**
- * Get failed jobs from DLQ
- */
-async function getDLQJobs(queueName, start = 0, end = 50) {
-    const dlq = queueName === 'email' ? emailDLQ : whatsappDLQ;
-    const jobs = await dlq.getJobs(['waiting', 'failed'], start, end);
-
-    return jobs.map(job => ({
-        id: job.id,
-        data: job.data,
-        failedReason: job.failedReason,
-        attemptsMade: job.attemptsMade,
-        timestamp: job.timestamp,
-        processedOn: job.processedOn,
-        finishedOn: job.finishedOn
-    }));
-}
-
-/**
- * Retry a job from DLQ
- */
-async function retryDLQJob(queueName, jobId) {
-    const dlq = queueName === 'email' ? emailDLQ : whatsappDLQ;
-    const targetQueue = queueName === 'email' ? emailQueue : whatsappQueue;
-
-    const job = await dlq.getJob(jobId);
-    if (!job) {
-        throw new Error('Job not found in DLQ');
-    }
-
-    // Re-queue the job
-    const newJob = await targetQueue.add(job.name, job.data);
-
-    // Remove from DLQ
-    await job.remove();
-
-    logger.info('Job retried from DLQ', { jobId, newJobId: newJob.id, queue: queueName });
-    return newJob;
-}
-
-// ============================================
-// GRACEFUL SHUTDOWN
-// ============================================
 
 async function closeQueues() {
-    logger.info('Closing queues...');
-    await Promise.all([
-        emailQueue.close(),
-        whatsappQueue.close(),
-        emailDLQ.close(),
-        whatsappDLQ.close(),
-        connection.quit()
-    ]);
-    logger.info('All queues closed');
+    logger.info('Shutting down queues...');
+    try {
+        await Promise.all(Object.values(_queues).map(q => q.close().catch(() => { })));
+        if (connection.status !== 'end') {
+            await connection.quit().catch(() => { });
+        }
+    } catch (err) {
+        logger.warn('QUEUE: Error during cleanup', { error: err.message });
+    }
 }
 
-// Handle process termination
-process.on('SIGTERM', closeQueues);
-process.on('SIGINT', closeQueues);
-
 module.exports = {
-    // Queues
-    emailQueue,
-    whatsappQueue,
-    emailDLQ,
-    whatsappDLQ,
-
-    // Functions
+    safeAdd,
     queueEmail,
     queueWhatsApp,
     getQueueStats,
-    getDLQJobs,
-    retryDLQJob,
-    closeQueues
+    closeQueues,
+    isAvailable: () => stateService.getSnapshot().infra.redis,
+    connection // Exported for authorized worker use
 };

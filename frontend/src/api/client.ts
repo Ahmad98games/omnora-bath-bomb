@@ -1,14 +1,16 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios'
 
-// Retry configuration - Optimized for instant fallback when backend unavailable
-const MAX_RETRIES = 0  // No retries for instant fallback to local data
-const RETRY_DELAY = 300  // Not used when MAX_RETRIES = 0
+// Retry configuration
+const MAX_RETRIES = 3
+const RETRY_DELAY = 1000 // 1 second base delay
 
 const client = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
-  timeout: 500,  // 500ms for instant failure detection
+  // Use VITE_API_URL if defined, otherwise default to localhost for dev or relative path
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  timeout: 30000,
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'X-Api-Version': '1'
   }
 })
 
@@ -35,11 +37,6 @@ client.interceptors.request.use(
 // Add a response interceptor with retry logic
 client.interceptors.response.use(
   (response) => {
-    // Check if response is HTML (incorrectly returned for API requests)
-    const contentType = response.headers['content-type']
-    if (contentType && contentType.includes('text/html')) {
-      return Promise.reject(new Error('Received HTML instead of JSON'))
-    }
     return response
   },
   async (error: AxiosError) => {
@@ -89,7 +86,7 @@ client.interceptors.response.use(
       return Promise.reject(new Error(errorMessage))
     } else if (error.request) {
       // The request was made but no response was received
-      return Promise.reject(new Error('Cannot connect to server. Please make sure the backend is running.'))
+      return Promise.reject(new Error('Unable to reach the server. Please check your internet connection or try again later.'))
     } else {
       // Something happened in setting up the request
       return Promise.reject(new Error('Failed to make request. Please try again.'))

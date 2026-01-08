@@ -1,13 +1,4 @@
-// server.js - corrected version with robust MongoDB connection and in‑memory fallback
-const express = require('express');
-// Conditionally require mongodb-memory-server (dev dependency)
-let MongoMemoryServer;
-try {
-  MongoMemoryServer = require('mongodb-memory-server').MongoMemoryServer;
-} catch (e) {
-  // mongodb-memory-server not available (production mode)
-  MongoMemoryServer = null;
-}
+const express = require('express'); // restart trigger 2
 const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
@@ -20,19 +11,16 @@ const cookieParser = require('cookie-parser');
 const hpp = require('hpp');
 const Sentry = require('@sentry/node');
 const { apiLimiter } = require('./middleware/rateLimiter');
+const { validateEnv } = require('./config/env');
 const logger = require('./services/logger');
+const { gatekeeper, CAPABILITIES } = require('./middleware/gatekeeper');
 
-console.log('Starting server.js...');
-dotenv.config();
-console.log('Environment variables loaded.');
-console.log('PORT:', process.env.PORT);
-console.log('MONGODB_URI:', process.env.MONGODB_URI ? 'Set' : 'Not Set');
+// Load Validated Config
+const config = validateEnv();
+const API_PREFIX = config.apiPrefix;
 
 const app = express();
 app.set('trust proxy', 1);
-
-const PORT = process.env.PORT || 3000;
-const API_PREFIX = process.env.API_PREFIX || '/api/v1';
 
 // Initialise Sentry if DSN provided
 if (process.env.SENTRY_DSN) {
@@ -44,79 +32,7 @@ if (process.env.SENTRY_DSN) {
   app.use(Sentry.Handlers.requestHandler());
 }
 
-// ---------- MongoDB connection with fallback ----------
-const connectDB = async () => {
-  console.log('Attempting to connect to MongoDB...');
-  const primaryUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/omnora_ecommerce';
-  try {
-    await mongoose.connect(primaryUri);
-    logger.info('MongoDB connected (primary)');
-    return;
-  } catch (primaryErr) {
-    logger.error('Primary MongoDB connection failed', { error: primaryErr.message });
-  }
-
-  // Try local MongoDB fallback
-  const localUri = 'mongodb://127.0.0.1:27017/omnora_ecommerce';
-  try {
-    await mongoose.connect(localUri);
-    logger.info('MongoDB connected (local fallback)');
-    return;
-  } catch (localErr) {
-    logger.error('Local MongoDB fallback failed', { error: localErr.message });
-  }
-
-  // Final fallback: in‑memory MongoDB (only if available)
-  if (MongoMemoryServer) {
-    try {
-      const mongod = await MongoMemoryServer.create();
-      const memUri = mongod.getUri();
-      await mongoose.connect(memUri);
-      logger.info('MongoDB connected (in‑memory)');
-      // Store reference for graceful shutdown if needed
-      process.env.MEMORY_MONGODB_URI = memUri;
-      return;
-    } catch (memErr) {
-      logger.error('In‑memory MongoDB startup failed', { error: memErr.message });
-    }
-  }
-
-  // No MongoDB available
-  logger.warn('All MongoDB connection attempts failed. Server starting in OFFLINE mode (using in-memory data).');
-  // Do NOT exit, allow server to start with in-memory fallbacks in controllers
-  // process.exit(1);
-};
-
-const seedDatabase = async () => {
-  try {
-    // Load models first to ensure they are registered
-    require('./models/Product');
-    const Product = mongoose.model('Product');
-    const defaultProducts = require('./data/defaultProducts');
-
-    if (mongoose.connection.readyState !== 1) {
-      logger.warn('Skipping seed: MongoDB not connected');
-      return;
-    }
-
-    const count = await Product.countDocuments();
-    if (count === 0) {
-      logger.info('Database empty, seeding default products...');
-      // Ensure _id is handled correctly if it's a string in defaultProducts but ObjectId in schema
-      // But usually mongoose handles string _id if schema allows or if we remove it.
-      // Let's remove _id to let Mongoose generate it, or keep it if we want fixed IDs.
-      // defaultProducts has string IDs '1', '2', etc. which might be an issue if Schema expects ObjectId.
-      // Let's try inserting as is, if it fails we might need to map.
-      // Actually, let's map to remove _id so Mongoose generates valid ObjectIds
-      const productsToInsert = defaultProducts.map(({ _id, ...rest }) => rest);
-
-      await Product.insertMany(productsToInsert);
-      logger.info(`Seeded ${productsToInsert.length} products`);
-    }
-  } catch (error) {
-    logger.error('Seeding failed', { error: error.message });
-  }
-};
+// Database connection and seeding are handled by bootstrap.js
 
 // Load all Mongoose models after DB connection
 // We need to load them before seeding
@@ -130,8 +46,6 @@ require('./models/Phase3Models');
 // Let's ensure it's loaded.
 require('./models/Product');
 
-connectDB().then(() => seedDatabase());
-
 // ---------- Middleware ----------
 const allowedOrigins = (process.env.ALLOWED_ORIGINS || '').split(',').filter(Boolean);
 const corsOptions = {
@@ -140,7 +54,8 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use(express.json({ limit: '1mb' }));
+// Increased limit for Serverless uploads (Vercel max 4.5MB)
+app.use(express.json({ limit: '4mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(hpp());
@@ -183,8 +98,9 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/webhook', require('./routes/webhookRoutes'));
-app.use('/api/admin', require('./routes/adminRoutes'));
-app.use('/api/newsletter', newsletterRoutes);
+app.use('/api/admin', gatekeeper(CAPABILITIES.STATE_MUTATING), require('./routes/adminRoutes'));
+// Add Health Route Explicitly if not covered
+app.use('/api/health', healthRoutes);
 
 // Global error handler
 app.use((err, req, res, _next) => {
@@ -202,16 +118,40 @@ app.use((err, req, res, _next) => {
   });
 });
 
-console.log('Attempting to start server on port ' + PORT);
-app.listen(PORT, () => {
-  console.log('Server is listening!');
-  logger.info(`Server running on port ${PORT}`);
-  logger.info(`API URL: http://localhost:${PORT}${API_PREFIX}`);
-}).on('error', (err) => {
-  if (err.code === 'EADDRINUSE') {
-    logger.error(`Port ${PORT} is already in use! Please stop the other process running on this port.`);
+// Only start server if running directly
+if (require.main === module) {
+  const bootstrap = require('./bootstrap');
+  bootstrap().then(({ config }) => {
+    const PORT = config.port;
+    app.listen(PORT, () => {
+      logger.info(`Server running on port ${PORT}`);
+      logger.info(`Mode: ${config.env}`);
+    }).on('error', (err) => {
+      if (err.code === 'EADDRINUSE') {
+        logger.error(`Port ${PORT} is already in use!`);
+        process.exit(1);
+      } else {
+        logger.error('Server error', { error: err.message });
+      }
+    });
+  });
+}
+
+module.exports = app;
+
+// GLOBAL CRASH HANDLING (Exit Strategy)
+process.on('unhandledRejection', (reason, promise) => {
+  logger.error('Unhandled Rejection at:', { promise, reason: reason?.message || reason });
+  // Flush logs if possible, then exit to allow restart
+  setTimeout(() => {
     process.exit(1);
-  } else {
-    logger.error('Server error', { error: err.message });
-  }
+  }, 1000);
+});
+
+process.on('uncaughtException', (error) => {
+  logger.error('Uncaught Exception:', { error: error.message, stack: error.stack });
+  // Flush logs if possible, then exit
+  setTimeout(() => {
+    process.exit(1);
+  }, 1000);
 });

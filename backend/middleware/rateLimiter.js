@@ -1,8 +1,12 @@
 const rateLimit = require('express-rate-limit');
 
+const { validateEnv } = require('../config/env');
+
+const config = validateEnv();
+
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: parseInt(process.env.AUTH_RATE_LIMIT || '20', 10),
+  max: config.limits.authRateLimit,
   standardHeaders: true,
   legacyHeaders: false,
   message: {
@@ -13,7 +17,7 @@ const authLimiter = rateLimit({
 
 const apiLimiter = rateLimit({
   windowMs: 1 * 60 * 1000,
-  max: parseInt(process.env.API_RATE_LIMIT || '300', 10),
+  max: config.limits.apiRateLimit,
   standardHeaders: true,
   legacyHeaders: false,
   handler: (req, res) =>

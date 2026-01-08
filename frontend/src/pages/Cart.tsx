@@ -24,31 +24,48 @@ export default function Cart() {
     window.dispatchEvent(new Event('cart-updated'))
   }
 
-  const removeItem = (id: string) => {
-    updateCart(items.filter(i => i.id !== id))
-    showToast('Item removed from bag', 'info')
+  const removeItem = (id: string, name: string) => {
+    if (confirm(`Remove "${name}" from your bag?`)) {
+      updateCart(items.filter(i => i.id !== id))
+      showToast('Item removed from bag', 'info')
+    }
   }
 
   const updateQty = (id: string, delta: number) => {
-    updateCart(items.map(i => i.id === id ? { ...i, quantity: Math.max(1, i.quantity + delta) } : i))
+    const updatedItems = items.map(i => {
+      if (i.id === id) {
+        const newQty = Math.max(1, i.quantity + delta)
+        return { ...i, quantity: newQty }
+      }
+      return i
+    })
+    updateCart(updatedItems)
   }
 
   const clearCart = () => {
-    if (confirm('Are you sure you want to empty your bag?')) {
+    if (confirm('Are you sure you want to empty your bag? This action cannot be undone.')) {
       updateCart([])
-      showToast('Bag cleared', 'info')
+      showToast('Shopping bag cleared', 'info')
     }
   }
 
   const subtotal = useMemo(() => items.reduce((s, i) => s + i.price * i.quantity, 0), [items])
+  const totalItems = useMemo(() => items.reduce((sum, i) => sum + i.quantity, 0), [items])
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = FALLBACK_IMAGE
+    e.currentTarget.onerror = null // Prevent infinite loop
+  }
 
   if (items.length === 0) {
     return (
       <div className="cart-page empty-cart animate-fade-in">
         <div className="empty-cart-content">
-          <h2>Your bag is empty</h2>
-          <p>Treat yourself to something luxurious.</p>
-          <Link to="/collection" className="luxury-button hover-lift">Start Shopping</Link>
+          <h2>Your Bag Is Empty</h2>
+          <p>Discover our curated collection of premium products.</p>
+          <Link to="/collection" className="luxury-button hover-lift">
+            Explore Collection
+          </Link>
         </div>
       </div>
     )
@@ -58,8 +75,10 @@ export default function Cart() {
     <div className="cart-page">
       <header className="cart-hero">
         <div className="cart-hero-content animate-fade-in-up">
-          <h1 className="cart-title">Your Shopping Bag</h1>
-          <p className="cart-subtitle">Review your luxury selections</p>
+          <h1 className="cart-title">Shopping Bag</h1>
+          <p className="cart-subtitle">
+            {totalItems} {totalItems === 1 ? 'Item' : 'Items'} • PKR {subtotal.toLocaleString()}
+          </p>
         </div>
       </header>
 
@@ -71,43 +90,111 @@ export default function Cart() {
               <span>Quantity</span>
               <span>Total</span>
             </div>
-            {items.map(item => (
-              <div key={item.id} className="cart-item animate-slide-in-right">
+            {items.map((item, index) => (
+              <div 
+                key={item.id} 
+                className="cart-item animate-slide-in-right"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
                 <div className="item-info">
                   <div className="item-image-placeholder">
-                    <img src={item.image} alt={item.name} onError={(e) => e.currentTarget.src = FALLBACK_IMAGE} />
+                    <img 
+                      src={item.image || FALLBACK_IMAGE} 
+                      alt={item.name}
+                      onError={handleImageError}
+                      loading="lazy"
+                    />
                   </div>
                   <div>
                     <h3>{item.name}</h3>
                     <p>PKR {item.price.toLocaleString()}</p>
-                    <button onClick={() => removeItem(item.id)} className="remove-btn">Remove</button>
+                    <button 
+                      onClick={() => removeItem(item.id, item.name)} 
+                      className="remove-btn"
+                      aria-label={`Remove ${item.name} from cart`}
+                    >
+                      Remove
+                    </button>
                   </div>
                 </div>
                 <div className="item-quantity">
-                  <button onClick={() => updateQty(item.id, -1)}>-</button>
-                  <span>{item.quantity}</span>
-                  <button onClick={() => updateQty(item.id, 1)}>+</button>
+                  <button 
+                    onClick={() => updateQty(item.id, -1)}
+                    aria-label="Decrease quantity"
+                    disabled={item.quantity <= 1}
+                  >
+                    −
+                  </button>
+                  <span aria-label={`Quantity: ${item.quantity}`}>
+                    {item.quantity}
+                  </span>
+                  <button 
+                    onClick={() => updateQty(item.id, 1)}
+                    aria-label="Increase quantity"
+                  >
+                    +
+                  </button>
                 </div>
                 <div className="item-total">
                   PKR {(item.price * item.quantity).toLocaleString()}
                 </div>
               </div>
             ))}
-            <button onClick={clearCart} className="clear-cart-btn hover-scale">Clear Bag</button>
+            <button 
+              onClick={clearCart} 
+              className="clear-cart-btn hover-scale"
+              aria-label="Clear entire shopping bag"
+            >
+              Clear Bag
+            </button>
           </div>
 
           <div className="order-summary animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
             <h2>Order Summary</h2>
             <div className="summary-row">
+              <span>Items ({totalItems})</span>
+              <span>PKR {subtotal.toLocaleString()}</span>
+            </div>
+            <div className="summary-row">
               <span>Subtotal</span>
               <span>PKR {subtotal.toLocaleString()}</span>
             </div>
-            <p className="shipping-note">Shipping & taxes calculated at checkout</p>
+            <p className="shipping-note">
+              Shipping, taxes, and discount codes calculated at checkout
+            </p>
             <div className="summary-total">
               <span>Total</span>
               <span>PKR {subtotal.toLocaleString()}</span>
             </div>
-            <button onClick={() => navigate('/checkout')} className="luxury-button checkout-btn hover-lift">Proceed to Checkout</button>
+            <button 
+              onClick={() => navigate('/checkout')} 
+              className="luxury-button checkout-btn hover-lift"
+              aria-label={`Proceed to checkout with ${totalItems} items totaling PKR ${subtotal.toLocaleString()}`}
+            >
+              Proceed to Checkout
+            </button>
+            
+            <div style={{ 
+              marginTop: '1.5rem', 
+              textAlign: 'center',
+              padding: '1rem',
+              background: 'rgba(0, 240, 255, 0.05)',
+              border: '1px solid rgba(0, 240, 255, 0.2)'
+            }}>
+              <Link 
+                to="/collection" 
+                style={{ 
+                  color: 'var(--neon-cyan)', 
+                  textDecoration: 'none',
+                  fontSize: '0.9rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
+                  fontWeight: 600
+                }}
+              >
+                ← Continue Shopping
+              </Link>
+            </div>
           </div>
         </div>
       </div>

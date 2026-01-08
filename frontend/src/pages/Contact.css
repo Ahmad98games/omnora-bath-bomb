@@ -1,6 +1,7 @@
+/* Contact Page Styles */
 .contact-page {
     padding-bottom: 3rem;
-    background-color: var(--background-dark);
+    background-color: var(--background-color);
     min-height: 100vh;
 }
 
@@ -66,19 +67,19 @@
 
 .contact-form-container,
 .contact-info-container {
-    background: var(--background-card);
+    background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(10px);
-    border: 1px solid var(--border-color);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 16px;
     padding: 2rem;
-    box-shadow: 0 4px 30px var(--border-color);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
 }
 
 .contact-section-title {
     font-family: 'Playfair Display', serif;
     font-size: 1.8rem;
     margin-bottom: 1.5rem;
-    color: var(--aqua-400);
+    color: var(--primary-color);
 }
 
 .contact-form {
@@ -94,7 +95,7 @@
 }
 
 .contact-info-item {
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     padding-bottom: 1.5rem;
 }
 
@@ -107,11 +108,11 @@
     font-family: 'Playfair Display', serif;
     font-size: 1.2rem;
     margin-bottom: 0.5rem;
-    color: var(--text-primary);
+    color: var(--text-color);
 }
 
 .contact-info-text {
-    color: var(--text-secondary);
+    color: var(--light-text-color);
     margin-bottom: 0.25rem;
 }
 
@@ -122,17 +123,17 @@
 }
 
 .contact-social-link {
-    color: var(--aqua-400);
+    color: var(--primary-color);
     text-decoration: none;
     font-weight: 500;
     padding: 0.5rem 1rem;
-    border: 1px solid var(--aqua-400);
+    border: 1px solid var(--primary-color);
     border-radius: 20px;
     transition: all 0.3s;
 }
 
 .contact-social-link:hover {
-    background: var(--aqua-400);
+    background: var(--primary-color);
     color: white;
 }
 
@@ -143,8 +144,8 @@
 .map-container {
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 4px 30px var(--border-color);
-    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .success-message {

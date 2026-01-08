@@ -7,7 +7,9 @@ const logger = require('../services/logger');
  * @returns {number} - Available stock
  */
 function getAvailableStock(product) {
-    return product.stock - product.reservedStock;
+    const stock = Number(product.stock || 0);
+    const reserved = Number(product.reservedStock || 0);
+    return Math.max(0, stock - reserved);
 }
 
 /**
@@ -117,9 +119,11 @@ async function checkStock(items) {
     const outOfStock = [];
 
     for (const item of items) {
+        console.log(`[Inventory Check] Looking up Product ID: "${item.product}"`); // DEBUG LOG
         const product = await Product.findById(item.product);
 
         if (!product) {
+            console.error(`[Inventory Check] FAILED: Product ID "${item.product}" not found in DB!`); // DEBUG LOG
             outOfStock.push({
                 productId: item.product,
                 reason: 'Product not found'

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const orderController = require('../controllers/orderController');
 const { protect, authorize } = require('../middleware/auth');
+const { gatekeeper, CAPABILITIES } = require('../middleware/gatekeeper');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
@@ -87,15 +88,16 @@ const secureFileUpload = async (req, res, next) => {
 };
 
 // Routes
-router.post('/', orderController.createOrder); // Public for guest checkout
-router.get('/', protect, orderController.getUserOrders);
-router.get('/admin/all', protect, authorize('admin'), orderController.getAllOrders);
-router.get('/:id', protect, orderController.getOrderById);
-router.put('/:id/cancel', protect, orderController.cancelOrder);
-router.put('/:id/status', protect, authorize('admin'), orderController.updateOrderStatus);
+router.post('/', gatekeeper(CAPABILITIES.STATE_MUTATING), orderController.createOrder); // Public for guest checkout
+router.get('/', gatekeeper(CAPABILITIES.READ_ONLY), protect, orderController.getUserOrders);
+router.get('/admin/all', gatekeeper(CAPABILITIES.READ_ONLY), protect, authorize('admin'), orderController.getAllOrders);
+router.get('/:id', gatekeeper(CAPABILITIES.READ_ONLY), protect, orderController.getOrderById);
+router.put('/:id/cancel', gatekeeper(CAPABILITIES.STATE_MUTATING), protect, orderController.cancelOrder);
+router.put('/:id/status', gatekeeper(CAPABILITIES.STATE_MUTATING), protect, authorize('admin'), orderController.updateOrderStatus);
 
 // Payment Proof Upload with security layers
 router.post('/:id/receipt',
+    gatekeeper(CAPABILITIES.STATE_MUTATING),
     uploadLimiter,           // Rate limit: 5 uploads per 15 min
     upload.single('receipt'), // Parse multipart form data
     secureFileUpload,        // Validate magic bytes and save securely
@@ -104,18 +106,21 @@ router.post('/:id/receipt',
 
 // Order Approval with rate limiting and token protection
 router.get('/:id/approve',
+    gatekeeper(CAPABILITIES.STATE_MUTATING),
     approvalLimiter,         // Rate limit: 10 attempts per 15 min
     orderController.approveOrder
 );
 
 // Order Rejection with rate limiting and token protection
 router.get('/:id/reject',
+    gatekeeper(CAPABILITIES.STATE_MUTATING),
     approvalLimiter,         // Rate limit: 10 attempts per 15 min
     orderController.rejectOrder
 );
 
 // Secure Receipt Retrieval (Private - no static serving)
 router.get('/:id/receipt',
+    gatekeeper(CAPABILITIES.READ_ONLY),
     protect,                 // Requires JWT authentication
     orderController.getReceipt
 );

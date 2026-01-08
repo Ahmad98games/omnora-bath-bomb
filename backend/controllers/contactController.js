@@ -1,57 +1,48 @@
 const Contact = require('../models/Contact');
 const nodemailer = require('nodemailer');
-require('dotenv').config();
+const { validateEnv } = require('../config/env');
+
+const config = validateEnv();
 
 // Submit contact form
 exports.submitContactForm = async (req, res) => {
   try {
     const { name, email, subject, message } = req.body;
-    
+
     if (!name || !email || !subject || !message) {
       return res.status(400).json({ error: 'All fields are required' });
     }
-    
-    // Save to database
-    const newContact = new Contact({
-      name,
-      email,
-      subject,
-      message
-    });
-    
+
+    const newContact = new Contact({ name, email, subject, message });
     await newContact.save();
-    
-    // Send email notification (in a real app)
+
+    // Send email notification
     try {
-      const transporter = nodemailer.createTransport({
-        service: process.env.EMAIL_SERVICE,
-        auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS
-        }
-      });
-      
-      const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: process.env.EMAIL_USER, // Send to yourself or a designated email
-        subject: `New Contact Form: ${subject}`,
-        html: `
-          <h3>New Contact Form Submission</h3>
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Subject:</strong> ${subject}</p>
-          <p><strong>Message:</strong> ${message}</p>
-        `
-      };
-      
-      await transporter.sendMail(mailOptions);
+      const { nodemailer: mailConfig } = config.services;
+      if (mailConfig.service && mailConfig.user && mailConfig.pass) {
+        const transporter = nodemailer.createTransport({
+          service: mailConfig.service,
+          auth: {
+            user: mailConfig.user,
+            pass: mailConfig.pass
+          }
+        });
+
+        const mailOptions = {
+          from: mailConfig.user,
+          to: mailConfig.user,
+          subject: `New Contact Form: ${subject}`,
+          html: `<h3>New Contact Form Submission</h3><p><strong>Name:</strong> ${name}</p>`
+        };
+
+        await transporter.sendMail(mailOptions);
+      }
     } catch (emailError) {
       console.error('Error sending email notification:', emailError);
-      // Continue with the response even if email fails
     }
-    
-    res.status(201).json({ 
-      success: true, 
+
+    res.status(201).json({
+      success: true,
       message: 'Message sent successfully',
       contact: newContact
     });
@@ -61,7 +52,6 @@ exports.submitContactForm = async (req, res) => {
   }
 };
 
-// Get all contact submissions (admin only)
 exports.getContactSubmissions = async (req, res) => {
   try {
     const contacts = await Contact.find().sort({ createdAt: -1 });
@@ -72,32 +62,22 @@ exports.getContactSubmissions = async (req, res) => {
   }
 };
 
-// Update contact status (admin only)
 exports.updateContactStatus = async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
-    
-    if (!status) {
-      return res.status(400).json({ error: 'Status is required' });
-    }
-    
+
+    if (!status) return res.status(400).json({ error: 'Status is required' });
+
     const contact = await Contact.findById(id);
-    
-    if (!contact) {
-      return res.status(404).json({ error: 'Contact submission not found' });
-    }
-    
+    if (!contact) return res.status(404).json({ error: 'Contact submission not found' });
+
     contact.status = status;
     await contact.save();
-    
-    res.json({ 
-      success: true, 
-      message: 'Contact status updated',
-      contact
-    });
+
+    res.json({ success: true, message: 'Contact status updated', contact });
   } catch (error) {
     console.error('Error updating contact status:', error);
     res.status(500).json({ error: 'Server error' });
   }
-}; 
+};

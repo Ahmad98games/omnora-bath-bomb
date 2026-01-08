@@ -3,10 +3,14 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const logger = require('../services/logger');
 
+const { validateEnv } = require('../config/env');
+
+const config = validateEnv();
+
 // Generate JWT Token
 const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET || 'your_secret_key', {
-        expiresIn: '30d'
+    return jwt.sign({ id }, config.jwt.secret, {
+        expiresIn: config.jwt.expiresIn
     });
 };
 
@@ -128,7 +132,7 @@ exports.refreshToken = async (req, res) => {
         }
 
         // Verify token
-        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your_secret_key');
+        const decoded = jwt.verify(token, config.jwt.secret);
         const user = await User.findById(decoded.id);
 
         if (!user) {
@@ -161,7 +165,7 @@ exports.forgotPassword = async (req, res) => {
         }
 
         // Generate reset token
-        const resetToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET || 'your_secret_key', {
+        const resetToken = jwt.sign({ id: user._id }, config.jwt.secret, {
             expiresIn: '1h'
         });
 
@@ -190,7 +194,7 @@ exports.resetPassword = async (req, res) => {
         const { password } = req.body;
 
         // Verify token
-        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your_secret_key');
+        const decoded = jwt.verify(token, config.jwt.secret);
         const user = await User.findById(decoded.id);
 
         if (!user) {

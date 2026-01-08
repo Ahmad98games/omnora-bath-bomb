@@ -1,18 +1,41 @@
-/**
- * Product Image Styles
- */
-.product-image {
+/* Product Detail Page Styles */
+
+:root {
+    --luxury-gradient: linear-gradient(135deg, #e8c547, #c19a2d, #d4a832);
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --primary-color: #06063b;
+    --secondary-color: #e8c547;
+    --accent-color: #e8c547;
+    --accent-color-2: #c19a2d;
+    --light-bg-color: #f5f5f5;
+    --surface-color: #ffffff;
+    --text-color: #06063b;
+    --light-text-color: #666666;
+    --border-color: #e0e0e0;
+    --bg-color: #ffffff;
+    --cream: #fdf8f0;
+}
+
+/* Product Details */
+.product-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    margin-bottom: 5rem;
+    padding-top: 2.5rem;
+}
+
+.product-main-image {
+    width: 100%;
+    aspect-ratio: 1/1;
     object-fit: cover;
     box-shadow: 0 12px 35px var(--shadow-color);
     margin-bottom: 1.2rem;
     border-radius: 0.75rem;
     transition: transform 0.4s ease, box-shadow 0.4s ease;
-    border: 1px solid rgba(79, 195, 247, 0.15);
+    border: 1px solid rgba(232, 197, 71, 0.15);
 }
 
-/**
- * Product Info Section
- */
 .product-info {
     padding-top: 1rem;
 }
@@ -21,7 +44,7 @@
     font-family: 'Playfair Display', serif;
     font-size: 3rem;
     margin-bottom: 1.2rem;
-    color: var(--navy-900);
+    color: var(--primary-color);
     position: relative;
     letter-spacing: 1px;
 }
@@ -33,13 +56,13 @@
     left: 0;
     width: 100px;
     height: 3px;
-    background: linear-gradient(135deg, var(--aqua-400), var(--aqua-600));
+    background: var(--luxury-gradient);
     border-radius: 2px;
 }
 
 .product-description {
     font-size: 1.3rem;
-    color: var(--text-secondary);
+    color: var(--light-text-color);
     margin-bottom: 2rem;
     font-style: italic;
     line-height: 1.7;
@@ -48,10 +71,10 @@
 .product-price {
     font-family: 'Playfair Display', serif;
     font-size: 2rem;
-    color: var(--aqua-400);
+    color: var(--accent-color);
     margin-bottom: 2.5rem;
     font-weight: 600;
-    text-shadow: 0 2px 4px rgba(79, 195, 247, 0.25);
+    text-shadow: 0 2px 4px rgba(232, 197, 71, 0.25);
     letter-spacing: 0.5px;
 }
 
@@ -75,7 +98,7 @@
 }
 
 .luxury-button {
-    background: linear-gradient(135deg, var(--aqua-400), var(--aqua-600));
+    background: var(--luxury-gradient);
     color: white;
     border: none;
     padding: 1rem 2rem;
@@ -83,7 +106,7 @@
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 10px 30px rgba(79, 195, 247, 0.35);
+    box-shadow: 0 10px 30px rgba(232, 197, 71, 0.35);
     font-size: 1.1rem;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -91,7 +114,7 @@
 
 .luxury-button:hover {
     transform: translateY(-3px);
-    box-shadow: 0 15px 40px rgba(79, 195, 247, 0.45);
+    box-shadow: 0 15px 40px rgba(232, 197, 71, 0.45);
 }
 
 /* Tabs */
@@ -103,11 +126,11 @@
     display: flex;
     border-bottom: 2px solid var(--border-color);
     margin-bottom: 2.5rem;
-    background: var(--background-card);
+    background: var(--surface-color);
     border-radius: 10px 10px 0 0;
     padding: 0 1.2rem;
     overflow: hidden;
-    box-shadow: 0 5px 15px var(--shadow-lg);
+    box-shadow: 0 5px 15px var(--shadow-color);
 }
 
 .tab-button {
@@ -116,7 +139,7 @@
     border: none;
     border-bottom: 4px solid transparent;
     font-size: 1.3rem;
-    color: var(--text-secondary);
+    color: var(--light-text-color);
     cursor: pointer;
     transition: all 0.4s ease;
     flex: 1;
@@ -127,31 +150,31 @@
 
 .tab-button:hover,
 .tab-button.active {
-    color: var(--aqua-400);
-    border-bottom-color: var(--aqua-400);
-    background: var(--background-light);
+    color: var(--accent-color);
+    border-bottom-color: var(--accent-color);
+    background: var(--light-bg-color);
 }
 
 .tab-content {
     padding: 2.5rem;
-    background: var(--background-card);
+    background: var(--surface-color);
     border-radius: 0 0 10px 10px;
     border: 2px solid var(--border-color);
     border-top: none;
-    box-shadow: 0 5px 20px var(--shadow-lg);
+    box-shadow: 0 5px 20px var(--shadow-color);
 }
 
 .tab-content h3 {
     font-size: 1.7rem;
     margin-bottom: 1.2rem;
-    color: var(--navy-900);
+    color: var(--primary-color);
 }
 
 .tab-content p {
     font-size: 1.15rem;
     line-height: 1.7;
     margin-bottom: 1.2rem;
-    color: var(--text-primary);
+    color: var(--text-color);
 }
 
 /* Related Products */
@@ -163,7 +186,7 @@
     text-align: center;
     margin-bottom: 4rem;
     font-size: 2.5rem;
-    color: var(--navy-900);
+    color: var(--primary-color);
 }
 
 .related-grid {
@@ -186,12 +209,11 @@
 
 @media (max-width: 768px) {
     .tabs-nav {
-        display: flex; /* Kept display: flex for the mobile layout */
-        flex-wrap: wrap; /* Added flex-wrap for better layout on smaller devices */
+        flex-wrap: wrap;
     }
 
     .tab-button {
-        flex: 1 1 auto; /* Use flex-basis auto to allow wrapping */
+        flex: 1;
         padding: 1.2rem;
         text-align: center;
     }

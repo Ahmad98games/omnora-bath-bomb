@@ -1,5 +1,9 @@
 const axios = require("axios");
 const { formatPhoneNumber, isValidWhatsAppNumber } = require("./phoneFormatter");
+const { validateEnv } = require("../config/env");
+
+const config = validateEnv();
+const { whatsapp } = config.services;
 
 /**
  * Message Templates for consistent messaging
@@ -26,11 +30,6 @@ const messageTemplates = {
 
 /**
  * Send template message via WhatsApp Cloud API
- * @param {string} to - Phone number in international format
- * @param {string} templateName - Name of the template
- * @param {string} languageCode - Language code (e.g., "en_US")
- * @param {Array} components - Template components
- * @returns {Promise<Object|null>} - API response with message ID or null on failure
  */
 const sendTemplateMessage = async (to, templateName, languageCode = "en_US", components = []) => {
     try {
@@ -41,7 +40,7 @@ const sendTemplateMessage = async (to, templateName, languageCode = "en_US", com
             return null;
         }
 
-        const url = `https://graph.facebook.com/v22.0/${process.env.WHATSAPP_PHONE_ID}/messages`;
+        const url = `https://graph.facebook.com/v22.0/${whatsapp.phoneId}/messages`;
         const payload = {
             messaging_product: "whatsapp",
             to: formattedPhone,
@@ -55,19 +54,15 @@ const sendTemplateMessage = async (to, templateName, languageCode = "en_US", com
 
         const res = await axios.post(url, payload, {
             headers: {
-                Authorization: `Bearer ${process.env.WHATSAPP_CLOUD_API_TOKEN}`,
+                Authorization: `Bearer ${whatsapp.token}`,
                 "Content-Type": "application/json"
             }
         });
 
         console.log(`✅ WhatsApp template message sent to ${formattedPhone}:`, res.data);
-
-        // Return full response including message ID
-        // Response format: { messaging_product: 'whatsapp', contacts: [...], messages: [{ id: 'wamid.xxx' }] }
         return res.data;
     } catch (err) {
         console.error("❌ WhatsApp API Error:", err.response?.data || err.message);
-        // Return error details for DLQ handling
         return {
             error: true,
             message: err.response?.data || err.message,
@@ -78,13 +73,9 @@ const sendTemplateMessage = async (to, templateName, languageCode = "en_US", com
 
 /**
  * Send text message via WhatsApp Cloud API
- * @param {string} to - Phone number in international format (e.g., 923001234567)
- * @param {string} body - Message text
- * @returns {Promise<Object|null>} - Response data or null on failure
  */
 const sendTextMessage = async (to, body) => {
     try {
-        // Format and validate phone number
         const formattedPhone = formatPhoneNumber(to);
 
         if (!formattedPhone || !isValidWhatsAppNumber(formattedPhone)) {
@@ -92,7 +83,7 @@ const sendTextMessage = async (to, body) => {
             return null;
         }
 
-        const url = `https://graph.facebook.com/v22.0/${process.env.WHATSAPP_PHONE_ID}/messages`;
+        const url = `https://graph.facebook.com/v22.0/${whatsapp.phoneId}/messages`;
         const payload = {
             messaging_product: "whatsapp",
             to: formattedPhone,
@@ -102,7 +93,7 @@ const sendTextMessage = async (to, body) => {
 
         const res = await axios.post(url, payload, {
             headers: {
-                Authorization: `Bearer ${process.env.WHATSAPP_CLOUD_API_TOKEN}`,
+                Authorization: `Bearer ${whatsapp.token}`,
                 "Content-Type": "application/json"
             }
         });
@@ -111,7 +102,6 @@ const sendTextMessage = async (to, body) => {
         return res.data;
     } catch (err) {
         console.error("❌ WhatsApp API Error:", err.response?.data || err.message);
-        // Don't throw error to prevent blocking the main flow
         return null;
     }
 };
@@ -124,27 +114,17 @@ const sendOrderCreatedNotification = async (phone, customerName, orderNumber, to
     return await sendTextMessage(phone, message);
 };
 
-/**
- * Send order shipped notification
- */
 const sendOrderShippedNotification = async (phone, customerName, orderNumber, trackingNumber) => {
     const message = messageTemplates.orderShipped(customerName, orderNumber, trackingNumber);
     return await sendTextMessage(phone, message);
 };
 
-/**
- * Send order delivered notification
- */
 const sendOrderDeliveredNotification = async (phone, customerName, orderNumber) => {
     const message = messageTemplates.orderDelivered(customerName, orderNumber);
     return await sendTextMessage(phone, message);
 };
 
-/**
- * Send payment approved notification (Using Template)
- */
 const sendPaymentApprovedNotification = async (phone, customerName, orderNumber) => {
-    // Use template message for approval as requested
     const components = [
         {
             type: "body",
@@ -155,10 +135,8 @@ const sendPaymentApprovedNotification = async (phone, customerName, orderNumber)
         }
     ];
 
-    // Try sending template message first
     const result = await sendTemplateMessage(phone, "order_approved", "en_US", components);
 
-    // Fallback to text message if template fails (optional, but good for reliability)
     if (!result) {
         console.log("⚠️ Falling back to text message for payment approval...");
         const message = messageTemplates.paymentApproved(customerName, orderNumber);
@@ -168,17 +146,11 @@ const sendPaymentApprovedNotification = async (phone, customerName, orderNumber)
     return result;
 };
 
-/**
- * Send order cancelled notification
- */
 const sendOrderCancelledNotification = async (phone, customerName, orderNumber) => {
     const message = messageTemplates.orderCancelled(customerName, orderNumber);
     return await sendTextMessage(phone, message);
 };
 
-/**
- * Send payment reminder notification
- */
 const sendPaymentReminderNotification = async (phone, customerName, orderNumber, totalAmount) => {
     const message = messageTemplates.paymentReminder(customerName, orderNumber, totalAmount);
     return await sendTextMessage(phone, message);

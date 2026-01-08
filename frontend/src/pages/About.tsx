@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import { ChevronLeft, Gamepad, Bot, Laptop, Brush, Sprout, Lightbulb, BookOpen, Handshake, Globe, UserCircle } from 'lucide-react';
+import { Gamepad, Bot, Laptop, Brush, Sprout, Lightbulb, BookOpen, Handshake, Globe, UserCircle } from 'lucide-react';
 import './About.css';
-import { Link } from 'react-router-dom';
 
 interface AboutComponentProps {
   onBack: () => void;
@@ -15,11 +14,11 @@ const AboutComponent: React.FC<AboutComponentProps> = ({ onBack }) => {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('reveal-active');
+            entry.target.classList.add('active');
           }
         });
       },
-      { threshold: 0.2 }
+      { threshold: 0.15 } // Trigger slightly earlier for smoother mobile feel
     );
 
     revealRefs.current.forEach((ref) => {
@@ -37,60 +36,91 @@ const AboutComponent: React.FC<AboutComponentProps> = ({ onBack }) => {
 
   return (
     <div className="about-page">
-      <section className="about-container">
-        <div className="bg-pattern-about"></div>
+      <div className="noise-layer"></div>
 
-        {/* Intro */}
-        <div className="about-intro">
-          <h1 className="section-header-about about-title">
-            About Omnora
+      <div className="about-container">
+        
+        {/* --- HERO SECTION --- */}
+        <section className="about-hero">
+          <div className="hero-super-title">OMNORA</div>
+          <h1 className="section-header-magnum">
+            We Are The <br />
+            <span className="highlight-cyan">Movement.</span>
           </h1>
-          <p className="about-subtitle">
-            We're not just a company—we're a movement. Fueled by ethical AI, bold creativity, and a passion for building a better tomorrow.
+          <p className="text-editorial">
+            Fueled by ethical AI, bold creativity, and a passion for building a better tomorrow.
+            We don't just follow trends; we engineer them.
+          </p>
+        </section>
+
+        {/* --- WHO WE ARE (Animated) --- */ }
+        <div ref={addToRefs} className="reveal-block">
+          <h2 className="section-header-magnum">The Vision</h2>
+          <p className="text-editorial">
+            Omnora Store is a digital powerhouse born from the vision of <span className="highlight-gold">Ahmad Mahboob</span>.
+            We drive innovation through game development, AI solutions, and digital excellence.
           </p>
         </div>
 
-        {/* Who We Are */}
-        <div ref={addToRefs} className="reveal-about grid-cols-1">
-          <div style={{ position: 'relative', zIndex: 1 }}>
-            <h2 className="section-header-about">Who We Are</h2>
-            <p style={{ color: 'var(--text-secondary)', lineHeight: '1.75', fontSize: '1.125rem' }}>
-              Omnora is a digital powerhouse born from the vision of <span className="highlight-text">Ahmad Mahboob</span>, driving innovation through game development, AI solutions, and digital excellence.
+        {/* --- MISSION STATEMENT --- */}
+        <div ref={addToRefs} className="reveal-block" style={{ marginTop: '6rem' }}>
+          <div style={{ borderLeft: '4px solid var(--neon-gold)', paddingLeft: '2rem' }}>
+            <h2 className="section-header-magnum" style={{ fontSize: '2rem', marginBottom: '1rem' }}>Our Mission</h2>
+            <p className="text-editorial" style={{ fontStyle: 'italic', fontSize: '1.5rem', color: '#fff' }}>
+              "To generate revenue through <span className="highlight-cyan">ethical, halal ventures</span>—AI innovation, game development, and digital mastery—while inspiring our generation to turn skills into impact."
             </p>
           </div>
         </div>
 
-        {/* Our Mission */}
-        <div ref={addToRefs} className="reveal-about section-mb">
-          <h2 className="section-header-about text-center w-full">Our Mission</h2>
-          <p style={{ color: 'var(--text-secondary)', lineHeight: '1.75', fontSize: '1.125rem', maxWidth: '768px', margin: '0 auto', textAlign: 'center' }}>
-            We aim to generate  any amount of money <span className="highlight-text"> annually or Monthly </span> we have to go through it in  <span className="highlight-text">ethical, halal ventures</span>—think AI innovation, game development, and digital mastery—all while inspiring our generation to turn skills into impact.
-          </p>
-        </div>
-
-        {/* What We Do */}
-        <div ref={addToRefs} className="reveal-about section-mb">
-          <h2 className="section-header-about text-center w-full mb-2">What We Do</h2>
-          <div className="grid-cards">
+        {/* --- WHAT WE DO (Tech Grid) --- */}
+        <div ref={addToRefs} className="reveal-block" style={{ marginTop: '6rem' }}>
+          <h2 className="section-header-magnum">Capabilities</h2>
+          <div className="tech-grid">
             {[
               { icon: Gamepad, title: 'Game Development', desc: 'From 3D endless runners to bubble shooters—mobile games that captivate.' },
               { icon: Bot, title: 'AI Solutions', desc: 'Automation tools and digital products that solve real problems.' },
               { icon: Laptop, title: 'Web & Design', desc: 'Stunning sites, dashboards, and 3D visuals that stand out.' },
               { icon: Brush, title: 'Graphics Design', desc: 'Stunning design, thumbnails, logos, and banners that stand out.' }
             ].map((item, idx) => (
-              <div key={idx} className="card-about">
-                <item.icon size={48} color="var(--aqua-400)" style={{ marginBottom: '1rem' }} />
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)' }}>{item.title}</h3>
-                <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem' }}>{item.desc}</p>
+              <div key={idx} className="tech-card">
+                <item.icon className="tech-icon" size={32} />
+                <h3 className="tech-title">{item.title}</h3>
+                <p className="tech-desc">{item.desc}</p>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Core Values */}
-        <div ref={addToRefs} className="reveal-about section-mb">
-          <h2 className="section-header-about text-center w-full mb-2">Our Core Values</h2>
-          <div className="grid-values">
+      {/* --- FOUNDER SPOTLIGHT --- */}
+<div ref={addToRefs} className="reveal-block">
+  <div className="founder-section">
+    <div className="founder-header">
+      {/* Fixed: Added url() and corrected the string syntax */}
+      <div 
+        className="founder-avatar" 
+        style={{ 
+          backgroundImage: `url('/src/assets/ingredients/me.png')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+      >
+      </div>
+      <div>
+        <h3 className="founder-name">Ahmad Mahboob</h3>
+        <span className="founder-role">Founder • 18 Years Old</span>
+      </div>
+    </div>
+    <p className="text-editorial">
+      i am Ahmad Mahboob and i am the founder of Omnora Store. I am a 19 years old student and i am not only founder but also a Game/Web Developer and Designer We'll Prove 
+      <span className="highlight-gold"> age is no barrier to impact.</span>
+    </p>
+          </div>
+        </div>
+
+        {/* --- CORE VALUES --- */}
+        <div ref={addToRefs} className="reveal-block">
+          <h2 className="section-header-magnum">Core Code</h2>
+          <div className="values-list">
             {[
               { icon: Sprout, text: 'Growth through skills, not just degrees.' },
               { icon: Lightbulb, text: 'Simplicity and clarity in every creation.' },
@@ -98,52 +128,37 @@ const AboutComponent: React.FC<AboutComponentProps> = ({ onBack }) => {
               { icon: Handshake, text: 'Ethics and respect in all we do.' },
               { icon: Globe, text: 'Impact that inspires the next gen.' }
             ].map((item, idx) => (
-              <div key={idx} className="value-item">
-                <item.icon size={32} color="var(--aqua-400)" style={{ flexShrink: 0 }} />
-                <p style={{ color: 'var(--text-primary)' }}>{item.text}</p>
+              <div key={idx} className="value-row">
+                <item.icon className="highlight-cyan" size={24} />
+                <span className="value-text">{item.text}</span>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Meet the Founders */}
-        <div ref={addToRefs} className="reveal-about section-mb">
-          <h2 className="section-header-about text-center w-full mb-2">Meet the Founders</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
-            <div className="card-about founder-card">
-              <div className="founder-header">
-                <div className="founder-icon">
-                  <UserCircle size={32} />
-                </div>
-                <div className="founder-info">
-                  <h3>Ahmad Mahboob</h3>
-                  <p>Founder • 18 Years Old</p>
-                </div>
-              </div>
-              <p className="founder-bio">
-                A dreamer and doer, Ahmad's skills in game dev, AI, and design fuel Omnora's bold vision. He's all about action and impact. Solo Developed 3 Games in unity and multiple websites if it is Front end or back end. We are proud of our skills and we are ready to take over the world with our skills.
-              </p>
-            </div>
+        {/* --- CTA --- */}
+        <div ref={addToRefs} className="reveal-block" style={{ marginTop: '8rem', textAlign: 'center' }}>
+          <h2 className="section-header-magnum">Shape The Future</h2>
+          <p className="text-editorial" style={{ margin: '0 auto' }}>
+            Whether you're a creator, a visionary, or just curious—join us to build something extraordinary.
+          </p>
+          
+          <a href="mailto:pakahmad9815@gmail.com" className="btn-neon">
+            Initiate Contact
+          </a>
+          
+          <div style={{ marginTop: '2rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
+            For inquiries: <a href="mailto:omnorainfo28@gmail.com" className="contact-link-neon">omnorainfo28@gmail.com</a>
           </div>
         </div>
 
-        {/* Call to Action */}
-        <div ref={addToRefs} className="reveal-about text-center section-mb">
-          <h2 className="section-header-about text-center w-full" style={{ marginBottom: '1.5rem' }}>Let's Shape the Future</h2>
-          <p style={{ color: 'var(--text-secondary)', maxWidth: '672px', margin: '0 auto 2rem', fontSize: '1.125rem' }}>
-            Whether you're a creator, a visionary, or just curious—join us to build something extraordinary.
-          </p>
-          <a href="mailto:pakahmad9815@gmail.com" className="btn-custom-about" style={{ marginBottom: '1.5rem' }}>
-            Get in Touch
-          </a>
-          <p style={{ marginTop: '2rem', color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
-            For more information, please email us at <a href="mailto:omnorainfo28@gmail.com" className="contact-link">omnorainfo28@gmail.com</a>
-          </p>
-        </div>
-      </section>
-      
-      <footer>
-      </footer>
+        {/* --- FOOTER --- */}
+        <footer className="footer-magnum">
+          <img src="/images/omnora labs.png" alt="Omnora Labs" />
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>&copy; 2025 Omnora Labs. All Rights Reserved.</p>
+        </footer>
+
+      </div>
     </div>
   );
 };

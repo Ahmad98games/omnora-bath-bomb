@@ -8,13 +8,6 @@ const isMongoDBConnected = () => {
   return mongoose.connection.readyState === 1;
 };
 
-const mapDefaultProduct = (p) => ({
-  ...p,
-  isFeatured: p.featured || false,
-  isNew: false,
-  _id: p._id // Ensure ID is preserved
-});
-
 const buildFilters = (query) => {
   const filters = {};
   if (query.category) {
@@ -62,14 +55,13 @@ exports.getProducts = async (req, res) => {
     // Use in-memory fallback if MongoDB is not connected
     if (!isMongoDBConnected()) {
       logger.warn('MongoDB not connected, using default products');
-      const mappedProducts = defaultProducts.map(mapDefaultProduct);
       return res.json({
         success: true,
-        data: mappedProducts,
+        data: defaultProducts,
         pagination: {
           page: 1,
-          limit: mappedProducts.length,
-          total: mappedProducts.length,
+          limit: defaultProducts.length,
+          total: defaultProducts.length,
           pages: 1
         }
       });
@@ -94,12 +86,7 @@ exports.getProducts = async (req, res) => {
     }
 
     const page = parseInt(req.query.page, 10) || 1;
-    // Allow fetching all products if limit is high or not specified (default 12)
-    // But user wants to change concept. Let's allow limit=0 or limit=1000
-    let limit = parseInt(req.query.limit, 10) || 12;
-    if (limit > 100) limit = 100; // Cap at 100 still for safety, but maybe user wants more?
-    // If user passes limit=100, they get 100.
-
+    const limit = Math.min(parseInt(req.query.limit, 10) || 12, 100);
     const skip = (page - 1) * limit;
 
     const filters = buildFilters(req.query);
@@ -128,14 +115,13 @@ exports.getProducts = async (req, res) => {
     });
 
     // CONSISTENT fallback response
-    const mappedProducts = defaultProducts.map(mapDefaultProduct);
     res.status(200).json({
       success: true,
-      data: mappedProducts,
+      data: defaultProducts,
       pagination: {
         page: 1,
-        limit: mappedProducts.length,
-        total: mappedProducts.length,
+        limit: defaultProducts.length,
+        total: defaultProducts.length,
         pages: 1
       },
       fallback: true
@@ -161,7 +147,7 @@ exports.getProductById = async (req, res) => {
           error: 'Product not found.'
         });
       }
-      return res.json({ success: true, data: mapDefaultProduct(product) });
+      return res.json({ success: true, data: product });
     }
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -189,7 +175,7 @@ exports.getProductById = async (req, res) => {
     // Try fallback on error
     const product = defaultProducts.find(p => p._id === req.params.id);
     if (product) {
-      return res.json({ success: true, data: mapDefaultProduct(product), fallback: true });
+      return res.json({ success: true, data: product, fallback: true });
     }
 
     res.status(500).json({
@@ -210,7 +196,7 @@ exports.getProductsByCategory = async (req, res) => {
 
     // Use in-memory fallback if MongoDB is not connected
     if (!isMongoDBConnected()) {
-      const filtered = defaultProducts.filter(p => p.category === category).map(mapDefaultProduct);
+      const filtered = defaultProducts.filter(p => p.category === category);
       return res.json({
         success: true,
         data: filtered,
@@ -250,7 +236,7 @@ exports.getProductsByCategory = async (req, res) => {
 
     // CONSISTENT fallback
     const category = req.params.category.toLowerCase();
-    const filtered = defaultProducts.filter(p => p.category === category).map(mapDefaultProduct);
+    const filtered = defaultProducts.filter(p => p.category === category);
 
     res.status(200).json({
       success: true,
@@ -277,7 +263,7 @@ exports.getNewArrivals = async (req, res) => {
     if (!isMongoDBConnected()) {
       return res.json({
         success: true,
-        data: defaultProducts.slice(0, 3).map(mapDefaultProduct)
+        data: defaultProducts.slice(0, 3)
       });
     }
 
@@ -292,7 +278,7 @@ exports.getNewArrivals = async (req, res) => {
     logger.error('Error fetching new arrivals', { error: error.message });
     res.json({
       success: true,
-      data: defaultProducts.slice(0, 3).map(mapDefaultProduct),
+      data: defaultProducts.slice(0, 3),
       fallback: true
     });
   }
@@ -307,7 +293,7 @@ exports.getFeaturedProducts = async (req, res) => {
   try {
     // Use in-memory fallback if MongoDB is not connected
     if (!isMongoDBConnected()) {
-      const featured = defaultProducts.filter(p => p.featured).map(mapDefaultProduct);
+      const featured = defaultProducts.filter(p => p.featured);
       return res.json({ success: true, data: featured });
     }
 
@@ -319,7 +305,7 @@ exports.getFeaturedProducts = async (req, res) => {
     res.json({ success: true, data: featuredProducts });
   } catch (error) {
     logger.error('Error fetching featured products', { error: error.message });
-    const featured = defaultProducts.filter(p => p.featured).map(mapDefaultProduct);
+    const featured = defaultProducts.filter(p => p.featured);
     res.json({
       success: true,
       data: featured,
@@ -348,7 +334,7 @@ exports.searchProducts = async (req, res) => {
       const results = defaultProducts.filter(p =>
         p.name.toLowerCase().includes(q.toLowerCase()) ||
         p.description.toLowerCase().includes(q.toLowerCase())
-      ).map(mapDefaultProduct);
+      );
       return res.json({ success: true, data: results });
     }
 
@@ -371,7 +357,7 @@ exports.searchProducts = async (req, res) => {
     const results = defaultProducts.filter(p =>
       p.name.toLowerCase().includes(q.toLowerCase()) ||
       p.description.toLowerCase().includes(q.toLowerCase())
-    ).map(mapDefaultProduct);
+    );
 
     res.json({
       success: true,
@@ -384,7 +370,6 @@ exports.searchProducts = async (req, res) => {
 /**
  * @desc    Create product (Admin only)
  * @route   POST /api/products
- * @access  Private/Admin
  * @access  Private/Admin
  */
 exports.createProduct = async (req, res) => {

@@ -1,7 +1,9 @@
 const Order = require('../models/Order');
-require('dotenv').config();
+const { validateEnv } = require('../config/env');
 const crypto = require('crypto');
 const axios = require('axios');
+
+const config = validateEnv();
 
 /**
  * Payment Service
@@ -12,17 +14,17 @@ const axios = require('axios');
 exports.processBankTransfer = async (paymentData) => {
   try {
     const { orderId, transactionId } = paymentData;
-    
+
     // In a real implementation, you would validate the transaction ID
     // and update the order status accordingly
-    
+
     // For now, we'll just mark the payment as pending
     await Order.findByIdAndUpdate(orderId, {
       'payment.status': 'pending',
       'payment.transactionId': transactionId,
       'status': 'processing'
     });
-    
+
     return {
       success: true,
       status: 'pending',
@@ -41,30 +43,31 @@ exports.processBankTransfer = async (paymentData) => {
 exports.processJazzCashPayment = async (paymentData) => {
   try {
     const { orderId, amount, phoneNumber } = paymentData;
-    
-    // Get JazzCash credentials from environment variables
-    const merchantId = process.env.JAZZCASH_MERCHANT_ID || 'JC12345';
-    const password = process.env.JAZZCASH_PASSWORD || 'test_password';
-    const hashKey = process.env.JAZZCASH_HASH_KEY || 'test_hash_key';
-    const returnUrl = process.env.JAZZCASH_RETURN_URL || 'http://localhost:3000/api/payments/jazzcash/callback';
-    
+
+    // Get JazzCash credentials from central config
+    const { jazzcash } = config.payments;
+    const merchantId = jazzcash.merchantId;
+    const password = jazzcash.password;
+    const hashKey = jazzcash.hashKey;
+    const returnUrl = jazzcash.returnUrl;
+
     // Generate a unique transaction ID
     const txnId = `OMN-${Date.now()}-${Math.floor(Math.random() * 1000000)}`;
-    
+
     // Get order details
     const order = await Order.findById(orderId);
-    
+
     // Prepare data for JazzCash API
     const dateTime = new Date().toISOString().replace(/[-T:.Z]/g, '').substring(0, 14);
     const expiryDateTime = new Date(Date.now() + 24 * 60 * 60 * 1000)
       .toISOString().replace(/[-T:.Z]/g, '').substring(0, 14);
-    
+
     const totalAmount = Math.round(parseFloat(amount) * 100); // Convert to lowest denomination
-    
+
     // Create hash for security
     const hashString = `${hashKey}&${txnId}&${merchantId}&${password}&${totalAmount}&${expiryDateTime}`;
     const hash = crypto.createHash('sha256').update(hashString).digest('hex');
-    
+
     // Prepare API request payload
     const payload = {
       pp_Version: '1.1',
@@ -90,7 +93,7 @@ exports.processJazzCashPayment = async (paymentData) => {
       ppmpf_1: orderId,
       pp_ReturnURL: returnUrl
     };
-    
+
     // In development, return a mock response
     // In production, uncomment the following code to make the actual API call
     /*
@@ -99,7 +102,7 @@ exports.processJazzCashPayment = async (paymentData) => {
       payload
     );
     */
-    
+
     // Mock response for development
     const mockResponse = {
       data: {
@@ -117,7 +120,7 @@ exports.processJazzCashPayment = async (paymentData) => {
         pp_ResponseURL: `${returnUrl}?pp_ResponseCode=000&pp_TxnRefNo=${txnId}&ppmpf_1=${orderId}`
       }
     };
-    
+
     // Update order with transaction details
     await Order.findByIdAndUpdate(orderId, {
       'payment.status': 'pending',
@@ -130,7 +133,7 @@ exports.processJazzCashPayment = async (paymentData) => {
       },
       'status': 'processing'
     });
-    
+
     return {
       success: true,
       status: 'pending',
@@ -151,25 +154,26 @@ exports.processJazzCashPayment = async (paymentData) => {
 exports.processEasyPaisaPayment = async (paymentData) => {
   try {
     const { orderId, amount, phoneNumber } = paymentData;
-    
-    // Get EasyPaisa credentials from environment variables
-    const merchantId = process.env.EASYPAISA_MERCHANT_ID || 'EP12345';
-    const secretKey = process.env.EASYPAISA_SECRET_KEY || 'test_secret_key';
-    const returnUrl = process.env.EASYPAISA_RETURN_URL || 'http://localhost:3000/api/payments/easypaisa/callback';
-    
+
+    // Get EasyPaisa credentials from central config
+    const { easypaisa } = config.payments;
+    const merchantId = easypaisa.merchantId;
+    const secretKey = easypaisa.secretKey;
+    const returnUrl = easypaisa.returnUrl;
+
     // Generate a unique transaction ID
     const txnId = `OMN-EP-${Date.now()}-${Math.floor(Math.random() * 1000000)}`;
-    
+
     // Get order details
     const order = await Order.findById(orderId);
-    
+
     // Format amount (EasyPaisa expects amount in PKR without decimal)
     const formattedAmount = Math.round(parseFloat(amount));
-    
+
     // Generate checksum
     const checksumString = `${merchantId}${txnId}${formattedAmount}${secretKey}`;
     const checksum = crypto.createHash('md5').update(checksumString).digest('hex');
-    
+
     // Prepare API request payload
     const payload = {
       merchantId: merchantId,
@@ -185,7 +189,7 @@ exports.processEasyPaisaPayment = async (paymentData) => {
       returnUrl: returnUrl,
       merchantPaymentMethod: 'MWALLET'
     };
-    
+
     // In development, return a mock response
     // In production, uncomment the following code to make the actual API call
     /*
@@ -194,7 +198,7 @@ exports.processEasyPaisaPayment = async (paymentData) => {
       payload
     );
     */
-    
+
     // Mock response for development
     const mockResponse = {
       data: {
@@ -204,7 +208,7 @@ exports.processEasyPaisaPayment = async (paymentData) => {
         redirectUrl: `${returnUrl}?status=PAID&orderRefNumber=${order.orderNumber}&transactionId=${txnId}`
       }
     };
-    
+
     // Update order with transaction details
     await Order.findByIdAndUpdate(orderId, {
       'payment.status': 'pending',
@@ -217,7 +221,7 @@ exports.processEasyPaisaPayment = async (paymentData) => {
       },
       'status': 'processing'
     });
-    
+
     return {
       success: true,
       status: 'pending',
@@ -238,17 +242,17 @@ exports.processEasyPaisaPayment = async (paymentData) => {
 exports.processPayPalPayment = async (paymentData) => {
   try {
     const { orderId, paypalOrderId } = paymentData;
-    
+
     // In a real implementation, you would verify the PayPal payment
     // using the PayPal API and the order ID
-    
+
     // Update the order status
     await Order.findByIdAndUpdate(orderId, {
       'payment.status': 'completed',
       'payment.transactionId': paypalOrderId,
       'status': 'processing'
     });
-    
+
     return {
       success: true,
       status: 'completed',
@@ -267,17 +271,17 @@ exports.processPayPalPayment = async (paymentData) => {
 exports.processWesternUnionPayment = async (paymentData) => {
   try {
     const { orderId, mtcnNumber } = paymentData;
-    
+
     // In a real implementation, you would validate the MTCN number
     // and update the order status accordingly
-    
+
     // For now, we'll just mark the payment as pending
     await Order.findByIdAndUpdate(orderId, {
       'payment.status': 'pending',
       'payment.transactionId': mtcnNumber,
       'status': 'processing'
     });
-    
+
     return {
       success: true,
       status: 'pending',
@@ -296,17 +300,17 @@ exports.processWesternUnionPayment = async (paymentData) => {
 exports.processWireTransfer = async (paymentData) => {
   try {
     const { orderId, wireTransferId } = paymentData;
-    
+
     // In a real implementation, you would validate the wire transfer
     // and update the order status accordingly
-    
+
     // For now, we'll just mark the payment as pending
     await Order.findByIdAndUpdate(orderId, {
       'payment.status': 'pending',
       'payment.transactionId': wireTransferId,
       'status': 'processing'
     });
-    
+
     return {
       success: true,
       status: 'pending',
@@ -329,7 +333,7 @@ exports.processCashOnDelivery = async (orderId) => {
       'payment.status': 'pending',
       'status': 'processing'
     });
-    
+
     return {
       success: true,
       status: 'pending',
@@ -349,10 +353,10 @@ exports.verifyPayment = async (paymentId, paymentMethod) => {
   try {
     // In a real implementation, you would check the payment status
     // with the respective payment gateway or service
-    
+
     let status = 'unknown';
     let verified = false;
-    
+
     // Simulate verification based on payment method
     switch (paymentMethod) {
       case 'bank':
@@ -362,31 +366,31 @@ exports.verifyPayment = async (paymentId, paymentMethod) => {
         status = 'pending';
         verified = false;
         break;
-        
+
       case 'jazzcash':
       case 'easypaisa':
         // Mobile payments might be pending or completed
         status = Math.random() > 0.5 ? 'completed' : 'pending';
         verified = status === 'completed';
         break;
-        
+
       case 'paypal':
         // PayPal payments are usually completed immediately
         status = 'completed';
         verified = true;
         break;
-        
+
       case 'cod':
         // COD is always pending until delivery
         status = 'pending';
         verified = false;
         break;
-        
+
       default:
         status = 'unknown';
         verified = false;
     }
-    
+
     return {
       success: true,
       verified,
@@ -408,22 +412,22 @@ exports.verifyPayment = async (paymentId, paymentMethod) => {
 exports.calculatePaymentBreakdown = (items, shippingAddress) => {
   // Calculate subtotal
   const subtotal = items.reduce((total, item) => total + (item.price * item.quantity), 0);
-  
+
   // Calculate tax (17% GST in Pakistan)
   const taxRate = 0.17;
   const tax = subtotal * taxRate;
-  
+
   // Calculate shipping cost based on country
   let shipping = 500; // Default shipping cost for Pakistan (in PKR)
-  
+
   if (shippingAddress.country && shippingAddress.country !== 'Pakistan') {
     // International shipping cost
     shipping = 5000; // Higher for international orders
   }
-  
+
   // Calculate total
   const total = subtotal + tax + shipping;
-  
+
   return {
     success: true,
     breakdown: {

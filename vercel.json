@@ -1,8 +1,12 @@
 {
     "buildCommand": "cd frontend && npm install && npm run build",
     "outputDirectory": "frontend/dist",
-    "installCommand": "npm install",
+    "installCommand": "npm install && cd backend && npm install",
     "rewrites": [
+        {
+            "source": "/api/(.*)",
+            "destination": "/api/index.js"
+        },
         {
             "source": "/(.*)",
             "destination": "/index.html"
@@ -35,5 +39,11 @@
                 }
             ]
         }
-    ]
+    ],
+    "functions": {
+        "api/index.js": {
+            "maxDuration": 10,
+            "memory": 1024
+        }
+    }
 }

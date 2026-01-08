@@ -2,10 +2,10 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const logger = require('../services/logger');
 
-const JWT_SECRET = process.env.JWT_SECRET;
-if (!JWT_SECRET) {
-  logger.warn('JWT_SECRET is not defined. Set it in your environment variables.');
-}
+const { validateEnv } = require('../config/env');
+
+const config = validateEnv();
+const JWT_SECRET = config.jwt.secret;
 
 const extractToken = (req) => {
   const authHeader = req.headers.authorization || req.headers.Authorization;

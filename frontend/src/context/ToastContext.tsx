@@ -1,7 +1,5 @@
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react'
-
-// Removed: import '../styles/Animations.css'
-// The animation CSS is now included in the style block below for self-containment.
+import '../styles/Animations.css'
 
 type ToastType = 'success' | 'error' | 'info' | 'warning'
 
@@ -24,30 +22,13 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         const id = Date.now()
         setToasts(prev => [...prev, { id, message, type }])
 
-        // Changed timeout to 5000ms for better readability of warning messages
         setTimeout(() => {
             setToasts(prev => prev.filter(t => t.id !== id))
-        }, 5000)
+        }, 3000)
     }, [])
 
     const removeToast = (id: number) => {
         setToasts(prev => prev.filter(t => t.id !== id))
-    }
-
-    // Helper function to get the icon based on type
-    const getToastIcon = (type: ToastType) => {
-        switch (type) {
-            case 'success':
-                return '✓'
-            case 'error':
-                return '✕'
-            case 'info':
-                return 'ℹ'
-            case 'warning':
-                return '⚠️' // Using a warning sign emoji
-            default:
-                return '•'
-        }
     }
 
     return (
@@ -57,36 +38,20 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                 {toasts.map(toast => (
                     <div
                         key={toast.id}
-                        // The animation class is retained
                         className={`toast toast-${toast.type} animate-slide-in-right`}
                         onClick={() => removeToast(toast.id)}
                     >
                         <div className="toast-icon">
-                            {getToastIcon(toast.type)}
+                            {toast.type === 'success' && '✓'}
+                            {toast.type === 'error' && '✕'}
+                            {toast.type === 'info' && 'ℹ'}
+                            {toast.type === 'warning' && '⚠'}
                         </div>
                         <div className="toast-message">{toast.message}</div>
                     </div>
                 ))}
             </div>
-            {/* Added CSS for styles and the 'animate-slide-in-right' keyframes */}
             <style>{`
-        /* Keyframes for the slide-in animation */
-        @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-        
-        /* Animation application */
-        .animate-slide-in-right {
-            animation: slideInRight 0.5s ease-out forwards;
-        }
-
         .toast-container {
           position: fixed;
           bottom: 20px;
@@ -100,7 +65,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           min-width: 300px;
           padding: 16px;
           border-radius: 8px;
-          background: rgba(1, 162, 255, 0.95);
+          background: rgba(255, 255, 255, 0.95);
           backdrop-filter: blur(10px);
           box-shadow: 0 4px 12px rgba(0,0,0,0.15);
           display: flex;
@@ -113,8 +78,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         .toast-success { border-left-color: #2e7d32; }
         .toast-error { border-left-color: #d32f2f; }
         .toast-info { border-left-color: #0288d1; }
-        .toast-warning { border-left-color: #ffa000; } /* Color for warning */
-
+        .toast-warning { border-left-color: #ed6c02; }
         .toast-icon {
           font-weight: bold;
           font-size: 1.2rem;
@@ -122,7 +86,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         .toast-success .toast-icon { color: #2e7d32; }
         .toast-error .toast-icon { color: #d32f2f; }
         .toast-info .toast-icon { color: #0288d1; }
-        .toast-warning .toast-icon { color: #ffa000; } /* Color for warning icon */
+        .toast-warning .toast-icon { color: #ed6c02; }
       `}</style>
         </ToastContext.Provider>
     )

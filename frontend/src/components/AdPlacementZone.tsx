@@ -23,8 +23,8 @@ const AdPlacementZone: React.FC<AdPlacementZoneProps> = ({
     zoneName = 'Ad Zone',
     className = ''
 }) => {
-    // Don't render if config is missing or explicitly disabled
-    if (!config || config.enabled === false) {
+    // Don't render if explicitly disabled
+    if (config.enabled === false) {
         return null;
     }
 

@@ -1,11 +1,11 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
-import Home from './pages/Home'
-import Collection from './pages/Collection'
+import Home from './pages/HomeWithAds'
+import Collection from './pages/OmnoraCollection'
 import Product from './pages/Product'
 import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
-import FAQ from './pages/FAQ'
-import Contact from './pages/Contact'
+import FAQ from './pages/OmnoraFAQ'
+import Contact from './pages/OmnoraContact'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Profile from './pages/Profile'
@@ -19,11 +19,11 @@ import ErrorBoundary from './components/ErrorBoundary'
 import { ToastProvider } from './context/ToastContext'
 import { AuthProvider } from './context/AuthContext'
 import './styles/Animations.css'
-import './components/Layout.css'
 import About from './pages/About'
 
 import OrderConfirmation from './pages/OrderConfirmation'
 import AdminApprove from './pages/AdminApprove'
+import TechStackSection from './components/home/tech'
 
 import Terms from './pages/Terms'
 import Privacy from './pages/Privacy'
@@ -52,6 +52,7 @@ export default function App() {
               <Route path="wishlist" element={<ProtectedRoute><Wishlist /></ProtectedRoute>} />
               <Route path="admin" element={<ProtectedRoute requireAdmin><AdminDashboard /></ProtectedRoute>} />
               <Route path="about" element={<About onBack={() => window.history.back()} />} />
+              <Route path="tech" element={<TechStackSection />} />
               <Route path="*" element={<NotFound />} />
             </Route>
             {/* Auth routes outside Layout (full screen) */}

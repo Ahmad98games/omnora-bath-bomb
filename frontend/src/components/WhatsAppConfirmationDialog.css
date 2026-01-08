@@ -1,0 +1,143 @@
+.whatsapp-dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.2s ease-out;
+}
+
+.whatsapp-dialog {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border-radius: 16px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0, 240, 255, 0.3);
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    animation: slideUp 0.3s ease-out;
+}
+
+.whatsapp-dialog-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(0, 240, 255, 0.1);
+}
+
+.whatsapp-dialog-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--neon-cyan);
+    font-weight: 600;
+}
+
+.whatsapp-dialog-content {
+    padding: 1.5rem;
+}
+
+.whatsapp-dialog-warning {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.whatsapp-dialog-alert {
+    background: rgba(255, 193, 7, 0.1);
+    border-left: 4px solid #ffc107;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 4px;
+    color: #ffc107;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.whatsapp-dialog-instructions {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-top: 1rem;
+}
+
+.whatsapp-dialog-actions {
+    padding: 1.5rem;
+    border-top: 1px solid rgba(0, 240, 255, 0.1);
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.whatsapp-dialog-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    outline: none;
+}
+
+.whatsapp-dialog-btn-cancel {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-muted);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.whatsapp-dialog-btn-cancel:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+}
+
+.whatsapp-dialog-btn-confirm {
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+}
+
+.whatsapp-dialog-btn-confirm:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .whatsapp-dialog {
+        width: 95%;
+        max-width: none;
+    }
+
+    .whatsapp-dialog-actions {
+        flex-direction: column;
+    }
+
+    .whatsapp-dialog-btn {
+        width: 100%;
+    }
+}

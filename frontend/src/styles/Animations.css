@@ -1,117 +1,93 @@
-/* Global Animations */
+:root {
+  /* Animation Timings */
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-in-out-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  --anim-slow: 0.8s;
+  --anim-med: 0.5s;
+  --anim-fast: 0.3s;
+  
+  /* Movement Constants */
+  --reveal-distance: 30px;
+}
 
-/* Keyframes */
+/* REDUCED MOTION: 
+   Respects users who prefer no movement 
+*/
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+  }
+}
+
+/* --- Keyframes (Performance Optimized) --- */
 @keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translate3d(0, 40px, 0);
-    }
-
-    to {
-        opacity: 1;
-        transform: translate3d(0, 0, 0);
-    }
+  from {
+    opacity: 0;
+    transform: translate3d(0, var(--reveal-distance), 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translate3d(0, 10px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translate3d(0, 0, 0);
+  }
 }
 
-@keyframes slideInRight {
-    from {
-        transform: translate3d(100%, 0, 0);
-        visibility: visible;
-    }
-
-    to {
-        transform: translate3d(0, 0, 0);
-    }
-}
-
-@keyframes scaleUp {
-    from {
-        transform: scale(0.95);
-        opacity: 0;
-    }
-
-    to {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-/* Utility Classes */
+/* --- Utility Classes --- */
 .animate-fade-in-up {
-    animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation: fadeInUp var(--anim-slow) var(--ease-out-expo) forwards;
+  will-change: transform, opacity; /* Hints browser for smoother rendering */
 }
 
-.animate-fade-in {
-    animation: fadeIn 1s ease-out forwards;
+.animate-scale-in {
+  animation: scaleIn var(--anim-med) var(--ease-out-expo) forwards;
 }
 
-.animate-slide-in-right {
-    animation: slideInRight 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+/* --- Scroll Reveal (Modern approach) --- */
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-distance), 0);
+  transition: 
+    opacity var(--anim-slow) var(--ease-out-expo),
+    transform var(--anim-slow) var(--ease-out-expo);
+  visibility: hidden;
 }
 
-/* Scroll Reveal Base Class */
-.reveal-on-scroll {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+.reveal.active {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  visibility: visible;
 }
 
-.reveal-on-scroll.is-visible {
-    opacity: 1;
-    transform: translateY(0);
+/* --- Staggered Delays --- 
+   Apply these to children in a list to make them appear one by one
+*/
+.delay-1 { transition-delay: 100ms; animation-delay: 100ms; }
+.delay-2 { transition-delay: 200ms; animation-delay: 200ms; }
+.delay-3 { transition-delay: 300ms; animation-delay: 300ms; }
+
+/* --- High-End Hover States --- */
+.hover-premium {
+  transition: all var(--anim-fast) var(--ease-in-out-soft);
+  backface-visibility: hidden; /* Prevents jitter */
 }
 
-/* Hover Effects */
-.hover-lift {
-    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.hover-lift:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-}
-
-.hover-scale {
-    transition: transform 0.3s ease;
-}
-
-.hover-scale:hover {
-    transform: scale(1.03);
-}
-
-/* Button Ripple Effect (Optional, can be added via JS or CSS pseudo-elements) */
-.luxury-button {
-    position: relative;
-    overflow: hidden;
-}
-
-/* Page Transition Wrapper */
-.page-transition-enter {
-    opacity: 0;
-    transform: translateY(10px);
-}
-
-.page-transition-enter-active {
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 400ms, transform 400ms;
-}
-
-.page-transition-exit {
-    opacity: 1;
-}
-
-.page-transition-exit-active {
-    opacity: 0;
-    transition: opacity 300ms;
+.hover-premium:hover {
+  transform: translateY(-8px) scale(1.02);
+  filter: brightness(1.1);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
 }

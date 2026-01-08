@@ -1,15 +1,13 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const logger = require('../services/logger');
+const { validateEnv } = require('../config/env');
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const config = validateEnv();
+const JWT_SECRET = config.jwt.secret;
 const REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || `${JWT_SECRET || ''}-refresh`;
-const ACCESS_TOKEN_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
+const ACCESS_TOKEN_EXPIRES_IN = config.jwt.expiresIn;
 const REFRESH_TOKEN_EXPIRES_IN = process.env.JWT_REFRESH_EXPIRES_IN || '30d';
-
-if (!JWT_SECRET) {
-  throw new Error('JWT_SECRET must be defined in environment variables.');
-}
 
 const signAccessToken = (user) =>
   jwt.sign({ id: user._id.toString(), role: user.role }, JWT_SECRET, {

@@ -1,7 +1,10 @@
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
+const { validateEnv } = require('../config/env');
 
-const TOKEN_SECRET = process.env.APPROVAL_TOKEN_SECRET || crypto.randomBytes(32).toString('hex');
+const config = validateEnv();
+
+const TOKEN_SECRET = config.jwt.approvalSecret || crypto.randomBytes(32).toString('hex');
 const TOKEN_EXPIRY = '24h';
 
 /**
@@ -16,7 +19,7 @@ exports.generateApprovalToken = (orderId, action = 'approve', adminEmail = null,
     const payload = {
         orderId: orderId.toString(),
         action,
-        adminEmail: adminEmail || process.env.ADMIN_EMAIL || 'admin@omnora.com',
+        adminEmail: adminEmail || config.services.adminEmail,
         adminIp: adminIp || 'unknown',
         iat: Math.floor(Date.now() / 1000),
         jti: crypto.randomBytes(16).toString('hex') // Unique token ID

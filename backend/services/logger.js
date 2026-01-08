@@ -1,7 +1,11 @@
 const { createLogger, format, transports } = require('winston');
 
+const { validateEnv } = require('../config/env');
+
+const config = validateEnv();
+
 const logger = createLogger({
-  level: process.env.LOG_LEVEL || 'info',
+  level: config.logLevel,
   format: format.combine(
     format.timestamp(),
     format.errors({ stack: true }),
