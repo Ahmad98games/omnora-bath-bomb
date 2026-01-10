@@ -94,13 +94,11 @@ const gatekeeper = (capability) => {
         // 1. Universal Version Check
         const clientVersion = req.headers['x-api-version'];
         if (clientVersion !== API_VERSION) {
-            logger.warn('GATEKEEPER: Invalid API Version (Proceeding anyway)', {
-                provided: clientVersion,
-                expected: API_VERSION,
-                path: req.path
+            return res.status(503).json({
+                error: 'SERVICE_UNAVAILABLE',
+                message: `System is not ready for current operation mode (${snapshot.lifecycle})`, // Using snapshot.lifecycle as 'lifecycle' is undefined here
+                retryAfter: 5
             });
-            // Proceed anyway for now to unblock development
-            // return res.status(400).json({...});
         }
 
         // 2. Lifecycle Check: DRAINING
