@@ -1,24 +1,34 @@
-const app = require('../backend/server');
-const dbConnect = require('../backend/lib/dbConnect');
 const stateService = require('../backend/services/stateService');
 const { LIFECYCLE, INFRA } = require('../backend/services/stateService');
 
+// Lazy load critical modules to catch initialization errors (e.g. missing env vars)
+let app;
+let dbConnect;
+
 module.exports = async (req, res) => {
-    // 1. Handle DB Connection (Cached)
     try {
+        // 1. Load Modules (if not loaded)
+        if (!dbConnect) dbConnect = require('../backend/lib/dbConnect');
+        if (!app) app = require('../backend/server');
+
+        // 2. Handle DB Connection
         await dbConnect();
-        // Manually update state for Gatekeeper since bootstrap.js is skipped
+
+        // 3. Update Gatekeeper State
         stateService.setInfraStatus(INFRA.DB, true);
         stateService.setLifecycle(LIFECYCLE.READY);
+
+        // 4. Forward to Express
+        return app(req, res);
+
     } catch (e) {
-        console.error('Database connection failed in serverless function:', e);
+        console.error('Server Extension Initialization Failed:', e);
+        // Return explicit error to helps debug Vercel env issues
         return res.status(500).json({
-            error: `Database connection failed: ${e.message}`,
-            stack: e.stack
+            error: 'Server Initialization Failed',
+            message: e.message,
+            code: e.code || 'INIT_ERROR',
+            suggestion: e.code === 'ERR_ENV_MISSING_CRITICAL_SECRET' ? 'Please check JWT_SECRET in Vercel Environment Variables' : 'Check logs'
         });
     }
-
-    // 2. Forward request to Express
-    // Vercel's req/res are compatible with Express
-    app(req, res);
 };
