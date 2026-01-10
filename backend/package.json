@@ -7,7 +7,7 @@
     "cleanup": "node scripts/cleanup-port.js",
     "start": "npm run cleanup && node server.js",
     "server": "npm run cleanup && node server.js",
-    "dev": "set NODE_ENV=development && set MONGODB_URI= && npm run cleanup && node --watch server.js",
+    "dev": "npm run cleanup && node scripts/start-dev.js",
     "dev:mongo": "set NODE_ENV=development && npm run cleanup && node --watch server.js",
     "worker": "node workers/notificationWorker.js",
     "worker:dev": "nodemon workers/notificationWorker.js",

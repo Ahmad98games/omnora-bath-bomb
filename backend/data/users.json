@@ -9,5 +9,16 @@
     "createdAt": "2026-01-08T19:22:31.094Z",
     "updatedAt": "2026-01-08T19:22:31.094Z",
     "__v": 0
+  },
+  {
+    "_id": "admin_default",
+    "name": "Admin",
+    "email": "admin@omnora.com",
+    "password": "$2a$10$5sOObsCtcBgAXib.QCcZQevmLiTZUGTIXV97HAR.qFEepK5B/W9gm",
+    "role": "admin",
+    "addresses": [],
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z",
+    "__v": 0
   }
 ]
