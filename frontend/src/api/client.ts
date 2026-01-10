@@ -88,13 +88,9 @@ client.interceptors.response.use(
     if (error.response) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx
-      if (error.response.status === 500) {
-        return Promise.reject(new Error('An internal server error occurred. Please try again later.'))
-      }
-      // Return the error message from the server if available
-      const data = error.response.data as { error?: string }
-      // Use logical OR || to catch empty strings if necessary, though ?. operator is safer
-      const errorMessage = data?.error || 'An unexpected error occurred'
+      // Return the error message from the server if available, otherwise generic
+      const data = error.response.data as { error?: string, message?: string }
+      const errorMessage = data?.error || data?.message || 'An internal server error occurred'
       return Promise.reject(new Error(errorMessage))
     } else if (error.request) {
       // The request was made but no response was received
