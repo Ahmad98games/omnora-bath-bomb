@@ -25,17 +25,26 @@ async function bootstrap() {
 
     // 2. Database Connection
     // 2. Database Connection
-    // FORCE LOCAL MODE: Skipping MongoDB connection since we are using LocalDB adapter
-    logger.info('SYSTEM: Using LocalDB (File-based persistence). MongoDB connection skipped.');
-    stateService.setInfraStatus(INFRA.DB, true); // Mark DB as ready immediately
-    /*
-    try {
-        await dbService.connect(config.mongo.uri);
-        stateService.setInfraStatus(INFRA.DB, true);
-    } catch (error) {
-        // ...
+    if (config.mongo.uri) {
+        logger.info('SYSTEM: Connecting to MongoDB...');
+        try {
+            await dbService.connect(config.mongo.uri);
+            stateService.setInfraStatus(INFRA.DB, true);
+            logger.info('SYSTEM: MongoDB Connected Successfully');
+        } catch (error) {
+            logger.error('SYSTEM: MongoDB Connection Failed', { error: error.message });
+            // If in production, this is fatal. In dev, maybe fallback to LocalDB?
+            // But since Models have already chosen Mongoose mode based on URI presence, 
+            // we cannot easily switch model implementation at runtime without reload.
+            // So we must exit or let it fail.
+            stateService.setInfraStatus(INFRA.DB, false);
+            if (process.env.NODE_ENV === 'production') process.exit(1);
+        }
+    } else {
+        // FORCE LOCAL MODE: Skipping MongoDB connection since we are using LocalDB adapter
+        logger.info('SYSTEM: Using LocalDB (File-based persistence). MongoDB connection skipped.');
+        stateService.setInfraStatus(INFRA.DB, true); // Mark DB as ready immediately
     }
-    */
 
     // 3. Finalize Lifecycle (Async health checks will update stateService)
     const currentLifecycle = stateService.getSnapshot().lifecycle;
