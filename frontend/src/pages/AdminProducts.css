@@ -1,8 +1,10 @@
 /* --- Core Layout & Theming --- */
 .admin-products {
-    background: #1e293b; /* Slate 800 */
+    background: #1e293b;
+    /* Slate 800 */
     padding: 1.5rem;
-    border-radius: 12px; /* Slightly softer corners */
+    border-radius: 12px;
+    /* Slightly softer corners */
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     border: 1px solid #334155;
     font-family: 'Inter', system-ui, sans-serif;
@@ -20,7 +22,8 @@
     margin: 0;
     font-size: 1.75rem;
     font-weight: 700;
-    color: #f8fafc; /* Slate 50 */
+    color: #f8fafc;
+    /* Slate 50 */
     letter-spacing: -0.025em;
 }
 
@@ -37,7 +40,8 @@
     align-items: center;
     gap: 0.5rem;
     transition: all 0.2s ease;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); /* Glow effect */
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    /* Glow effect */
 }
 
 .add-btn:hover {
@@ -60,7 +64,8 @@
     width: 100%;
     border-collapse: collapse;
     font-size: 0.95rem;
-    color: #cbd5e1; /* Slate 300 */
+    color: #cbd5e1;
+    /* Slate 300 */
 }
 
 .products-table th,
@@ -71,9 +76,11 @@
 }
 
 .products-table th {
-    background: #0f172a; /* Slate 900 */
+    background: #0f172a;
+    /* Slate 900 */
     font-weight: 600;
-    color: #94a3b8; /* Slate 400 */
+    color: #94a3b8;
+    /* Slate 400 */
     text-transform: uppercase;
     font-size: 0.75rem;
     letter-spacing: 0.05em;
@@ -84,7 +91,8 @@
 }
 
 .products-table tr:hover {
-    background: rgba(51, 65, 85, 0.3); /* Subtle hover highlight */
+    background: rgba(51, 65, 85, 0.3);
+    /* Subtle hover highlight */
 }
 
 /* --- Product Cell & Badges --- */
@@ -95,12 +103,22 @@
 }
 
 .product-thumb {
-    width: 48px;
-    height: 48px;
-    object-fit: cover;
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
     border-radius: 8px;
-    background: #334155;
+    background: #ffffff;
+    /* White bg for better product visibility */
     border: 1px solid #475569;
+    padding: 2px;
+    transition: transform 0.2s ease;
+}
+
+.product-thumb:hover {
+    transform: scale(1.5);
+    z-index: 10;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    border-color: #3b82f6;
 }
 
 .product-info {
@@ -129,14 +147,18 @@
 }
 
 .status-badge.featured {
-    background: rgba(234, 179, 8, 0.15); /* Yellow/Gold bg */
-    color: #facc15; /* Yellow text */
+    background: rgba(234, 179, 8, 0.15);
+    /* Yellow/Gold bg */
+    color: #facc15;
+    /* Yellow text */
     border: 1px solid rgba(234, 179, 8, 0.2);
 }
 
 .status-badge.new {
-    background: rgba(16, 185, 129, 0.15); /* Emerald bg */
-    color: #34d399; /* Emerald text */
+    background: rgba(16, 185, 129, 0.15);
+    /* Emerald bg */
+    color: #34d399;
+    /* Emerald text */
     border: 1px solid rgba(16, 185, 129, 0.2);
 }
 
@@ -163,11 +185,23 @@
     justify-content: center;
 }
 
-.edit-btn { color: #94a3b8; }
-.edit-btn:hover { background: rgba(59, 130, 246, 0.1); color: #60a5fa; }
+.edit-btn {
+    color: #94a3b8;
+}
 
-.delete-btn { color: #94a3b8; }
-.delete-btn:hover { background: rgba(239, 68, 68, 0.1); color: #f87171; }
+.edit-btn:hover {
+    background: rgba(59, 130, 246, 0.1);
+    color: #60a5fa;
+}
+
+.delete-btn {
+    color: #94a3b8;
+}
+
+.delete-btn:hover {
+    background: rgba(239, 68, 68, 0.1);
+    color: #f87171;
+}
 
 /* --- Modal & Forms --- */
 .modal-overlay {
@@ -178,14 +212,22 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    backdrop-filter: blur(5px); /* Cinematic blur */
+    backdrop-filter: blur(5px);
+    /* Cinematic blur */
     padding: 1rem;
 }
 
 /* Animation Keyframes */
 @keyframes fadeInScale {
-    from { opacity: 0; transform: scale(0.95) translateY(10px); }
-    to { opacity: 1; transform: scale(1) translateY(0); }
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }
 
 .animate-fade-in {
@@ -261,7 +303,8 @@
 .form-group textarea,
 .form-group select {
     padding: 0.75rem 1rem;
-    background: #0f172a; /* Darker input bg */
+    background: #0f172a;
+    /* Darker input bg */
     border: 1px solid #334155;
     border-radius: 8px;
     font-size: 0.95rem;
@@ -273,7 +316,8 @@
 .form-group textarea:focus {
     border-color: #3b82f6;
     outline: none;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); /* Focus glow */
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    /* Focus glow */
 }
 
 /* Custom Checkbox Styling */
