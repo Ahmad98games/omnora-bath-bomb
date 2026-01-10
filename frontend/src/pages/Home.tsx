@@ -270,6 +270,7 @@ export default function Home() {
           <span style={{ color: '#fff' }}>We are working hard to make it better.</span>
         </p>
         </div>
+        
       </section>
 
       {/* Newsletter Section */}

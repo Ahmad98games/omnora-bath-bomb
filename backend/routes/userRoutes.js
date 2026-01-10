@@ -17,4 +17,10 @@ router.post('/logout', gatekeeper(CAPABILITIES.READ_ONLY), protect, userControll
 router.get('/profile', gatekeeper(CAPABILITIES.READ_ONLY), protect, userController.getUserProfile);
 router.put('/profile', gatekeeper(CAPABILITIES.STATE_MUTATING), protect, userController.updateUserProfile);
 
+// Admin Routes
+const { admin } = require('../middleware/auth');
+router.get('/', gatekeeper(CAPABILITIES.READ_ONLY), protect, admin, userController.getAllUsers);
+router.delete('/:id', gatekeeper(CAPABILITIES.STATE_MUTATING), protect, admin, userController.deleteUser);
+router.put('/:id', gatekeeper(CAPABILITIES.STATE_MUTATING), protect, admin, userController.updateUserRole);
+
 module.exports = router;

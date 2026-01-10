@@ -23,7 +23,7 @@ const optionalProductFields = () =>
 const createProductValidator = requiredProductFields();
 
 const updateProductValidator = [
-  param('id').isMongoId(),
+  param('id').notEmpty().isString(), // Changed from isMongoId() to support "1", "2" etc.
   ...optionalProductFields()
 ];
 

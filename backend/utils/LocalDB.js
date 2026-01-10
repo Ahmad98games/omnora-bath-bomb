@@ -71,7 +71,7 @@ class LocalDB {
         }
 
         const newDoc = {
-            _id: Math.random().toString(36).substr(2, 9), // Simple ID generation
+            _id: docData._id || Math.random().toString(36).substr(2, 9), // Use provided ID or generate one
             ...docData,
             createdAt: new Date(),
             updatedAt: new Date(),
@@ -83,63 +83,107 @@ class LocalDB {
         return this._wrapDocument(newDoc);
     }
 
-    async find(query = {}) {
+    // Helper to create Mongoose-like query chain
+    _chain(resultOrPromise) {
+        const chain = {
+            // If it's already a promise/result, we hold it
+            promise: Promise.resolve(resultOrPromise),
+
+            // Chainable methods
+            populate: () => chain,
+            select: () => chain,
+            lean: () => chain,
+            sort: () => chain, // For single docs, sort is no-op
+
+            // Promise interface
+            then: (resolve, reject) => chain.promise.then(resolve, reject),
+            catch: (reject) => chain.promise.catch(reject),
+            finally: (cb) => chain.promise.finally(cb)
+        };
+        return chain;
+    }
+
+    // Return chain for find (array)
+    find(query = {}) {
         let results = this.data.filter(item => this._matches(item, query));
 
-        // Return a chainable object for sort/limit/select
         const chain = {
             results,
             sort: (criteria) => {
                 const [field, order] = Object.entries(criteria)[0];
                 chain.results.sort((a, b) => {
-                    if (a[field] < b[field]) return order === 1 ? -1 : 1;
-                    if (a[field] > b[field]) return order === 1 ? 1 : -1;
+                    const valA = a[field];
+                    const valB = b[field];
+                    if (valA < valB) return order === 1 ? -1 : 1;
+                    if (valA > valB) return order === 1 ? 1 : -1;
                     return 0;
                 });
                 return chain;
             },
-            populate: () => chain, // No-op for now
-            select: () => chain,   // No-op for now
-            then: (resolve) => resolve(chain.results) // Allow await
+            skip: (count) => {
+                chain.skipCount = count;
+                return chain;
+            },
+            limit: (count) => {
+                chain.limitCount = count;
+                return chain;
+            },
+            populate: () => chain,
+            select: () => chain,
+            lean: () => chain,
+            then: (resolve, reject) => {
+                let finalResults = chain.results;
+                if (chain.skipCount) finalResults = finalResults.slice(chain.skipCount);
+                if (chain.limitCount) finalResults = finalResults.slice(0, chain.limitCount);
+                resolve(finalResults);
+            }
         };
         return chain;
     }
 
-    async findById(id) {
+    findById(id) {
         const doc = this.data.find(item => item._id === id);
-        if (!doc) return null;
-        return this._wrapDocument(doc);
+        return this._chain(doc ? this._wrapDocument(doc) : null);
     }
 
-    async findOne(query) {
+    findOne(query) {
         const doc = this.data.find(item => this._matches(item, query));
-        if (!doc) return null;
-        return this._wrapDocument(doc);
+        return this._chain(doc ? this._wrapDocument(doc) : null);
     }
 
-    async updateOne(query, update) {
+    updateOne(query, update) {
         const doc = this.data.find(item => this._matches(item, query));
-        if (!doc) return { n: 0, nModified: 0 };
+        if (!doc) return this._chain({ n: 0, nModified: 0 });
 
         this._applyUpdate(doc, update);
         this._save();
-        return { n: 1, nModified: 1 };
+        return this._chain({ n: 1, nModified: 1 });
     }
 
-    async findOneAndUpdate(query, update, options = {}) {
+    findOneAndUpdate(query, update, options = {}) {
         let doc = this.data.find(item => this._matches(item, query));
-        if (!doc) return null;
+        if (!doc) return this._chain(null);
 
         this._applyUpdate(doc, update);
-        if (options.new) {
-            // Return modified document
-        }
         this._save();
-        return this._wrapDocument(doc);
+        return this._chain(this._wrapDocument(doc));
     }
 
-    async countDocuments(query = {}) {
-        return this.data.filter(item => this._matches(item, query)).length;
+    findByIdAndUpdate(id, update, options = {}) {
+        return this.findOneAndUpdate({ _id: id }, update, options);
+    }
+
+    findByIdAndDelete(id) {
+        const index = this.data.findIndex(item => item._id === id);
+        if (index === -1) return this._chain(null);
+
+        const [deletedDoc] = this.data.splice(index, 1);
+        this._save();
+        return this._chain(deletedDoc);
+    }
+
+    countDocuments(query = {}) {
+        return Promise.resolve(this.data.filter(item => this._matches(item, query)).length);
     }
 
     // --- Helpers ---
@@ -152,17 +196,26 @@ class LocalDB {
     }
 
     _applyUpdate(doc, update) {
-        if (update.$set) Object.assign(doc, update.$set);
-        if (update.$inc) {
-            for (const [key, val] of Object.entries(update.$inc)) {
-                doc[key] = (doc[key] || 0) + val;
+        // Check for MongoDB atomic operators
+        const hasOperators = Object.keys(update).some(k => k.startsWith('$'));
+
+        if (hasOperators) {
+            if (update.$set) Object.assign(doc, update.$set);
+            if (update.$inc) {
+                for (const [key, val] of Object.entries(update.$inc)) {
+                    doc[key] = (doc[key] || 0) + val;
+                }
             }
-        }
-        if (update.$unset) {
-            for (const key of Object.keys(update.$unset)) {
-                delete doc[key];
+            if (update.$unset) {
+                for (const key of Object.keys(update.$unset)) {
+                    delete doc[key];
+                }
             }
+        } else {
+            // Mongoose behavior: if no operators, treat top-level keys as updates
+            Object.assign(doc, update);
         }
+
         doc.updatedAt = new Date();
     }
 

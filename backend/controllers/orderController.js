@@ -17,6 +17,7 @@ const config = validateEnv();
 // ============================================
 
 const VALID_TRANSITIONS = {
+  'INITIATED': ['pending', 'receipt_submitted', 'approved', 'cancelled'],
   'pending': ['approved', 'rejected', 'cancelled'],
   'pending_admin_approval': ['approved', 'rejected', 'cancelled'],
   'receipt_submitted': ['approved', 'rejected', 'cancelled'],

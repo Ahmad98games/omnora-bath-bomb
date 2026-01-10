@@ -24,10 +24,11 @@ declare module 'axios' {
 // Add a request interceptor
 client.interceptors.request.use(
   (config) => {
-    // Note: Firebase authentication is handled client-side only
-    // Backend routes that require auth should be updated to use Firebase Admin SDK
-    // For now, most routes (products, orders, contact) work without authentication
-    return config
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
   },
   (error) => {
     return Promise.reject(error)
@@ -40,6 +41,16 @@ client.interceptors.response.use(
     return response
   },
   async (error: AxiosError) => {
+    // Global Auth Error Handling
+    if (error.response?.status === 401) {
+      localStorage.removeItem('token');
+      // Only redirect if not already on login page to avoid loops
+      if (!window.location.pathname.includes('/login')) {
+        window.location.href = '/login';
+      }
+      return Promise.reject(error);
+    }
+
     const config = error.config as InternalAxiosRequestConfig
 
     // Initialize retry count
@@ -82,6 +93,7 @@ client.interceptors.response.use(
       }
       // Return the error message from the server if available
       const data = error.response.data as { error?: string }
+      // Use logical OR || to catch empty strings if necessary, though ?. operator is safer
       const errorMessage = data?.error || 'An unexpected error occurred'
       return Promise.reject(new Error(errorMessage))
     } else if (error.request) {

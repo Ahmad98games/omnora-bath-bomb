@@ -24,6 +24,11 @@ import About from './pages/About'
 import OrderConfirmation from './pages/OrderConfirmation'
 import AdminApprove from './pages/AdminApprove'
 import TechStackSection from './components/home/tech'
+import AdminLayout from './components/AdminLayout'
+import RequireAdmin from './components/RequireAdmin'
+import AdminProducts from './pages/AdminProducts'
+import AdminOrders from './pages/AdminOrders'
+import AdminUsers from './pages/AdminUsers'
 
 import Terms from './pages/Terms'
 import Privacy from './pages/Privacy'
@@ -35,14 +40,15 @@ export default function App() {
       <AuthProvider>
         <ToastProvider>
           <Routes>
-            <Route path="/" element={<Layout />}>
+            {/* PUBLIC / CUSTOMER ROUTES */}
+            <Route element={<Layout />}>
               <Route index element={<Home />} />
+              <Route path="/" element={<Home />} />
               <Route path="collection" element={<Collection />} />
               <Route path="product/:id" element={<Product />} />
               <Route path="cart" element={<Cart />} />
               <Route path="checkout" element={<Checkout />} />
               <Route path="order-confirmation/:id" element={<OrderConfirmation />} />
-              <Route path="admin/approve-order/:id" element={<AdminApprove />} />
               <Route path="faq" element={<FAQ />} />
               <Route path="contact" element={<Contact />} />
               <Route path="terms" element={<Terms />} />
@@ -50,10 +56,26 @@ export default function App() {
               <Route path="profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
               <Route path="orders/:id" element={<ProtectedRoute><OrderDetail /></ProtectedRoute>} />
               <Route path="wishlist" element={<ProtectedRoute><Wishlist /></ProtectedRoute>} />
-              <Route path="admin" element={<ProtectedRoute requireAdmin><AdminDashboard /></ProtectedRoute>} />
               <Route path="about" element={<About onBack={() => window.history.back()} />} />
               <Route path="tech" element={<TechStackSection />} />
               <Route path="*" element={<NotFound />} />
+            </Route>
+
+            {/* ADMIN ROUTES (ISOLATED) */}
+            <Route path="/admin" element={
+              <ProtectedRoute>
+                <RequireAdmin>
+                  <AdminLayout />
+                </RequireAdmin>
+              </ProtectedRoute>
+            }>
+              <Route index element={<Navigate to="dashboard" replace />} />
+              <Route path="dashboard" element={<AdminDashboard />} />
+              <Route path="products" element={<AdminProducts />} />
+              <Route path="orders" element={<AdminOrders />} />
+              <Route path="users" element={<AdminUsers />} />
+              {/* Legacy/Specific Admin Routes can be mapped here if needed */}
+              <Route path="approve-order/:id" element={<AdminApprove />} />
             </Route>
             {/* Auth routes outside Layout (full screen) */}
             <Route path="/login" element={<Login />} />
@@ -62,6 +84,6 @@ export default function App() {
           </Routes>
         </ToastProvider>
       </AuthProvider>
-    </ErrorBoundary>
+    </ErrorBoundary >
   )
 }

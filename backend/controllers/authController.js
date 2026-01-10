@@ -61,7 +61,7 @@ exports.login = async (req, res) => {
         const { email, password } = req.body;
 
         // Check for user
-        const user = await User.findOne({ email }).select('+password');
+        const user = await User.findOne({ email });
         if (!user) {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
@@ -96,7 +96,12 @@ exports.login = async (req, res) => {
 // @access  Private
 exports.getMe = async (req, res) => {
     try {
-        const user = await User.findById(req.user.id);
+        // Safety check to prevent 500 errors if middleware fails
+        if (!req.user) {
+            return res.status(401).json({ error: 'Not authenticated' });
+        }
+
+        const user = req.user; // User is already attached by protect middleware
 
         res.json({
             success: true,

@@ -1,0 +1,265 @@
+# Details
+
+Date : 2026-01-09 17:36:08
+
+Directory c:\\E-Commerce Website (Full)
+
+Total : 250 files,  47186 codes, 1366 comments, 5531 blanks, all 54083 lines
+
+[Summary](results.md) / Details / [Diff Summary](diff.md) / [Diff Details](diff-details.md)
+
+## Files
+| filename | language | code | comment | blank | total |
+| :--- | :--- | ---: | ---: | ---: | ---: |
+| [QUICK_START.md](/QUICK_START.md) | Markdown | 142 | 0 | 78 | 220 |
+| [api/index.js](/api/index.js) | JavaScript | 11 | 3 | 3 | 17 |
+| [backend/BULLMQ_STATUS.md](/backend/BULLMQ_STATUS.md) | Markdown | 104 | 0 | 32 | 136 |
+| [backend/COLLECTION_PAGE_FIX.md](/backend/COLLECTION_PAGE_FIX.md) | Markdown | 99 | 0 | 22 | 121 |
+| [backend/MONGODB_SETUP.md](/backend/MONGODB_SETUP.md) | Markdown | 112 | 0 | 53 | 165 |
+| [backend/PRODUCTION_READINESS.md](/backend/PRODUCTION_READINESS.md) | Markdown | 112 | 0 | 34 | 146 |
+| [backend/README.md](/backend/README.md) | Markdown | 82 | 0 | 29 | 111 |
+| [backend/SECURITY_FIXES.md](/backend/SECURITY_FIXES.md) | Markdown | 86 | 0 | 22 | 108 |
+| [backend/bootstrap.js](/backend/bootstrap.js) | JavaScript | 73 | 11 | 19 | 103 |
+| [backend/check_status.js](/backend/check_status.js) | JavaScript | 7 | 0 | 1 | 8 |
+| [backend/config/db.js](/backend/config/db.js) | JavaScript | 11 | 0 | 3 | 14 |
+| [backend/config/env.js](/backend/config/env.js) | JavaScript | 110 | 1 | 18 | 129 |
+| [backend/controllers/adminController.js](/backend/controllers/adminController.js) | JavaScript | 196 | 2 | 30 | 228 |
+| [backend/controllers/analyticsController.js](/backend/controllers/analyticsController.js) | JavaScript | 38 | 0 | 4 | 42 |
+| [backend/controllers/authController.js](/backend/controllers/authController.js) | JavaScript | 151 | 37 | 34 | 222 |
+| [backend/controllers/cartController.js](/backend/controllers/cartController.js) | JavaScript | 217 | 0 | 32 | 249 |
+| [backend/controllers/contactController.js](/backend/controllers/contactController.js) | JavaScript | 67 | 2 | 14 | 83 |
+| [backend/controllers/inventoryController.js](/backend/controllers/inventoryController.js) | JavaScript | 350 | 2 | 48 | 400 |
+| [backend/controllers/newsletterController.js](/backend/controllers/newsletterController.js) | JavaScript | 78 | 5 | 15 | 98 |
+| [backend/controllers/orderController.js](/backend/controllers/orderController.js) | JavaScript | 605 | 47 | 93 | 745 |
+| [backend/controllers/paymentController.js](/backend/controllers/paymentController.js) | JavaScript | 97 | 1 | 10 | 108 |
+| [backend/controllers/phase1Controller.js](/backend/controllers/phase1Controller.js) | JavaScript | 474 | 5 | 93 | 572 |
+| [backend/controllers/phase2Controller.js](/backend/controllers/phase2Controller.js) | JavaScript | 688 | 35 | 131 | 854 |
+| [backend/controllers/phase3Controller.js](/backend/controllers/phase3Controller.js) | JavaScript | 809 | 53 | 155 | 1,017 |
+| [backend/controllers/productController.js](/backend/controllers/productController.js) | JavaScript | 414 | 12 | 46 | 472 |
+| [backend/controllers/recommendationController.js](/backend/controllers/recommendationController.js) | JavaScript | 213 | 1 | 32 | 246 |
+| [backend/controllers/reviewController.js](/backend/controllers/reviewController.js) | JavaScript | 335 | 4 | 51 | 390 |
+| [backend/controllers/searchController.js](/backend/controllers/searchController.js) | JavaScript | 203 | 2 | 24 | 229 |
+| [backend/controllers/userController.js](/backend/controllers/userController.js) | JavaScript | 148 | 0 | 26 | 174 |
+| [backend/controllers/webhookController.js](/backend/controllers/webhookController.js) | JavaScript | 101 | 0 | 10 | 111 |
+| [backend/controllers/wishlistController.js](/backend/controllers/wishlistController.js) | JavaScript | 359 | 0 | 52 | 411 |
+| [backend/data/admin_action_logs.json](/backend/data/admin_action_logs.json) | JSON | 1 | 0 | 0 | 1 |
+| [backend/data/defaultProducts.js](/backend/data/defaultProducts.js) | JavaScript | 87 | 2 | 3 | 92 |
+| [backend/data/orders.json](/backend/data/orders.json) | JSON | 1 | 0 | 0 | 1 |
+| [backend/data/products.json](/backend/data/products.json) | JSON | 80 | 0 | 0 | 80 |
+| [backend/data/users.json](/backend/data/users.json) | JSON | 13 | 0 | 0 | 13 |
+| [backend/docs/API_OPERATIONS.md](/backend/docs/API_OPERATIONS.md) | Markdown | 42 | 0 | 18 | 60 |
+| [backend/docs/RUNBOOK_ARCHITECTURE.md](/backend/docs/RUNBOOK_ARCHITECTURE.md) | Markdown | 32 | 0 | 19 | 51 |
+| [backend/ecosystem.config.js](/backend/ecosystem.config.js) | JavaScript | 53 | 0 | 2 | 55 |
+| [backend/email-templates/order-cancelled.html](/backend/email-templates/order-cancelled.html) | HTML | 60 | 0 | 11 | 71 |
+| [backend/email-templates/order-delivered.html](/backend/email-templates/order-delivered.html) | HTML | 60 | 0 | 10 | 70 |
+| [backend/email-templates/order-placed.html](/backend/email-templates/order-placed.html) | HTML | 71 | 0 | 12 | 83 |
+| [backend/email-templates/order-shipped.html](/backend/email-templates/order-shipped.html) | HTML | 69 | 0 | 12 | 81 |
+| [backend/email-templates/payment-approved.html](/backend/email-templates/payment-approved.html) | HTML | 69 | 0 | 12 | 81 |
+| [backend/jobs/cleanupInitiatedOrders.js](/backend/jobs/cleanupInitiatedOrders.js) | JavaScript | 97 | 5 | 19 | 121 |
+| [backend/lib/dbConnect.js](/backend/lib/dbConnect.js) | JavaScript | 34 | 1 | 10 | 45 |
+| [backend/middleware/auth.js](/backend/middleware/auth.js) | JavaScript | 90 | 4 | 17 | 111 |
+| [backend/middleware/authEnhanced.js](/backend/middleware/authEnhanced.js) | JavaScript | 1 | 0 | 1 | 2 |
+| [backend/middleware/authMiddleware.js](/backend/middleware/authMiddleware.js) | JavaScript | 1 | 0 | 0 | 1 |
+| [backend/middleware/gatekeeper.js](/backend/middleware/gatekeeper.js) | JavaScript | 102 | 13 | 22 | 137 |
+| [backend/middleware/rateLimiter.js](/backend/middleware/rateLimiter.js) | JavaScript | 28 | 0 | 7 | 35 |
+| [backend/middleware/validate.js](/backend/middleware/validate.js) | JavaScript | 15 | 0 | 4 | 19 |
+| [backend/models/AbandonedCart.js](/backend/models/AbandonedCart.js) | JavaScript | 389 | 11 | 45 | 445 |
+| [backend/models/AdminActionLog.js](/backend/models/AdminActionLog.js) | JavaScript | 3 | 1 | 3 | 7 |
+| [backend/models/Bundle.js](/backend/models/Bundle.js) | JavaScript | 340 | 15 | 39 | 394 |
+| [backend/models/Contact.js](/backend/models/Contact.js) | JavaScript | 33 | 0 | 2 | 35 |
+| [backend/models/Event.js](/backend/models/Event.js) | JavaScript | 17 | 0 | 4 | 21 |
+| [backend/models/Inventory.js](/backend/models/Inventory.js) | JavaScript | 406 | 4 | 35 | 445 |
+| [backend/models/MessageLog.js](/backend/models/MessageLog.js) | JavaScript | 31 | 0 | 3 | 34 |
+| [backend/models/Newsletter.js](/backend/models/Newsletter.js) | JavaScript | 19 | 0 | 2 | 21 |
+| [backend/models/OneClickCheckout.js](/backend/models/OneClickCheckout.js) | JavaScript | 140 | 11 | 14 | 165 |
+| [backend/models/Order.js](/backend/models/Order.js) | JavaScript | 10 | 2 | 3 | 15 |
+| [backend/models/Phase1Models.js](/backend/models/Phase1Models.js) | JavaScript | 521 | 61 | 73 | 655 |
+| [backend/models/Phase2Models.js](/backend/models/Phase2Models.js) | JavaScript | 696 | 79 | 134 | 909 |
+| [backend/models/Phase3Models.js](/backend/models/Phase3Models.js) | JavaScript | 737 | 93 | 174 | 1,004 |
+| [backend/models/Product.js](/backend/models/Product.js) | JavaScript | 84 | 3 | 3 | 90 |
+| [backend/models/Recommendation.js](/backend/models/Recommendation.js) | JavaScript | 85 | 0 | 6 | 91 |
+| [backend/models/Review.js](/backend/models/Review.js) | JavaScript | 400 | 10 | 46 | 456 |
+| [backend/models/User.js](/backend/models/User.js) | JavaScript | 30 | 8 | 8 | 46 |
+| [backend/models/Wishlist.js](/backend/models/Wishlist.js) | JavaScript | 404 | 5 | 50 | 459 |
+| [backend/package-lock.json](/backend/package-lock.json) | JSON | 9,611 | 0 | 1 | 9,612 |
+| [backend/package-production.json](/backend/package-production.json) | JSON | 71 | 0 | 1 | 72 |
+| [backend/package.json](/backend/package.json) | JSON | 56 | 0 | 0 | 56 |
+| [backend/routes/adminRoutes.js](/backend/routes/adminRoutes.js) | JavaScript | 20 | 5 | 7 | 32 |
+| [backend/routes/analyticsRoutes.js](/backend/routes/analyticsRoutes.js) | JavaScript | 6 | 0 | 4 | 10 |
+| [backend/routes/authRoutes.js](/backend/routes/authRoutes.js) | JavaScript | 13 | 2 | 4 | 19 |
+| [backend/routes/cartRoutes.js](/backend/routes/cartRoutes.js) | JavaScript | 15 | 1 | 4 | 20 |
+| [backend/routes/contactRoutes.js](/backend/routes/contactRoutes.js) | JavaScript | 9 | 2 | 3 | 14 |
+| [backend/routes/healthRoutes.js](/backend/routes/healthRoutes.js) | JavaScript | 57 | 3 | 8 | 68 |
+| [backend/routes/inventoryRoutes.js](/backend/routes/inventoryRoutes.js) | JavaScript | 20 | 3 | 6 | 29 |
+| [backend/routes/newsletterRoutes.js](/backend/routes/newsletterRoutes.js) | JavaScript | 9 | 2 | 3 | 14 |
+| [backend/routes/orderRoutes.js](/backend/routes/orderRoutes.js) | JavaScript | 90 | 17 | 21 | 128 |
+| [backend/routes/paymentRoutes.js](/backend/routes/paymentRoutes.js) | JavaScript | 13 | 5 | 7 | 25 |
+| [backend/routes/phase1Routes.js](/backend/routes/phase1Routes.js) | JavaScript | 68 | 33 | 23 | 124 |
+| [backend/routes/phase2Routes.js](/backend/routes/phase2Routes.js) | JavaScript | 62 | 28 | 14 | 104 |
+| [backend/routes/phase3Routes.js](/backend/routes/phase3Routes.js) | JavaScript | 84 | 46 | 20 | 150 |
+| [backend/routes/productRoutes.js](/backend/routes/productRoutes.js) | JavaScript | 21 | 0 | 4 | 25 |
+| [backend/routes/recommendationRoutes.js](/backend/routes/recommendationRoutes.js) | JavaScript | 16 | 3 | 6 | 25 |
+| [backend/routes/reviewRoutes.js](/backend/routes/reviewRoutes.js) | JavaScript | 18 | 3 | 6 | 27 |
+| [backend/routes/searchRoutes.js](/backend/routes/searchRoutes.js) | JavaScript | 14 | 2 | 5 | 21 |
+| [backend/routes/userRoutes.js](/backend/routes/userRoutes.js) | JavaScript | 17 | 0 | 3 | 20 |
+| [backend/routes/webhookRoutes.js](/backend/routes/webhookRoutes.js) | JavaScript | 6 | 0 | 3 | 9 |
+| [backend/routes/wishlistRoutes.js](/backend/routes/wishlistRoutes.js) | JavaScript | 19 | 3 | 6 | 28 |
+| [backend/scripts/check-env-leaks.js](/backend/scripts/check-env-leaks.js) | JavaScript | 35 | 0 | 8 | 43 |
+| [backend/scripts/cleanup-port.js](/backend/scripts/cleanup-port.js) | JavaScript | 32 | 5 | 5 | 42 |
+| [backend/scripts/createAdmin.js](/backend/scripts/createAdmin.js) | JavaScript | 56 | 4 | 12 | 72 |
+| [backend/scripts/migrateProducts.js](/backend/scripts/migrateProducts.js) | JavaScript | 67 | 0 | 11 | 78 |
+| [backend/scripts/precheck.js](/backend/scripts/precheck.js) | JavaScript | 59 | 0 | 10 | 69 |
+| [backend/scripts/seedProducts.js](/backend/scripts/seedProducts.js) | JavaScript | 148 | 8 | 13 | 169 |
+| [backend/scripts/set-admin.js](/backend/scripts/set-admin.js) | JavaScript | 57 | 0 | 12 | 69 |
+| [backend/scripts/test-approval-system.js](/backend/scripts/test-approval-system.js) | JavaScript | 130 | 25 | 27 | 182 |
+| [backend/scripts/test-whatsapp.js](/backend/scripts/test-whatsapp.js) | JavaScript | 31 | 0 | 4 | 35 |
+| [backend/scripts/verify-system.js](/backend/scripts/verify-system.js) | JavaScript | 109 | 9 | 23 | 141 |
+| [backend/server.js](/backend/server.js) | JavaScript | 126 | 17 | 16 | 159 |
+| [backend/services/cartService.js](/backend/services/cartService.js) | JavaScript | 320 | 5 | 39 | 364 |
+| [backend/services/dbService.js](/backend/services/dbService.js) | JavaScript | 60 | 0 | 12 | 72 |
+| [backend/services/emailService.js](/backend/services/emailService.js) | JavaScript | 198 | 1 | 23 | 222 |
+| [backend/services/logger.js](/backend/services/logger.js) | JavaScript | 25 | 0 | 6 | 31 |
+| [backend/services/mailblusterService.js](/backend/services/mailblusterService.js) | JavaScript | 69 | 0 | 12 | 81 |
+| [backend/services/memoryDbService.js](/backend/services/memoryDbService.js) | JavaScript | 45 | 0 | 10 | 55 |
+| [backend/services/paymentService.js](/backend/services/paymentService.js) | JavaScript | 329 | 54 | 57 | 440 |
+| [backend/services/queueService.js](/backend/services/queueService.js) | JavaScript | 126 | 3 | 18 | 147 |
+| [backend/services/recommendationService.js](/backend/services/recommendationService.js) | JavaScript | 230 | 12 | 36 | 278 |
+| [backend/services/searchService.js](/backend/services/searchService.js) | JavaScript | 255 | 20 | 47 | 322 |
+| [backend/services/stateService.js](/backend/services/stateService.js) | JavaScript | 147 | 8 | 29 | 184 |
+| [backend/services/whatsappService.js](/backend/services/whatsappService.js) | JavaScript | 27 | 1 | 4 | 32 |
+| [backend/test-boundaries.js](/backend/test-boundaries.js) | JavaScript | 93 | 8 | 19 | 120 |
+| [backend/test_subscription.js](/backend/test_subscription.js) | JavaScript | 25 | 0 | 4 | 29 |
+| [backend/tests/QA-SECURITY-CHECKLIST.md](/backend/tests/QA-SECURITY-CHECKLIST.md) | Markdown | 315 | 0 | 117 | 432 |
+| [backend/tests/integration/bootstrap.test.js](/backend/tests/integration/bootstrap.test.js) | JavaScript | 62 | 1 | 10 | 73 |
+| [backend/tests/integration/payment-security.test.js](/backend/tests/integration/payment-security.test.js) | JavaScript | 219 | 26 | 51 | 296 |
+| [backend/tests/security/jwt.test.js](/backend/tests/security/jwt.test.js) | JavaScript | 88 | 3 | 24 | 115 |
+| [backend/tests/test_approval_flow.js](/backend/tests/test_approval_flow.js) | JavaScript | 104 | 8 | 20 | 132 |
+| [backend/tests/unit/config.test.js](/backend/tests/unit/config.test.js) | JavaScript | 38 | 0 | 10 | 48 |
+| [backend/utils/LocalDB.js](/backend/utils/LocalDB.js) | JavaScript | 192 | 19 | 36 | 247 |
+| [backend/utils/inventoryService.js](/backend/utils/inventoryService.js) | JavaScript | 133 | 3 | 23 | 159 |
+| [backend/utils/orderHashService.js](/backend/utils/orderHashService.js) | JavaScript | 40 | 3 | 8 | 51 |
+| [backend/utils/phoneFormatter.js](/backend/utils/phoneFormatter.js) | JavaScript | 56 | 10 | 17 | 83 |
+| [backend/utils/tokenService.js](/backend/utils/tokenService.js) | JavaScript | 74 | 2 | 11 | 87 |
+| [backend/utils/whatsappService.js](/backend/utils/whatsappService.js) | JavaScript | 142 | 0 | 28 | 170 |
+| [backend/validators/orderValidators.js](/backend/validators/orderValidators.js) | JavaScript | 36 | 0 | 8 | 44 |
+| [backend/validators/productValidators.js](/backend/validators/productValidators.js) | JavaScript | 28 | 0 | 8 | 36 |
+| [backend/validators/userValidator.js](/backend/validators/userValidator.js) | JavaScript | 23 | 0 | 5 | 28 |
+| [backend/validators/userValidators.js](/backend/validators/userValidators.js) | JavaScript | 41 | 0 | 8 | 49 |
+| [backend/verify-mongodb.js](/backend/verify-mongodb.js) | JavaScript | 96 | 3 | 23 | 122 |
+| [backend/verify-order-fix.js](/backend/verify-order-fix.js) | JavaScript | 42 | 1 | 9 | 52 |
+| [backend/verify-serverless.js](/backend/verify-serverless.js) | JavaScript | 69 | 10 | 19 | 98 |
+| [backend/workers/notificationWorker.js](/backend/workers/notificationWorker.js) | JavaScript | 157 | 16 | 37 | 210 |
+| [frontend/index.html](/frontend/index.html) | HTML | 104 | 0 | 17 | 121 |
+| [frontend/package-lock.json](/frontend/package-lock.json) | JSON | 4,068 | 0 | 1 | 4,069 |
+| [frontend/package.json](/frontend/package.json) | JSON | 33 | 0 | 1 | 34 |
+| [frontend/postcss.config.js](/frontend/postcss.config.js) | JavaScript | 6 | 0 | 1 | 7 |
+| [frontend/public/manifest.json](/frontend/public/manifest.json) | JSON | 26 | 0 | 0 | 26 |
+| [frontend/src/App.tsx](/frontend/src/App.tsx) | TypeScript JSX | 81 | 4 | 5 | 90 |
+| [frontend/src/api/client.ts](/frontend/src/api/client.ts) | TypeScript | 89 | 19 | 16 | 124 |
+| [frontend/src/components/AdPlacement.css](/frontend/src/components/AdPlacement.css) | CSS | 266 | 0 | 48 | 314 |
+| [frontend/src/components/AdPlacementZone.tsx](/frontend/src/components/AdPlacementZone.tsx) | TypeScript JSX | 123 | 5 | 10 | 138 |
+| [frontend/src/components/AdminLayout.css](/frontend/src/components/AdminLayout.css) | CSS | 160 | 0 | 22 | 182 |
+| [frontend/src/components/AdminLayout.tsx](/frontend/src/components/AdminLayout.tsx) | TypeScript JSX | 72 | 8 | 9 | 89 |
+| [frontend/src/components/Carousel.tsx](/frontend/src/components/Carousel.tsx) | TypeScript JSX | 113 | 7 | 17 | 137 |
+| [frontend/src/components/ErrorBoundary.tsx](/frontend/src/components/ErrorBoundary.tsx) | TypeScript JSX | 71 | 0 | 9 | 80 |
+| [frontend/src/components/Footer.tsx](/frontend/src/components/Footer.tsx) | TypeScript JSX | 109 | 5 | 12 | 126 |
+| [frontend/src/components/Layout.css](/frontend/src/components/Layout.css) | CSS | 331 | 0 | 51 | 382 |
+| [frontend/src/components/Layout.tsx](/frontend/src/components/Layout.tsx) | TypeScript JSX | 130 | 15 | 23 | 168 |
+| [frontend/src/components/LoadingWrapper.tsx](/frontend/src/components/LoadingWrapper.tsx) | TypeScript JSX | 43 | 5 | 5 | 53 |
+| [frontend/src/components/OmnoraCarousel.css](/frontend/src/components/OmnoraCarousel.css) | CSS | 178 | 0 | 24 | 202 |
+| [frontend/src/components/OmnoraLayout.css](/frontend/src/components/OmnoraLayout.css) | CSS | 560 | 0 | 90 | 650 |
+| [frontend/src/components/OmnoraPosterGallery.css](/frontend/src/components/OmnoraPosterGallery.css) | CSS | 205 | 0 | 30 | 235 |
+| [frontend/src/components/Payment.css](/frontend/src/components/Payment.css) | CSS | 119 | 0 | 21 | 140 |
+| [frontend/src/components/PosterGallery.tsx](/frontend/src/components/PosterGallery.tsx) | TypeScript JSX | 72 | 6 | 10 | 88 |
+| [frontend/src/components/ProtectedRoute.tsx](/frontend/src/components/ProtectedRoute.tsx) | TypeScript JSX | 31 | 0 | 7 | 38 |
+| [frontend/src/components/RequireAdmin.tsx](/frontend/src/components/RequireAdmin.tsx) | TypeScript JSX | 16 | 1 | 6 | 23 |
+| [frontend/src/components/Skeleton.css](/frontend/src/components/Skeleton.css) | CSS | 103 | 0 | 20 | 123 |
+| [frontend/src/components/Skeleton.tsx](/frontend/src/components/Skeleton.tsx) | TypeScript JSX | 37 | 11 | 11 | 59 |
+| [frontend/src/components/SkeletonProductCard.tsx](/frontend/src/components/SkeletonProductCard.tsx) | TypeScript JSX | 46 | 10 | 7 | 63 |
+| [frontend/src/components/SmartImage.tsx](/frontend/src/components/SmartImage.tsx) | TypeScript JSX | 104 | 21 | 14 | 139 |
+| [frontend/src/components/StripePayment.tsx](/frontend/src/components/StripePayment.tsx) | TypeScript JSX | 82 | 2 | 13 | 97 |
+| [frontend/src/components/WhatsAppConfirmationDialog.css](/frontend/src/components/WhatsAppConfirmationDialog.css) | CSS | 123 | 0 | 20 | 143 |
+| [frontend/src/components/WhatsAppConfirmationDialog.tsx](/frontend/src/components/WhatsAppConfirmationDialog.tsx) | TypeScript JSX | 50 | 0 | 8 | 58 |
+| [frontend/src/components/home/HowItWorks.tsx](/frontend/src/components/home/HowItWorks.tsx) | TypeScript JSX | 31 | 0 | 2 | 33 |
+| [frontend/src/components/home/Newsletter.tsx](/frontend/src/components/home/Newsletter.tsx) | TypeScript JSX | 49 | 0 | 6 | 55 |
+| [frontend/src/components/home/TechStack.css](/frontend/src/components/home/TechStack.css) | CSS | 280 | 0 | 43 | 323 |
+| [frontend/src/components/home/Testimonials.tsx](/frontend/src/components/home/Testimonials.tsx) | TypeScript JSX | 43 | 3 | 4 | 50 |
+| [frontend/src/components/home/TrustSection.tsx](/frontend/src/components/home/TrustSection.tsx) | TypeScript JSX | 32 | 0 | 2 | 34 |
+| [frontend/src/components/home/WhyUs.tsx](/frontend/src/components/home/WhyUs.tsx) | TypeScript JSX | 28 | 0 | 3 | 31 |
+| [frontend/src/components/home/tech.tsx](/frontend/src/components/home/tech.tsx) | TypeScript JSX | 154 | 5 | 18 | 177 |
+| [frontend/src/config/adConfig.json](/frontend/src/config/adConfig.json) | JSON | 109 | 0 | 2 | 111 |
+| [frontend/src/config/firebase.ts](/frontend/src/config/firebase.ts) | TypeScript | 60 | 4 | 5 | 69 |
+| [frontend/src/constants.ts](/frontend/src/constants.ts) | TypeScript | 1 | 0 | 1 | 2 |
+| [frontend/src/context/AuthContext.tsx](/frontend/src/context/AuthContext.tsx) | TypeScript JSX | 118 | 7 | 16 | 141 |
+| [frontend/src/context/ToastContext.tsx](/frontend/src/context/ToastContext.tsx) | TypeScript JSX | 91 | 0 | 11 | 102 |
+| [frontend/src/data/fallbackProducts.ts](/frontend/src/data/fallbackProducts.ts) | TypeScript | 62 | 1 | 1 | 64 |
+| [frontend/src/hooks/useImageLoader.ts](/frontend/src/hooks/useImageLoader.ts) | TypeScript | 73 | 27 | 23 | 123 |
+| [frontend/src/hooks/useMinimumLoadingTime.ts](/frontend/src/hooks/useMinimumLoadingTime.ts) | TypeScript | 31 | 0 | 6 | 37 |
+| [frontend/src/hooks/useScrollReveal.ts](/frontend/src/hooks/useScrollReveal.ts) | TypeScript | 26 | 1 | 8 | 35 |
+| [frontend/src/index.css](/frontend/src/index.css) | CSS | 238 | 0 | 37 | 275 |
+| [frontend/src/lib/loadingManager.ts](/frontend/src/lib/loadingManager.ts) | TypeScript | 135 | 20 | 27 | 182 |
+| [frontend/src/main.tsx](/frontend/src/main.tsx) | TypeScript JSX | 24 | 1 | 3 | 28 |
+| [frontend/src/pages/About.css](/frontend/src/pages/About.css) | CSS | 458 | 0 | 69 | 527 |
+| [frontend/src/pages/About.tsx](/frontend/src/pages/About.tsx) | TypeScript JSX | 130 | 17 | 19 | 166 |
+| [frontend/src/pages/AdminAnalytics.tsx](/frontend/src/pages/AdminAnalytics.tsx) | TypeScript JSX | 44 | 0 | 5 | 49 |
+| [frontend/src/pages/AdminApprove.tsx](/frontend/src/pages/AdminApprove.tsx) | TypeScript JSX | 56 | 2 | 10 | 68 |
+| [frontend/src/pages/AdminDashboard.css](/frontend/src/pages/AdminDashboard.css) | CSS | 195 | 0 | 37 | 232 |
+| [frontend/src/pages/AdminDashboard.tsx](/frontend/src/pages/AdminDashboard.tsx) | TypeScript JSX | 135 | 5 | 13 | 153 |
+| [frontend/src/pages/AdminOrders.css](/frontend/src/pages/AdminOrders.css) | CSS | 155 | 0 | 34 | 189 |
+| [frontend/src/pages/AdminOrders.tsx](/frontend/src/pages/AdminOrders.tsx) | TypeScript JSX | 136 | 2 | 13 | 151 |
+| [frontend/src/pages/AdminProducts.css](/frontend/src/pages/AdminProducts.css) | CSS | 231 | 0 | 34 | 265 |
+| [frontend/src/pages/AdminProducts.tsx](/frontend/src/pages/AdminProducts.tsx) | TypeScript JSX | 208 | 0 | 19 | 227 |
+| [frontend/src/pages/AdminUsers.tsx](/frontend/src/pages/AdminUsers.tsx) | TypeScript JSX | 10 | 1 | 3 | 14 |
+| [frontend/src/pages/Cart.css](/frontend/src/pages/Cart.css) | CSS | 570 | 0 | 84 | 654 |
+| [frontend/src/pages/Cart.tsx](/frontend/src/pages/Cart.tsx) | TypeScript JSX | 189 | 0 | 14 | 203 |
+| [frontend/src/pages/Checkout.css](/frontend/src/pages/Checkout.css) | CSS | 656 | 0 | 104 | 760 |
+| [frontend/src/pages/Checkout.tsx](/frontend/src/pages/Checkout.tsx) | TypeScript JSX | 432 | 8 | 34 | 474 |
+| [frontend/src/pages/Collection.css](/frontend/src/pages/Collection.css) | CSS | 554 | 0 | 89 | 643 |
+| [frontend/src/pages/Contact.css](/frontend/src/pages/Contact.css) | CSS | 136 | 0 | 22 | 158 |
+| [frontend/src/pages/FAQ.css](/frontend/src/pages/FAQ.css) | CSS | 148 | 0 | 25 | 173 |
+| [frontend/src/pages/Home.tsx](/frontend/src/pages/Home.tsx) | TypeScript JSX | 259 | 18 | 31 | 308 |
+| [frontend/src/pages/HomeWithAds.tsx](/frontend/src/pages/HomeWithAds.tsx) | TypeScript JSX | 12 | 4 | 6 | 22 |
+| [frontend/src/pages/Login.css](/frontend/src/pages/Login.css) | CSS | 245 | 0 | 39 | 284 |
+| [frontend/src/pages/Login.tsx](/frontend/src/pages/Login.tsx) | TypeScript JSX | 213 | 26 | 201 | 440 |
+| [frontend/src/pages/NotFound.tsx](/frontend/src/pages/NotFound.tsx) | TypeScript JSX | 37 | 0 | 3 | 40 |
+| [frontend/src/pages/OmnoraCollection.css](/frontend/src/pages/OmnoraCollection.css) | CSS | 554 | 0 | 89 | 643 |
+| [frontend/src/pages/OmnoraCollection.tsx](/frontend/src/pages/OmnoraCollection.tsx) | TypeScript JSX | 337 | 26 | 48 | 411 |
+| [frontend/src/pages/OmnoraContact.css](/frontend/src/pages/OmnoraContact.css) | CSS | 282 | 0 | 39 | 321 |
+| [frontend/src/pages/OmnoraContact.tsx](/frontend/src/pages/OmnoraContact.tsx) | TypeScript JSX | 183 | 12 | 30 | 225 |
+| [frontend/src/pages/OmnoraFAQ.css](/frontend/src/pages/OmnoraFAQ.css) | CSS | 266 | 0 | 38 | 304 |
+| [frontend/src/pages/OmnoraFAQ.tsx](/frontend/src/pages/OmnoraFAQ.tsx) | TypeScript JSX | 119 | 12 | 19 | 150 |
+| [frontend/src/pages/OmnoraFinal.css](/frontend/src/pages/OmnoraFinal.css) | CSS | 702 | 0 | 94 | 796 |
+| [frontend/src/pages/OrderConfirmation.tsx](/frontend/src/pages/OrderConfirmation.tsx) | TypeScript JSX | 486 | 8 | 32 | 526 |
+| [frontend/src/pages/OrderDetail.css](/frontend/src/pages/OrderDetail.css) | CSS | 205 | 0 | 36 | 241 |
+| [frontend/src/pages/OrderDetail.tsx](/frontend/src/pages/OrderDetail.tsx) | TypeScript JSX | 170 | 6 | 17 | 193 |
+| [frontend/src/pages/PaymentSuccess.css](/frontend/src/pages/PaymentSuccess.css) | CSS | 96 | 0 | 18 | 114 |
+| [frontend/src/pages/PaymentSuccess.tsx](/frontend/src/pages/PaymentSuccess.tsx) | TypeScript JSX | 48 | 1 | 8 | 57 |
+| [frontend/src/pages/Privacy.tsx](/frontend/src/pages/Privacy.tsx) | TypeScript JSX | 51 | 0 | 5 | 56 |
+| [frontend/src/pages/Product.css](/frontend/src/pages/Product.css) | CSS | 208 | 0 | 31 | 239 |
+| [frontend/src/pages/Product.tsx](/frontend/src/pages/Product.tsx) | TypeScript JSX | 224 | 17 | 44 | 285 |
+| [frontend/src/pages/Profile.css](/frontend/src/pages/Profile.css) | CSS | 159 | 0 | 31 | 190 |
+| [frontend/src/pages/Profile.tsx](/frontend/src/pages/Profile.tsx) | TypeScript JSX | 235 | 0 | 14 | 249 |
+| [frontend/src/pages/Register.tsx](/frontend/src/pages/Register.tsx) | TypeScript JSX | 9 | 1 | 4 | 14 |
+| [frontend/src/pages/Terms.tsx](/frontend/src/pages/Terms.tsx) | TypeScript JSX | 54 | 0 | 6 | 60 |
+| [frontend/src/pages/Wishlist.css](/frontend/src/pages/Wishlist.css) | CSS | 125 | 0 | 21 | 146 |
+| [frontend/src/pages/Wishlist.tsx](/frontend/src/pages/Wishlist.tsx) | TypeScript JSX | 120 | 2 | 12 | 134 |
+| [frontend/src/pages/index.css](/frontend/src/pages/index.css) | CSS | 5 | 0 | 2 | 7 |
+| [frontend/src/pages/service.js](/frontend/src/pages/service.js) | JavaScript | 154 | 5 | 14 | 173 |
+| [frontend/src/styles/Animations.css](/frontend/src/styles/Animations.css) | CSS | 82 | 0 | 11 | 93 |
+| [frontend/src/styles/theme.css](/frontend/src/styles/theme.css) | CSS | 181 | 0 | 31 | 212 |
+| [frontend/src/utils/whatsappOrderService.ts](/frontend/src/utils/whatsappOrderService.ts) | TypeScript | 139 | 0 | 25 | 164 |
+| [frontend/src/vite-env.d.ts](/frontend/src/vite-env.d.ts) | TypeScript | 24 | 1 | 7 | 32 |
+| [frontend/tailwind.config.js](/frontend/tailwind.config.js) | JavaScript | 11 | 0 | 1 | 12 |
+| [frontend/tsconfig.json](/frontend/tsconfig.json) | JSON with Comments | 17 | 0 | 2 | 19 |
+| [frontend/vercel.json](/frontend/vercel.json) | JSON | 12 | 0 | 0 | 12 |
+| [frontend/vite.config.ts](/frontend/vite.config.ts) | TypeScript | 44 | 2 | 2 | 48 |
+| [package-lock.json](/package-lock.json) | JSON | 466 | 0 | 1 | 467 |
+| [package.json](/package.json) | JSON | 20 | 0 | 0 | 20 |
+| [scripts/check-environment.ps1](/scripts/check-environment.ps1) | PowerShell | 0 | 0 | 1 | 1 |
+| [scripts/start-backend.ps1](/scripts/start-backend.ps1) | PowerShell | 0 | 0 | 1 | 1 |
+| [sitemap.xml](/sitemap.xml) | XML | 18 | 0 | 2 | 20 |
+| [start-dev.ps1](/start-dev.ps1) | PowerShell | 42 | 8 | 12 | 62 |
+| [test_api.js](/test_api.js) | JavaScript | 32 | 0 | 4 | 36 |
+| [vercel.json](/vercel.json) | JSON | 49 | 0 | 0 | 49 |
+
+[Summary](results.md) / Details / [Diff Summary](diff.md) / [Diff Details](diff-details.md)

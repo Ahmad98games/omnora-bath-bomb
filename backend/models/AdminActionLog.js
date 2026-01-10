@@ -1,26 +1,22 @@
 const mongoose = require('mongoose');
+const LocalDB = require('../utils/LocalDB');
 
-const adminActionLogSchema = new mongoose.Schema({
-    action: {
-        type: String,
-        required: true,
-        enum: ['approve', 'reject', 'update_status', 'login']
-    },
-    orderId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Order'
-    },
-    adminEmail: {
-        type: String,
-        required: true
-    },
-    ip: String,
-    userAgent: String,
-    details: mongoose.Schema.Types.Mixed,
-    timestamp: {
-        type: Date,
-        default: Date.now
-    }
-});
+const useMongo = !!process.env.MONGODB_URI;
+let AdminActionLog;
 
-module.exports = mongoose.model('AdminActionLog', adminActionLogSchema);
+if (useMongo) {
+    const adminLogSchema = new mongoose.Schema({
+        adminId: { type: String, required: true },
+        adminName: String,
+        action: { type: String, required: true },
+        target: { type: String }, // e.g., 'Order #123'
+        details: { type: Object },
+        timestamp: { type: Date, default: Date.now }
+    }, { timestamps: true });
+
+    AdminActionLog = mongoose.models.AdminActionLog || mongoose.model('AdminActionLog', adminLogSchema);
+} else {
+    AdminActionLog = new LocalDB('admin_action_logs');
+}
+
+module.exports = AdminActionLog;

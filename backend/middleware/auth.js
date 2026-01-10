@@ -23,27 +23,33 @@ const attachUser = async (decoded) => {
   if (!userId) {
     return null;
   }
-  return User.findById(userId).select('-password -refreshToken');
+  // LocalDB does not support chaining .select() on findById promise
+  // We return the user directly.
+  return User.findById(userId);
 };
 
 const protect = async (req, res, next) => {
   try {
     const token = extractToken(req);
     if (!token) {
+      logger.warn('AUTH_FAIL: Token missing from request headers/cookies');
       return res.status(401).json({ error: 'Not authorized. Token missing.' });
     }
 
     const decoded = jwt.verify(token, JWT_SECRET);
+    // logger.info(`AUTH_DEBUG: Token decoded`, { id: decoded.id }); // Too noisy for prod, useful for debug
+
     const user = await attachUser(decoded);
 
     if (!user) {
+      logger.warn('AUTH_FAIL: Token valid but User not found', { userId: decoded.id });
       return res.status(401).json({ error: 'User associated with this token no longer exists.' });
     }
 
     req.user = user;
     return next();
   } catch (error) {
-    logger.warn('JWT validation failed', { error: error.message });
+    logger.warn('AUTH_FAIL: JWT verification failed', { error: error.message });
     return res.status(401).json({ error: 'Not authorized. Invalid or expired token.' });
   }
 };

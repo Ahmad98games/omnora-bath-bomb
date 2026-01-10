@@ -1,0 +1,252 @@
+"filename", "language", "XML", "JSON", "JavaScript", "Markdown", "TypeScript", "JSON with Comments", "PowerShell", "TypeScript JSX", "CSS", "HTML", "comment", "blank", "total"
+"c:\E-Commerce Website (Full)\QUICK_START.md", "Markdown", 0, 0, 0, 142, 0, 0, 0, 0, 0, 0, 0, 78, 220
+"c:\E-Commerce Website (Full)\api\index.js", "JavaScript", 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 3, 3, 17
+"c:\E-Commerce Website (Full)\backend\BULLMQ_STATUS.md", "Markdown", 0, 0, 0, 104, 0, 0, 0, 0, 0, 0, 0, 32, 136
+"c:\E-Commerce Website (Full)\backend\COLLECTION_PAGE_FIX.md", "Markdown", 0, 0, 0, 99, 0, 0, 0, 0, 0, 0, 0, 22, 121
+"c:\E-Commerce Website (Full)\backend\MONGODB_SETUP.md", "Markdown", 0, 0, 0, 112, 0, 0, 0, 0, 0, 0, 0, 53, 165
+"c:\E-Commerce Website (Full)\backend\PRODUCTION_READINESS.md", "Markdown", 0, 0, 0, 112, 0, 0, 0, 0, 0, 0, 0, 34, 146
+"c:\E-Commerce Website (Full)\backend\README.md", "Markdown", 0, 0, 0, 82, 0, 0, 0, 0, 0, 0, 0, 29, 111
+"c:\E-Commerce Website (Full)\backend\SECURITY_FIXES.md", "Markdown", 0, 0, 0, 86, 0, 0, 0, 0, 0, 0, 0, 22, 108
+"c:\E-Commerce Website (Full)\backend\bootstrap.js", "JavaScript", 0, 0, 73, 0, 0, 0, 0, 0, 0, 0, 11, 19, 103
+"c:\E-Commerce Website (Full)\backend\check_status.js", "JavaScript", 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 1, 8
+"c:\E-Commerce Website (Full)\backend\config\db.js", "JavaScript", 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 3, 14
+"c:\E-Commerce Website (Full)\backend\config\env.js", "JavaScript", 0, 0, 110, 0, 0, 0, 0, 0, 0, 0, 1, 18, 129
+"c:\E-Commerce Website (Full)\backend\controllers\adminController.js", "JavaScript", 0, 0, 196, 0, 0, 0, 0, 0, 0, 0, 2, 30, 228
+"c:\E-Commerce Website (Full)\backend\controllers\analyticsController.js", "JavaScript", 0, 0, 38, 0, 0, 0, 0, 0, 0, 0, 0, 4, 42
+"c:\E-Commerce Website (Full)\backend\controllers\authController.js", "JavaScript", 0, 0, 151, 0, 0, 0, 0, 0, 0, 0, 37, 34, 222
+"c:\E-Commerce Website (Full)\backend\controllers\cartController.js", "JavaScript", 0, 0, 217, 0, 0, 0, 0, 0, 0, 0, 0, 32, 249
+"c:\E-Commerce Website (Full)\backend\controllers\contactController.js", "JavaScript", 0, 0, 67, 0, 0, 0, 0, 0, 0, 0, 2, 14, 83
+"c:\E-Commerce Website (Full)\backend\controllers\inventoryController.js", "JavaScript", 0, 0, 350, 0, 0, 0, 0, 0, 0, 0, 2, 48, 400
+"c:\E-Commerce Website (Full)\backend\controllers\newsletterController.js", "JavaScript", 0, 0, 78, 0, 0, 0, 0, 0, 0, 0, 5, 15, 98
+"c:\E-Commerce Website (Full)\backend\controllers\orderController.js", "JavaScript", 0, 0, 605, 0, 0, 0, 0, 0, 0, 0, 47, 93, 745
+"c:\E-Commerce Website (Full)\backend\controllers\paymentController.js", "JavaScript", 0, 0, 97, 0, 0, 0, 0, 0, 0, 0, 1, 10, 108
+"c:\E-Commerce Website (Full)\backend\controllers\phase1Controller.js", "JavaScript", 0, 0, 474, 0, 0, 0, 0, 0, 0, 0, 5, 93, 572
+"c:\E-Commerce Website (Full)\backend\controllers\phase2Controller.js", "JavaScript", 0, 0, 688, 0, 0, 0, 0, 0, 0, 0, 35, 131, 854
+"c:\E-Commerce Website (Full)\backend\controllers\phase3Controller.js", "JavaScript", 0, 0, 809, 0, 0, 0, 0, 0, 0, 0, 53, 155, 1017
+"c:\E-Commerce Website (Full)\backend\controllers\productController.js", "JavaScript", 0, 0, 414, 0, 0, 0, 0, 0, 0, 0, 12, 46, 472
+"c:\E-Commerce Website (Full)\backend\controllers\recommendationController.js", "JavaScript", 0, 0, 213, 0, 0, 0, 0, 0, 0, 0, 1, 32, 246
+"c:\E-Commerce Website (Full)\backend\controllers\reviewController.js", "JavaScript", 0, 0, 335, 0, 0, 0, 0, 0, 0, 0, 4, 51, 390
+"c:\E-Commerce Website (Full)\backend\controllers\searchController.js", "JavaScript", 0, 0, 203, 0, 0, 0, 0, 0, 0, 0, 2, 24, 229
+"c:\E-Commerce Website (Full)\backend\controllers\userController.js", "JavaScript", 0, 0, 148, 0, 0, 0, 0, 0, 0, 0, 0, 26, 174
+"c:\E-Commerce Website (Full)\backend\controllers\webhookController.js", "JavaScript", 0, 0, 101, 0, 0, 0, 0, 0, 0, 0, 0, 10, 111
+"c:\E-Commerce Website (Full)\backend\controllers\wishlistController.js", "JavaScript", 0, 0, 359, 0, 0, 0, 0, 0, 0, 0, 0, 52, 411
+"c:\E-Commerce Website (Full)\backend\data\admin_action_logs.json", "JSON", 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"c:\E-Commerce Website (Full)\backend\data\defaultProducts.js", "JavaScript", 0, 0, 87, 0, 0, 0, 0, 0, 0, 0, 2, 3, 92
+"c:\E-Commerce Website (Full)\backend\data\orders.json", "JSON", 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"c:\E-Commerce Website (Full)\backend\data\products.json", "JSON", 0, 80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 80
+"c:\E-Commerce Website (Full)\backend\data\users.json", "JSON", 0, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13
+"c:\E-Commerce Website (Full)\backend\docs\API_OPERATIONS.md", "Markdown", 0, 0, 0, 42, 0, 0, 0, 0, 0, 0, 0, 18, 60
+"c:\E-Commerce Website (Full)\backend\docs\RUNBOOK_ARCHITECTURE.md", "Markdown", 0, 0, 0, 32, 0, 0, 0, 0, 0, 0, 0, 19, 51
+"c:\E-Commerce Website (Full)\backend\ecosystem.config.js", "JavaScript", 0, 0, 53, 0, 0, 0, 0, 0, 0, 0, 0, 2, 55
+"c:\E-Commerce Website (Full)\backend\email-templates\order-cancelled.html", "HTML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 60, 0, 11, 71
+"c:\E-Commerce Website (Full)\backend\email-templates\order-delivered.html", "HTML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 60, 0, 10, 70
+"c:\E-Commerce Website (Full)\backend\email-templates\order-placed.html", "HTML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 71, 0, 12, 83
+"c:\E-Commerce Website (Full)\backend\email-templates\order-shipped.html", "HTML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 69, 0, 12, 81
+"c:\E-Commerce Website (Full)\backend\email-templates\payment-approved.html", "HTML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 69, 0, 12, 81
+"c:\E-Commerce Website (Full)\backend\jobs\cleanupInitiatedOrders.js", "JavaScript", 0, 0, 97, 0, 0, 0, 0, 0, 0, 0, 5, 19, 121
+"c:\E-Commerce Website (Full)\backend\lib\dbConnect.js", "JavaScript", 0, 0, 34, 0, 0, 0, 0, 0, 0, 0, 1, 10, 45
+"c:\E-Commerce Website (Full)\backend\middleware\auth.js", "JavaScript", 0, 0, 90, 0, 0, 0, 0, 0, 0, 0, 4, 17, 111
+"c:\E-Commerce Website (Full)\backend\middleware\authEnhanced.js", "JavaScript", 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2
+"c:\E-Commerce Website (Full)\backend\middleware\authMiddleware.js", "JavaScript", 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"c:\E-Commerce Website (Full)\backend\middleware\gatekeeper.js", "JavaScript", 0, 0, 102, 0, 0, 0, 0, 0, 0, 0, 13, 22, 137
+"c:\E-Commerce Website (Full)\backend\middleware\rateLimiter.js", "JavaScript", 0, 0, 28, 0, 0, 0, 0, 0, 0, 0, 0, 7, 35
+"c:\E-Commerce Website (Full)\backend\middleware\validate.js", "JavaScript", 0, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0, 4, 19
+"c:\E-Commerce Website (Full)\backend\models\AbandonedCart.js", "JavaScript", 0, 0, 389, 0, 0, 0, 0, 0, 0, 0, 11, 45, 445
+"c:\E-Commerce Website (Full)\backend\models\AdminActionLog.js", "JavaScript", 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 1, 3, 7
+"c:\E-Commerce Website (Full)\backend\models\Bundle.js", "JavaScript", 0, 0, 340, 0, 0, 0, 0, 0, 0, 0, 15, 39, 394
+"c:\E-Commerce Website (Full)\backend\models\Contact.js", "JavaScript", 0, 0, 33, 0, 0, 0, 0, 0, 0, 0, 0, 2, 35
+"c:\E-Commerce Website (Full)\backend\models\Event.js", "JavaScript", 0, 0, 17, 0, 0, 0, 0, 0, 0, 0, 0, 4, 21
+"c:\E-Commerce Website (Full)\backend\models\Inventory.js", "JavaScript", 0, 0, 406, 0, 0, 0, 0, 0, 0, 0, 4, 35, 445
+"c:\E-Commerce Website (Full)\backend\models\MessageLog.js", "JavaScript", 0, 0, 31, 0, 0, 0, 0, 0, 0, 0, 0, 3, 34
+"c:\E-Commerce Website (Full)\backend\models\Newsletter.js", "JavaScript", 0, 0, 19, 0, 0, 0, 0, 0, 0, 0, 0, 2, 21
+"c:\E-Commerce Website (Full)\backend\models\OneClickCheckout.js", "JavaScript", 0, 0, 140, 0, 0, 0, 0, 0, 0, 0, 11, 14, 165
+"c:\E-Commerce Website (Full)\backend\models\Order.js", "JavaScript", 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 2, 3, 15
+"c:\E-Commerce Website (Full)\backend\models\Phase1Models.js", "JavaScript", 0, 0, 521, 0, 0, 0, 0, 0, 0, 0, 61, 73, 655
+"c:\E-Commerce Website (Full)\backend\models\Phase2Models.js", "JavaScript", 0, 0, 696, 0, 0, 0, 0, 0, 0, 0, 79, 134, 909
+"c:\E-Commerce Website (Full)\backend\models\Phase3Models.js", "JavaScript", 0, 0, 737, 0, 0, 0, 0, 0, 0, 0, 93, 174, 1004
+"c:\E-Commerce Website (Full)\backend\models\Product.js", "JavaScript", 0, 0, 84, 0, 0, 0, 0, 0, 0, 0, 3, 3, 90
+"c:\E-Commerce Website (Full)\backend\models\Recommendation.js", "JavaScript", 0, 0, 85, 0, 0, 0, 0, 0, 0, 0, 0, 6, 91
+"c:\E-Commerce Website (Full)\backend\models\Review.js", "JavaScript", 0, 0, 400, 0, 0, 0, 0, 0, 0, 0, 10, 46, 456
+"c:\E-Commerce Website (Full)\backend\models\User.js", "JavaScript", 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 8, 8, 46
+"c:\E-Commerce Website (Full)\backend\models\Wishlist.js", "JavaScript", 0, 0, 404, 0, 0, 0, 0, 0, 0, 0, 5, 50, 459
+"c:\E-Commerce Website (Full)\backend\package-lock.json", "JSON", 0, 9611, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 9612
+"c:\E-Commerce Website (Full)\backend\package-production.json", "JSON", 0, 71, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 72
+"c:\E-Commerce Website (Full)\backend\package.json", "JSON", 0, 56, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 56
+"c:\E-Commerce Website (Full)\backend\routes\adminRoutes.js", "JavaScript", 0, 0, 20, 0, 0, 0, 0, 0, 0, 0, 5, 7, 32
+"c:\E-Commerce Website (Full)\backend\routes\analyticsRoutes.js", "JavaScript", 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 4, 10
+"c:\E-Commerce Website (Full)\backend\routes\authRoutes.js", "JavaScript", 0, 0, 13, 0, 0, 0, 0, 0, 0, 0, 2, 4, 19
+"c:\E-Commerce Website (Full)\backend\routes\cartRoutes.js", "JavaScript", 0, 0, 15, 0, 0, 0, 0, 0, 0, 0, 1, 4, 20
+"c:\E-Commerce Website (Full)\backend\routes\contactRoutes.js", "JavaScript", 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 2, 3, 14
+"c:\E-Commerce Website (Full)\backend\routes\healthRoutes.js", "JavaScript", 0, 0, 57, 0, 0, 0, 0, 0, 0, 0, 3, 8, 68
+"c:\E-Commerce Website (Full)\backend\routes\inventoryRoutes.js", "JavaScript", 0, 0, 20, 0, 0, 0, 0, 0, 0, 0, 3, 6, 29
+"c:\E-Commerce Website (Full)\backend\routes\newsletterRoutes.js", "JavaScript", 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 2, 3, 14
+"c:\E-Commerce Website (Full)\backend\routes\orderRoutes.js", "JavaScript", 0, 0, 90, 0, 0, 0, 0, 0, 0, 0, 17, 21, 128
+"c:\E-Commerce Website (Full)\backend\routes\paymentRoutes.js", "JavaScript", 0, 0, 13, 0, 0, 0, 0, 0, 0, 0, 5, 7, 25
+"c:\E-Commerce Website (Full)\backend\routes\phase1Routes.js", "JavaScript", 0, 0, 68, 0, 0, 0, 0, 0, 0, 0, 33, 23, 124
+"c:\E-Commerce Website (Full)\backend\routes\phase2Routes.js", "JavaScript", 0, 0, 62, 0, 0, 0, 0, 0, 0, 0, 28, 14, 104
+"c:\E-Commerce Website (Full)\backend\routes\phase3Routes.js", "JavaScript", 0, 0, 84, 0, 0, 0, 0, 0, 0, 0, 46, 20, 150
+"c:\E-Commerce Website (Full)\backend\routes\productRoutes.js", "JavaScript", 0, 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 4, 25
+"c:\E-Commerce Website (Full)\backend\routes\recommendationRoutes.js", "JavaScript", 0, 0, 16, 0, 0, 0, 0, 0, 0, 0, 3, 6, 25
+"c:\E-Commerce Website (Full)\backend\routes\reviewRoutes.js", "JavaScript", 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 3, 6, 27
+"c:\E-Commerce Website (Full)\backend\routes\searchRoutes.js", "JavaScript", 0, 0, 14, 0, 0, 0, 0, 0, 0, 0, 2, 5, 21
+"c:\E-Commerce Website (Full)\backend\routes\userRoutes.js", "JavaScript", 0, 0, 17, 0, 0, 0, 0, 0, 0, 0, 0, 3, 20
+"c:\E-Commerce Website (Full)\backend\routes\webhookRoutes.js", "JavaScript", 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 3, 9
+"c:\E-Commerce Website (Full)\backend\routes\wishlistRoutes.js", "JavaScript", 0, 0, 19, 0, 0, 0, 0, 0, 0, 0, 3, 6, 28
+"c:\E-Commerce Website (Full)\backend\scripts\check-env-leaks.js", "JavaScript", 0, 0, 35, 0, 0, 0, 0, 0, 0, 0, 0, 8, 43
+"c:\E-Commerce Website (Full)\backend\scripts\cleanup-port.js", "JavaScript", 0, 0, 32, 0, 0, 0, 0, 0, 0, 0, 5, 5, 42
+"c:\E-Commerce Website (Full)\backend\scripts\createAdmin.js", "JavaScript", 0, 0, 56, 0, 0, 0, 0, 0, 0, 0, 4, 12, 72
+"c:\E-Commerce Website (Full)\backend\scripts\migrateProducts.js", "JavaScript", 0, 0, 67, 0, 0, 0, 0, 0, 0, 0, 0, 11, 78
+"c:\E-Commerce Website (Full)\backend\scripts\precheck.js", "JavaScript", 0, 0, 59, 0, 0, 0, 0, 0, 0, 0, 0, 10, 69
+"c:\E-Commerce Website (Full)\backend\scripts\seedProducts.js", "JavaScript", 0, 0, 148, 0, 0, 0, 0, 0, 0, 0, 8, 13, 169
+"c:\E-Commerce Website (Full)\backend\scripts\set-admin.js", "JavaScript", 0, 0, 57, 0, 0, 0, 0, 0, 0, 0, 0, 12, 69
+"c:\E-Commerce Website (Full)\backend\scripts\test-approval-system.js", "JavaScript", 0, 0, 130, 0, 0, 0, 0, 0, 0, 0, 25, 27, 182
+"c:\E-Commerce Website (Full)\backend\scripts\test-whatsapp.js", "JavaScript", 0, 0, 31, 0, 0, 0, 0, 0, 0, 0, 0, 4, 35
+"c:\E-Commerce Website (Full)\backend\scripts\verify-system.js", "JavaScript", 0, 0, 109, 0, 0, 0, 0, 0, 0, 0, 9, 23, 141
+"c:\E-Commerce Website (Full)\backend\server.js", "JavaScript", 0, 0, 126, 0, 0, 0, 0, 0, 0, 0, 17, 16, 159
+"c:\E-Commerce Website (Full)\backend\services\cartService.js", "JavaScript", 0, 0, 320, 0, 0, 0, 0, 0, 0, 0, 5, 39, 364
+"c:\E-Commerce Website (Full)\backend\services\dbService.js", "JavaScript", 0, 0, 60, 0, 0, 0, 0, 0, 0, 0, 0, 12, 72
+"c:\E-Commerce Website (Full)\backend\services\emailService.js", "JavaScript", 0, 0, 198, 0, 0, 0, 0, 0, 0, 0, 1, 23, 222
+"c:\E-Commerce Website (Full)\backend\services\logger.js", "JavaScript", 0, 0, 25, 0, 0, 0, 0, 0, 0, 0, 0, 6, 31
+"c:\E-Commerce Website (Full)\backend\services\mailblusterService.js", "JavaScript", 0, 0, 69, 0, 0, 0, 0, 0, 0, 0, 0, 12, 81
+"c:\E-Commerce Website (Full)\backend\services\memoryDbService.js", "JavaScript", 0, 0, 45, 0, 0, 0, 0, 0, 0, 0, 0, 10, 55
+"c:\E-Commerce Website (Full)\backend\services\paymentService.js", "JavaScript", 0, 0, 329, 0, 0, 0, 0, 0, 0, 0, 54, 57, 440
+"c:\E-Commerce Website (Full)\backend\services\queueService.js", "JavaScript", 0, 0, 126, 0, 0, 0, 0, 0, 0, 0, 3, 18, 147
+"c:\E-Commerce Website (Full)\backend\services\recommendationService.js", "JavaScript", 0, 0, 230, 0, 0, 0, 0, 0, 0, 0, 12, 36, 278
+"c:\E-Commerce Website (Full)\backend\services\searchService.js", "JavaScript", 0, 0, 255, 0, 0, 0, 0, 0, 0, 0, 20, 47, 322
+"c:\E-Commerce Website (Full)\backend\services\stateService.js", "JavaScript", 0, 0, 147, 0, 0, 0, 0, 0, 0, 0, 8, 29, 184
+"c:\E-Commerce Website (Full)\backend\services\whatsappService.js", "JavaScript", 0, 0, 27, 0, 0, 0, 0, 0, 0, 0, 1, 4, 32
+"c:\E-Commerce Website (Full)\backend\test-boundaries.js", "JavaScript", 0, 0, 93, 0, 0, 0, 0, 0, 0, 0, 8, 19, 120
+"c:\E-Commerce Website (Full)\backend\test_subscription.js", "JavaScript", 0, 0, 25, 0, 0, 0, 0, 0, 0, 0, 0, 4, 29
+"c:\E-Commerce Website (Full)\backend\tests\QA-SECURITY-CHECKLIST.md", "Markdown", 0, 0, 0, 315, 0, 0, 0, 0, 0, 0, 0, 117, 432
+"c:\E-Commerce Website (Full)\backend\tests\integration\bootstrap.test.js", "JavaScript", 0, 0, 62, 0, 0, 0, 0, 0, 0, 0, 1, 10, 73
+"c:\E-Commerce Website (Full)\backend\tests\integration\payment-security.test.js", "JavaScript", 0, 0, 219, 0, 0, 0, 0, 0, 0, 0, 26, 51, 296
+"c:\E-Commerce Website (Full)\backend\tests\security\jwt.test.js", "JavaScript", 0, 0, 88, 0, 0, 0, 0, 0, 0, 0, 3, 24, 115
+"c:\E-Commerce Website (Full)\backend\tests\test_approval_flow.js", "JavaScript", 0, 0, 104, 0, 0, 0, 0, 0, 0, 0, 8, 20, 132
+"c:\E-Commerce Website (Full)\backend\tests\unit\config.test.js", "JavaScript", 0, 0, 38, 0, 0, 0, 0, 0, 0, 0, 0, 10, 48
+"c:\E-Commerce Website (Full)\backend\utils\LocalDB.js", "JavaScript", 0, 0, 192, 0, 0, 0, 0, 0, 0, 0, 19, 36, 247
+"c:\E-Commerce Website (Full)\backend\utils\inventoryService.js", "JavaScript", 0, 0, 133, 0, 0, 0, 0, 0, 0, 0, 3, 23, 159
+"c:\E-Commerce Website (Full)\backend\utils\orderHashService.js", "JavaScript", 0, 0, 40, 0, 0, 0, 0, 0, 0, 0, 3, 8, 51
+"c:\E-Commerce Website (Full)\backend\utils\phoneFormatter.js", "JavaScript", 0, 0, 56, 0, 0, 0, 0, 0, 0, 0, 10, 17, 83
+"c:\E-Commerce Website (Full)\backend\utils\tokenService.js", "JavaScript", 0, 0, 74, 0, 0, 0, 0, 0, 0, 0, 2, 11, 87
+"c:\E-Commerce Website (Full)\backend\utils\whatsappService.js", "JavaScript", 0, 0, 142, 0, 0, 0, 0, 0, 0, 0, 0, 28, 170
+"c:\E-Commerce Website (Full)\backend\validators\orderValidators.js", "JavaScript", 0, 0, 36, 0, 0, 0, 0, 0, 0, 0, 0, 8, 44
+"c:\E-Commerce Website (Full)\backend\validators\productValidators.js", "JavaScript", 0, 0, 28, 0, 0, 0, 0, 0, 0, 0, 0, 8, 36
+"c:\E-Commerce Website (Full)\backend\validators\userValidator.js", "JavaScript", 0, 0, 23, 0, 0, 0, 0, 0, 0, 0, 0, 5, 28
+"c:\E-Commerce Website (Full)\backend\validators\userValidators.js", "JavaScript", 0, 0, 41, 0, 0, 0, 0, 0, 0, 0, 0, 8, 49
+"c:\E-Commerce Website (Full)\backend\verify-mongodb.js", "JavaScript", 0, 0, 96, 0, 0, 0, 0, 0, 0, 0, 3, 23, 122
+"c:\E-Commerce Website (Full)\backend\verify-order-fix.js", "JavaScript", 0, 0, 42, 0, 0, 0, 0, 0, 0, 0, 1, 9, 52
+"c:\E-Commerce Website (Full)\backend\verify-serverless.js", "JavaScript", 0, 0, 69, 0, 0, 0, 0, 0, 0, 0, 10, 19, 98
+"c:\E-Commerce Website (Full)\backend\workers\notificationWorker.js", "JavaScript", 0, 0, 157, 0, 0, 0, 0, 0, 0, 0, 16, 37, 210
+"c:\E-Commerce Website (Full)\frontend\index.html", "HTML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 104, 0, 17, 121
+"c:\E-Commerce Website (Full)\frontend\package-lock.json", "JSON", 0, 4068, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4069
+"c:\E-Commerce Website (Full)\frontend\package.json", "JSON", 0, 33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 34
+"c:\E-Commerce Website (Full)\frontend\postcss.config.js", "JavaScript", 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 1, 7
+"c:\E-Commerce Website (Full)\frontend\public\manifest.json", "JSON", 0, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 26
+"c:\E-Commerce Website (Full)\frontend\src\App.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 81, 0, 0, 4, 5, 90
+"c:\E-Commerce Website (Full)\frontend\src\api\client.ts", "TypeScript", 0, 0, 0, 0, 89, 0, 0, 0, 0, 0, 19, 16, 124
+"c:\E-Commerce Website (Full)\frontend\src\components\AdPlacement.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 266, 0, 0, 48, 314
+"c:\E-Commerce Website (Full)\frontend\src\components\AdPlacementZone.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 123, 0, 0, 5, 10, 138
+"c:\E-Commerce Website (Full)\frontend\src\components\AdminLayout.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 160, 0, 0, 22, 182
+"c:\E-Commerce Website (Full)\frontend\src\components\AdminLayout.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 72, 0, 0, 8, 9, 89
+"c:\E-Commerce Website (Full)\frontend\src\components\Carousel.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 113, 0, 0, 7, 17, 137
+"c:\E-Commerce Website (Full)\frontend\src\components\ErrorBoundary.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 71, 0, 0, 0, 9, 80
+"c:\E-Commerce Website (Full)\frontend\src\components\Footer.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 109, 0, 0, 5, 12, 126
+"c:\E-Commerce Website (Full)\frontend\src\components\Layout.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 331, 0, 0, 51, 382
+"c:\E-Commerce Website (Full)\frontend\src\components\Layout.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 130, 0, 0, 15, 23, 168
+"c:\E-Commerce Website (Full)\frontend\src\components\LoadingWrapper.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 43, 0, 0, 5, 5, 53
+"c:\E-Commerce Website (Full)\frontend\src\components\OmnoraCarousel.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 178, 0, 0, 24, 202
+"c:\E-Commerce Website (Full)\frontend\src\components\OmnoraLayout.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 560, 0, 0, 90, 650
+"c:\E-Commerce Website (Full)\frontend\src\components\OmnoraPosterGallery.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 205, 0, 0, 30, 235
+"c:\E-Commerce Website (Full)\frontend\src\components\Payment.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 119, 0, 0, 21, 140
+"c:\E-Commerce Website (Full)\frontend\src\components\PosterGallery.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 72, 0, 0, 6, 10, 88
+"c:\E-Commerce Website (Full)\frontend\src\components\ProtectedRoute.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 31, 0, 0, 0, 7, 38
+"c:\E-Commerce Website (Full)\frontend\src\components\RequireAdmin.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 16, 0, 0, 1, 6, 23
+"c:\E-Commerce Website (Full)\frontend\src\components\Skeleton.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 103, 0, 0, 20, 123
+"c:\E-Commerce Website (Full)\frontend\src\components\Skeleton.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 37, 0, 0, 11, 11, 59
+"c:\E-Commerce Website (Full)\frontend\src\components\SkeletonProductCard.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 46, 0, 0, 10, 7, 63
+"c:\E-Commerce Website (Full)\frontend\src\components\SmartImage.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 104, 0, 0, 21, 14, 139
+"c:\E-Commerce Website (Full)\frontend\src\components\StripePayment.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 82, 0, 0, 2, 13, 97
+"c:\E-Commerce Website (Full)\frontend\src\components\WhatsAppConfirmationDialog.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 123, 0, 0, 20, 143
+"c:\E-Commerce Website (Full)\frontend\src\components\WhatsAppConfirmationDialog.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 50, 0, 0, 0, 8, 58
+"c:\E-Commerce Website (Full)\frontend\src\components\home\HowItWorks.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 31, 0, 0, 0, 2, 33
+"c:\E-Commerce Website (Full)\frontend\src\components\home\Newsletter.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 49, 0, 0, 0, 6, 55
+"c:\E-Commerce Website (Full)\frontend\src\components\home\TechStack.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 280, 0, 0, 43, 323
+"c:\E-Commerce Website (Full)\frontend\src\components\home\Testimonials.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 43, 0, 0, 3, 4, 50
+"c:\E-Commerce Website (Full)\frontend\src\components\home\TrustSection.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 32, 0, 0, 0, 2, 34
+"c:\E-Commerce Website (Full)\frontend\src\components\home\WhyUs.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 28, 0, 0, 0, 3, 31
+"c:\E-Commerce Website (Full)\frontend\src\components\home\tech.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 154, 0, 0, 5, 18, 177
+"c:\E-Commerce Website (Full)\frontend\src\config\adConfig.json", "JSON", 0, 109, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 111
+"c:\E-Commerce Website (Full)\frontend\src\config\firebase.ts", "TypeScript", 0, 0, 0, 0, 60, 0, 0, 0, 0, 0, 4, 5, 69
+"c:\E-Commerce Website (Full)\frontend\src\constants.ts", "TypeScript", 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 2
+"c:\E-Commerce Website (Full)\frontend\src\context\AuthContext.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 118, 0, 0, 7, 16, 141
+"c:\E-Commerce Website (Full)\frontend\src\context\ToastContext.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 91, 0, 0, 0, 11, 102
+"c:\E-Commerce Website (Full)\frontend\src\data\fallbackProducts.ts", "TypeScript", 0, 0, 0, 0, 62, 0, 0, 0, 0, 0, 1, 1, 64
+"c:\E-Commerce Website (Full)\frontend\src\hooks\useImageLoader.ts", "TypeScript", 0, 0, 0, 0, 73, 0, 0, 0, 0, 0, 27, 23, 123
+"c:\E-Commerce Website (Full)\frontend\src\hooks\useMinimumLoadingTime.ts", "TypeScript", 0, 0, 0, 0, 31, 0, 0, 0, 0, 0, 0, 6, 37
+"c:\E-Commerce Website (Full)\frontend\src\hooks\useScrollReveal.ts", "TypeScript", 0, 0, 0, 0, 26, 0, 0, 0, 0, 0, 1, 8, 35
+"c:\E-Commerce Website (Full)\frontend\src\index.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 238, 0, 0, 37, 275
+"c:\E-Commerce Website (Full)\frontend\src\lib\loadingManager.ts", "TypeScript", 0, 0, 0, 0, 135, 0, 0, 0, 0, 0, 20, 27, 182
+"c:\E-Commerce Website (Full)\frontend\src\main.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 24, 0, 0, 1, 3, 28
+"c:\E-Commerce Website (Full)\frontend\src\pages\About.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 458, 0, 0, 69, 527
+"c:\E-Commerce Website (Full)\frontend\src\pages\About.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 130, 0, 0, 17, 19, 166
+"c:\E-Commerce Website (Full)\frontend\src\pages\AdminAnalytics.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 44, 0, 0, 0, 5, 49
+"c:\E-Commerce Website (Full)\frontend\src\pages\AdminApprove.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 56, 0, 0, 2, 10, 68
+"c:\E-Commerce Website (Full)\frontend\src\pages\AdminDashboard.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 195, 0, 0, 37, 232
+"c:\E-Commerce Website (Full)\frontend\src\pages\AdminDashboard.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 135, 0, 0, 5, 13, 153
+"c:\E-Commerce Website (Full)\frontend\src\pages\AdminOrders.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 155, 0, 0, 34, 189
+"c:\E-Commerce Website (Full)\frontend\src\pages\AdminOrders.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 136, 0, 0, 2, 13, 151
+"c:\E-Commerce Website (Full)\frontend\src\pages\AdminProducts.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 231, 0, 0, 34, 265
+"c:\E-Commerce Website (Full)\frontend\src\pages\AdminProducts.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 208, 0, 0, 0, 19, 227
+"c:\E-Commerce Website (Full)\frontend\src\pages\AdminUsers.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 1, 3, 14
+"c:\E-Commerce Website (Full)\frontend\src\pages\Cart.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 570, 0, 0, 84, 654
+"c:\E-Commerce Website (Full)\frontend\src\pages\Cart.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 189, 0, 0, 0, 14, 203
+"c:\E-Commerce Website (Full)\frontend\src\pages\Checkout.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 656, 0, 0, 104, 760
+"c:\E-Commerce Website (Full)\frontend\src\pages\Checkout.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 432, 0, 0, 8, 34, 474
+"c:\E-Commerce Website (Full)\frontend\src\pages\Collection.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 554, 0, 0, 89, 643
+"c:\E-Commerce Website (Full)\frontend\src\pages\Contact.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 136, 0, 0, 22, 158
+"c:\E-Commerce Website (Full)\frontend\src\pages\FAQ.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 148, 0, 0, 25, 173
+"c:\E-Commerce Website (Full)\frontend\src\pages\Home.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 259, 0, 0, 18, 31, 308
+"c:\E-Commerce Website (Full)\frontend\src\pages\HomeWithAds.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 12, 0, 0, 4, 6, 22
+"c:\E-Commerce Website (Full)\frontend\src\pages\Login.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 245, 0, 0, 39, 284
+"c:\E-Commerce Website (Full)\frontend\src\pages\Login.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 213, 0, 0, 26, 201, 440
+"c:\E-Commerce Website (Full)\frontend\src\pages\NotFound.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 37, 0, 0, 0, 3, 40
+"c:\E-Commerce Website (Full)\frontend\src\pages\OmnoraCollection.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 554, 0, 0, 89, 643
+"c:\E-Commerce Website (Full)\frontend\src\pages\OmnoraCollection.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 337, 0, 0, 26, 48, 411
+"c:\E-Commerce Website (Full)\frontend\src\pages\OmnoraContact.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 282, 0, 0, 39, 321
+"c:\E-Commerce Website (Full)\frontend\src\pages\OmnoraContact.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 183, 0, 0, 12, 30, 225
+"c:\E-Commerce Website (Full)\frontend\src\pages\OmnoraFAQ.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 266, 0, 0, 38, 304
+"c:\E-Commerce Website (Full)\frontend\src\pages\OmnoraFAQ.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 119, 0, 0, 12, 19, 150
+"c:\E-Commerce Website (Full)\frontend\src\pages\OmnoraFinal.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 702, 0, 0, 94, 796
+"c:\E-Commerce Website (Full)\frontend\src\pages\OrderConfirmation.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 486, 0, 0, 8, 32, 526
+"c:\E-Commerce Website (Full)\frontend\src\pages\OrderDetail.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 205, 0, 0, 36, 241
+"c:\E-Commerce Website (Full)\frontend\src\pages\OrderDetail.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 170, 0, 0, 6, 17, 193
+"c:\E-Commerce Website (Full)\frontend\src\pages\PaymentSuccess.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 96, 0, 0, 18, 114
+"c:\E-Commerce Website (Full)\frontend\src\pages\PaymentSuccess.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 48, 0, 0, 1, 8, 57
+"c:\E-Commerce Website (Full)\frontend\src\pages\Privacy.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 51, 0, 0, 0, 5, 56
+"c:\E-Commerce Website (Full)\frontend\src\pages\Product.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 208, 0, 0, 31, 239
+"c:\E-Commerce Website (Full)\frontend\src\pages\Product.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 224, 0, 0, 17, 44, 285
+"c:\E-Commerce Website (Full)\frontend\src\pages\Profile.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 159, 0, 0, 31, 190
+"c:\E-Commerce Website (Full)\frontend\src\pages\Profile.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 235, 0, 0, 0, 14, 249
+"c:\E-Commerce Website (Full)\frontend\src\pages\Register.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 9, 0, 0, 1, 4, 14
+"c:\E-Commerce Website (Full)\frontend\src\pages\Terms.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 54, 0, 0, 0, 6, 60
+"c:\E-Commerce Website (Full)\frontend\src\pages\Wishlist.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 125, 0, 0, 21, 146
+"c:\E-Commerce Website (Full)\frontend\src\pages\Wishlist.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 120, 0, 0, 2, 12, 134
+"c:\E-Commerce Website (Full)\frontend\src\pages\index.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 2, 7
+"c:\E-Commerce Website (Full)\frontend\src\pages\service.js", "JavaScript", 0, 0, 154, 0, 0, 0, 0, 0, 0, 0, 5, 14, 173
+"c:\E-Commerce Website (Full)\frontend\src\styles\Animations.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 82, 0, 0, 11, 93
+"c:\E-Commerce Website (Full)\frontend\src\styles\theme.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 181, 0, 0, 31, 212
+"c:\E-Commerce Website (Full)\frontend\src\utils\whatsappOrderService.ts", "TypeScript", 0, 0, 0, 0, 139, 0, 0, 0, 0, 0, 0, 25, 164
+"c:\E-Commerce Website (Full)\frontend\src\vite-env.d.ts", "TypeScript", 0, 0, 0, 0, 24, 0, 0, 0, 0, 0, 1, 7, 32
+"c:\E-Commerce Website (Full)\frontend\tailwind.config.js", "JavaScript", 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 1, 12
+"c:\E-Commerce Website (Full)\frontend\tsconfig.json", "JSON with Comments", 0, 0, 0, 0, 0, 17, 0, 0, 0, 0, 0, 2, 19
+"c:\E-Commerce Website (Full)\frontend\vercel.json", "JSON", 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12
+"c:\E-Commerce Website (Full)\frontend\vite.config.ts", "TypeScript", 0, 0, 0, 0, 44, 0, 0, 0, 0, 0, 2, 2, 48
+"c:\E-Commerce Website (Full)\package-lock.json", "JSON", 0, 466, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 467
+"c:\E-Commerce Website (Full)\package.json", "JSON", 0, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20
+"c:\E-Commerce Website (Full)\scripts\check-environment.ps1", "PowerShell", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+"c:\E-Commerce Website (Full)\scripts\start-backend.ps1", "PowerShell", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+"c:\E-Commerce Website (Full)\sitemap.xml", "XML", 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 20
+"c:\E-Commerce Website (Full)\start-dev.ps1", "PowerShell", 0, 0, 0, 0, 0, 0, 42, 0, 0, 0, 8, 12, 62
+"c:\E-Commerce Website (Full)\test_api.js", "JavaScript", 0, 0, 32, 0, 0, 0, 0, 0, 0, 0, 0, 4, 36
+"c:\E-Commerce Website (Full)\vercel.json", "JSON", 0, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 49
+"Total", "-", 18, 14616, 15827, 1126, 684, 17, 42, 5647, 8776, 433, 1366, 5531, 54083

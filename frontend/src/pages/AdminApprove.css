@@ -1,0 +1,166 @@
+/* --- Layout --- */
+.approval-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #0f172a; /* Slate 900 - Deep Background */
+    background-image: 
+        radial-gradient(circle at 50% 0%, #1e293b 0%, transparent 70%);
+    padding: 1.5rem;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #f8fafc;
+}
+
+/* --- Card Design --- */
+.approval-card {
+    background: #1e293b; /* Slate 800 */
+    width: 100%;
+    max-width: 480px;
+    padding: 3rem 2rem;
+    border-radius: 16px;
+    border: 1px solid #334155;
+    box-shadow: 
+        0 20px 25px -5px rgba(0, 0, 0, 0.5), 
+        0 8px 10px -6px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Top border highlight line */
+.approval-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+}
+
+/* --- Status Content --- */
+.status-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.status-content h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0.5rem 0 0;
+    color: #fff;
+}
+
+.status-content p {
+    color: #94a3b8;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+/* --- Icons & Glows --- */
+.icon-lg { width: 48px; height: 48px; }
+
+.icon-glow {
+    padding: 1.5rem;
+    border-radius: 50%;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-glow.green {
+    background: rgba(16, 185, 129, 0.1);
+    color: #34d399;
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.2); /* Ethereal Green Bloom */
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.icon-glow.red {
+    background: rgba(239, 68, 68, 0.1);
+    color: #f87171;
+    box-shadow: 0 0 30px rgba(239, 68, 68, 0.2); /* Crimson Bloom */
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+/* --- Specific Elements --- */
+.meta-info {
+    background: #0f172a;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    color: #cbd5e1;
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.highlight { color: #facc15; }
+.error-msg { color: #fca5a5; font-weight: 500; }
+
+/* --- Buttons --- */
+.btn-primary, .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background: #3b82f6;
+    color: white;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn-primary:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 1px solid #475569;
+    color: #cbd5e1;
+}
+
+.btn-secondary:hover {
+    background: #334155;
+    color: white;
+}
+
+/* --- Animations --- */
+.spinner {
+    color: #3b82f6;
+    animation: spin 1.5s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.approval-footer {
+    margin-top: 2rem;
+    color: #475569;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}

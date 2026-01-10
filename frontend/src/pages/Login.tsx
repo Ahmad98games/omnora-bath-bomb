@@ -15,406 +15,423 @@ import './Login.css';
 
 const Login: React.FC = () => {
 
-const location = useLocation();
+    const location = useLocation();
 
-const navigate = useNavigate();
+    const navigate = useNavigate();
 
-const { login, loginWithGoogle, register, resetPassword, isAuthenticated, user, loading } = useAuth();
+    const { login, loginWithGoogle, register, resetPassword, isAuthenticated, user, loading } = useAuth();
 
 
 
-// Determine if we are in sign‑up mode based on navigation state or default to sign‑in
+    // Determine if we are in sign‑up mode based on navigation state or default to sign‑in
 
-const initialSignUp = (location.state as any)?.isSignUp ?? false;
+    const initialSignUp = (location.state as any)?.isSignUp ?? false;
 
-const [isSignUp, setIsSignUp] = useState<boolean>(initialSignUp);
+    const [isSignUp, setIsSignUp] = useState<boolean>(initialSignUp);
 
 
 
-const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState({
 
-name: '',
+        name: '',
 
-email: '',
+        email: '',
 
-password: ''
+        password: ''
 
-});
+    });
 
 
 
-const [forgotEmail, setForgotEmail] = useState('');
+    const [forgotEmail, setForgotEmail] = useState('');
 
-const [showForgot, setShowForgot] = useState(false);
+    const [showForgot, setShowForgot] = useState(false);
 
-const [error, setError] = useState<string>('');
+    const [error, setError] = useState<string>('');
 
-const [loadingState, setLoadingState] = useState(false);
+    const [loadingState, setLoadingState] = useState(false);
 
 
 
-// Redirect authenticated users to profile or home
+    // Redirect authenticated users to profile or home
+    // Redirect logic is handled in handleSubmit to prevent infinite loops / wrong redirects
+    /*
+        useEffect(() => {
+            if (isAuthenticated && user) {
+                navigate('/profile');
+            }
+        }, [isAuthenticated, user, navigate]);
+    */
 
-useEffect(() => {
 
-if (isAuthenticated && user) {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
-navigate('/profile');
+        const { name, value } = e.target;
 
-}
+        setFormData(prev => ({ ...prev, [name]: value }));
 
-}, [isAuthenticated, user, navigate]);
+    };
 
 
 
-const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSubmit = async (e: React.FormEvent) => {
 
-const { name, value } = e.target;
+        e.preventDefault();
 
-setFormData(prev => ({ ...prev, [name]: value }));
+        setError('');
 
-};
+        setError('');
+        setLoadingState(true);
+        try {
+            if (isSignUp) {
+                // Register flow
+                await register(formData.name, formData.email, formData.password);
+                // After registration, AuthContext will set user
+                navigate('/profile');
+            } else {
+                // Login flow
+                await login(formData.email, formData.password);
+                // Check role from response or decoded token?
+                // AuthContext.login sets user state, but we might rely on fetching user profile or just assume role from context on next render?
+                // Better: Ask AuthContext to return the user or check it immediately if updated?
+                // Actually, since await login() resolves after setting user, we can check a trusted source.
+                // However, state updates in React are async.
+                // Safe bet: Fetch user directly or trust the flow.
+                // BUT: To be 100% sure without waiting for state update (which might not happen in this tick),
+                // let's rely on the fact that our local login API returns { user: {...} }.
+                // We can modify AuthContext.login to return the user object.
+                // OR: We can use a small delay or check localStorage (decoded).
+                // Simplest fix for now:
+                const token = localStorage.getItem('token');
+                if (token) {
+                    // Quick role check via API or decoding would be best, but for now let's use a "reload" strategy or assume user is set?
+                    // No, login() awaits. Let's assume AuthContext.user is NOT updated in this scope yet.
+                    // The previous useEffect handled this but caused loops.
+                    // Let's modify AuthContext to return user on login.
+                    // Since I can't modify AuthContext right this second in this tool call, I'll rely on a manual check.
+                    const { data } = await import('../api/client').then(m => m.default.get('/auth/me'));
+                    if (data?.user?.role === 'admin') {
+                        navigate('/admin/dashboard');
+                    } else {
+                        navigate('/profile');
+                    }
+                }
+            }
+        } catch (err: any) {
+            // Improved error handling
+            let message = 'Authentication failed';
+            if (err.message) message = err.message;
+            if (typeof err === 'string') message = err;
+            setError(message);
+        } finally {
+            setLoadingState(false);
+        }
+    };
 
+    const handleGoogleSignIn = async () => {
 
+        setError('Google Sign-In is not supported in Local Mode');
+        return;
 
-const handleSubmit = async (e: React.FormEvent) => {
+        /* 
+        // Disabled for Local Mode
+        setError('');
 
-e.preventDefault();
+        setLoadingState(true);
 
-setError('');
+        try {
 
-setLoadingState(true);
+            await loginWithGoogle();
 
-try {
+        } catch (err: any) {
 
-if (isSignUp) {
+            setError(err.message || 'Google sign‑in failed');
 
-// Register flow
+        } finally {
 
-await register(formData.name, formData.email, formData.password);
+            setLoadingState(false);
 
-// After registration, AuthContext will set user and redirect
+        }
+        */
 
-} else {
+    };
 
-// Login flow
 
-await login(formData.email, formData.password);
 
-}
+    const handleForgotPassword = async () => {
 
-} catch (err: any) {
+        if (!forgotEmail) {
 
-setError(err.message || 'Authentication failed');
+            setError('Please enter your email address');
 
-} finally {
+            return;
 
-setLoadingState(false);
+        }
 
-}
+        setError('');
 
-};
+        setLoadingState(true);
 
+        try {
 
+            await resetPassword(forgotEmail);
 
-const handleGoogleSignIn = async () => {
+            alert('Password reset email sent');
 
-setError('');
+            setShowForgot(false);
 
-setLoadingState(true);
+        } catch (err: any) {
 
-try {
+            setError(err.message || 'Failed to send reset email');
 
-await loginWithGoogle();
+        } finally {
 
-} catch (err: any) {
+            setLoadingState(false);
 
-setError(err.message || 'Google sign‑in failed');
+        }
 
-} finally {
+    };
 
-setLoadingState(false);
 
-}
 
-};
+    const toggleMode = () => {
 
+        setIsSignUp(prev => !prev);
 
+        setError('');
 
-const handleForgotPassword = async () => {
+    };
 
-if (!forgotEmail) {
 
-setError('Please enter your email address');
 
-return;
+    return (
 
-}
+        <div className="login-page">
 
-setError('');
+            <canvas id="bgCanvas" className="bg-canvas"></canvas>
 
-setLoadingState(true);
+            <div className="login-container animate-fade-in">
 
-try {
+                <div className="login-box">
 
-await resetPassword(forgotEmail);
+                    <div className="login-header">
 
-alert('Password reset email sent');
+                        <h1 className="login-title">{isSignUp ? 'Create an account' : 'Welcome back'}</h1>
 
-setShowForgot(false);
+                        <p className="login-subtitle">
 
-} catch (err: any) {
+                            {isSignUp ? 'Sign up to get started' : 'Sign in to your account to continue'}
 
-setError(err.message || 'Failed to send reset email');
+                        </p>
 
-} finally {
+                    </div>
 
-setLoadingState(false);
+                    {error && <div id="errorMessage" style={{ display: 'block' }}>{error}</div>}
 
-}
+                    {loadingState && (
 
-};
+                        <div className="loading-spinner">
 
+                            <span>Loading...</span>
 
+                        </div>
 
-const toggleMode = () => {
+                    )}
 
-setIsSignUp(prev => !prev);
+                    <form className="login-form" onSubmit={handleSubmit}>
 
-setError('');
+                        {isSignUp && (
 
-};
+                            <div className="form-group" id="nameField">
 
+                                <label htmlFor="name">Full Name</label>
 
+                                <input
 
-return (
+                                    type="text"
 
-<div className="login-page">
+                                    id="name"
 
-<canvas id="bgCanvas" className="bg-canvas"></canvas>
+                                    name="name"
 
-<div className="login-container animate-fade-in">
+                                    value={formData.name}
 
-<div className="login-box">
+                                    onChange={handleChange}
+                                    className="form-input"
+                                    placeholder="Ahmad Mahboob" required />
+                            </div>)}
 
-<div className="login-header">
+                        <div className="form-group">
 
-<h1 className="login-title">{isSignUp ? 'Create an account' : 'Welcome back'}</h1>
+                            <label htmlFor="email">Email Address</label>
 
-<p className="login-subtitle">
+                            <input
 
-{isSignUp ? 'Sign up to get started' : 'Sign in to your account to continue'}
+                                type="email"
 
-</p>
+                                id="email"
 
-</div>
+                                name="email"
 
-{error && <div id="errorMessage" style={{ display: 'block' }}>{error}</div>}
+                                value={formData.email}
 
-{loadingState && (
+                                onChange={handleChange}
 
-<div className="loading-spinner">
+                                className="form-input"
 
-<span>Loading...</span>
+                                placeholder="you@example.com"
 
-</div>
+                                required
 
-)}
+                            />
 
-<form className="login-form" onSubmit={handleSubmit}>
+                        </div>
 
-{isSignUp && (
+                        <div className="form-group">
 
-<div className="form-group" id="nameField">
+                            <label htmlFor="password">Password</label>
 
-<label htmlFor="name">Full Name</label>
+                            <input
 
-<input
+                                type="password"
 
-type="text"
+                                id="password"
 
-id="name"
+                                name="password"
 
-name="name"
+                                value={formData.password}
 
-value={formData.name}
+                                onChange={handleChange}
 
-onChange={handleChange}
-className="form-input"
-placeholder="Ahmad Mahboob"required/>
-</div>)}
+                                className="form-input"
 
-<div className="form-group">
+                                placeholder="••••••••"
 
-<label htmlFor="email">Email Address</label>
+                                required
 
-<input
+                            />
 
-type="email"
+                        </div>
 
-id="email"
+                        <div className="form-options">
 
-name="email"
+                            <label className="checkbox-label">
 
-value={formData.email}
+                                <input type="checkbox" /> Remember me
 
-onChange={handleChange}
+                            </label>
 
-className="form-input"
+                            {!isSignUp && (
 
-placeholder="you@example.com"
+                                <a href="#" className="forgot-link" onClick={e => { e.preventDefault(); setShowForgot(true); }}>
 
-required
+                                    Forgot password?
 
-/>
+                                </a>
 
-</div>
+                            )}
 
-<div className="form-group">
+                        </div>
 
-<label htmlFor="password">Password</label>
+                        <button type="submit" className="login-button" disabled={loadingState}>
 
-<input
+                            {loadingState ? (isSignUp ? 'Creating Account...' : 'Signing In...') : isSignUp ? 'Create Account' : 'Sign In'}
 
-type="password"
+                        </button>
 
-id="password"
+                    </form>
 
-name="password"
+                    {showForgot && (
 
-value={formData.password}
+                        <div className="forgot-section" style={{ marginTop: '1rem' }}>
 
-onChange={handleChange}
+                            <input
 
-className="form-input"
+                                type="email"
 
-placeholder="••••••••"
+                                placeholder="Enter email for reset"
 
-required
+                                value={forgotEmail}
 
-/>
+                                onChange={e => setForgotEmail(e.target.value)}
 
-</div>
+                                className="form-input"
 
-<div className="form-options">
+                            />
 
-<label className="checkbox-label">
+                            <button className="login-button" onClick={handleForgotPassword} disabled={loadingState}>
 
-<input type="checkbox" /> Remember me
+                                Send Reset Link
 
-</label>
+                            </button>
 
-{!isSignUp && (
+                            <button className="login-button" onClick={() => setShowForgot(false)} disabled={loadingState} style={{ marginTop: '0.5rem' }}>
 
-<a href="#" className="forgot-link" onClick={e => { e.preventDefault(); setShowForgot(true); }}>
+                                Cancel
 
-Forgot password?
+                            </button>
 
-</a>
+                        </div>
 
-)}
+                    )}
 
-</div>
+                    <div className="divider"><span>OR</span></div>
 
-<button type="submit" className="login-button" disabled={loadingState}>
+                    <div className="social-login">
 
-{loadingState ? (isSignUp ? 'Creating Account...' : 'Signing In...') : isSignUp ? 'Create Account' : 'Sign In'}
+                        <button className="social-button google" onClick={handleGoogleSignIn} disabled={loadingState}>
 
-</button>
+                            {/* Simple Google SVG */}
 
-</form>
+                            <svg width="20" height="20" viewBox="0 0 533.5 544.3" xmlns="http://www.w3.org/2000/svg"><path d="M533.5 278.4c0-17.7-1.5-35-4.5-51.8H272v98.1h146.9c-6.4 34.5-25.5 63.7-54.5 83.2v68.9h88.1c51.5-47.5 81.5-117.5 81.5-198.4" fill="#4285F4" /><path d="M272 544.3c73.5 0 135.2-24.3 180.3-66.2l-88.1-68.9c-24.5 16.5-55.9 26.2-92.2 26.2-70.9 0-131-47.9-152.5-112.5h-90.9v70.9c45.1 89.5 138.7 150.5 243.4 150.5" fill="#34A853" /><path d="M119.5 322.9c-10.5-31.5-10.5-65.5 0-97v-70.9h-90.9c-38.9 77.2-38.9 168.6 0 245.8l90.9-70.9" fill="#FBBC05" /><path d="M272 107.7c39.9-.6 78.5 15.2 107.5 43.6l80.5-80.5C417.5 22.5 345.9-1.9 272 0 167.3 0 73.7 61 28.6 150.5l90.9 70.9C141 155.6 201.1 107.7 272 107.7" fill="#EA4335" /></svg>
 
-{showForgot && (
+                            Sign in with Google
 
-<div className="forgot-section" style={{ marginTop: '1rem' }}>
+                        </button>
 
-<input
+                    </div>
 
-type="email"
+                    <div className="signup-prompt">
 
-placeholder="Enter email for reset"
+                        {isSignUp ? (
 
-value={forgotEmail}
+                            <>
 
-onChange={e => setForgotEmail(e.target.value)}
+                                Already have an account?{' '}
 
-className="form-input"
+                                <a href="#" className="signup-link" onClick={e => { e.preventDefault(); toggleMode(); }}>
 
-/>
+                                    Sign In
 
-<button className="login-button" onClick={handleForgotPassword} disabled={loadingState}>
+                                </a>
 
-Send Reset Link
+                            </>
 
-</button>
+                        ) : (
 
-<button className="login-button" onClick={() => setShowForgot(false)} disabled={loadingState} style={{ marginTop: '0.5rem' }}>
+                            <>
 
-Cancel
+                                Don't have an account?{' '}
 
-</button>
+                                <a href="#" className="signup-link" onClick={e => { e.preventDefault(); toggleMode(); }}>
 
-</div>
+                                    Sign Up
 
-)}
+                                </a>
 
-<div className="divider"><span>OR</span></div>
+                            </>
 
-<div className="social-login">
+                        )}
 
-<button className="social-button google" onClick={handleGoogleSignIn} disabled={loadingState}>
+                    </div>
 
-{/* Simple Google SVG */}
+                </div>
 
-<svg width="20" height="20" viewBox="0 0 533.5 544.3" xmlns="http://www.w3.org/2000/svg"><path d="M533.5 278.4c0-17.7-1.5-35-4.5-51.8H272v98.1h146.9c-6.4 34.5-25.5 63.7-54.5 83.2v68.9h88.1c51.5-47.5 81.5-117.5 81.5-198.4" fill="#4285F4" /><path d="M272 544.3c73.5 0 135.2-24.3 180.3-66.2l-88.1-68.9c-24.5 16.5-55.9 26.2-92.2 26.2-70.9 0-131-47.9-152.5-112.5h-90.9v70.9c45.1 89.5 138.7 150.5 243.4 150.5" fill="#34A853" /><path d="M119.5 322.9c-10.5-31.5-10.5-65.5 0-97v-70.9h-90.9c-38.9 77.2-38.9 168.6 0 245.8l90.9-70.9" fill="#FBBC05" /><path d="M272 107.7c39.9-.6 78.5 15.2 107.5 43.6l80.5-80.5C417.5 22.5 345.9-1.9 272 0 167.3 0 73.7 61 28.6 150.5l90.9 70.9C141 155.6 201.1 107.7 272 107.7" fill="#EA4335" /></svg>
+            </div>
 
-Sign in with Google
+        </div>
 
-</button>
-
-</div>
-
-<div className="signup-prompt">
-
-{isSignUp ? (
-
-<>
-
-Already have an account?{' '}
-
-<a href="#" className="signup-link" onClick={e => { e.preventDefault(); toggleMode(); }}>
-
-Sign In
-
-</a>
-
-</>
-
-) : (
-
-<>
-
-Don't have an account?{' '}
-
-<a href="#" className="signup-link" onClick={e => { e.preventDefault(); toggleMode(); }}>
-
-Sign Up
-
-</a>
-
-</>
-
-)}
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-);
+    );
 
 };
 

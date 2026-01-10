@@ -171,3 +171,54 @@ exports.updateUserProfile = async (req, res) => {
     return res.status(500).json({ error: 'Unable to update profile.' });
   }
 };
+
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find().select('-password -__v');
+    res.json({
+      success: true,
+      users
+    });
+  } catch (error) {
+    logger.error('Error fetching all users', { error: error.message });
+    res.status(500).json({ error: 'Failed to fetch users' });
+  }
+};
+
+exports.deleteUser = async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json({ success: true, message: 'User deleted successfully' });
+  } catch (error) {
+    logger.error('Error deleting user', { error: error.message });
+    res.status(500).json({ error: 'Failed to delete user' });
+  }
+};
+
+exports.updateUserRole = async (req, res) => {
+  try {
+    const { isAdmin } = req.body;
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Role toggle
+    user.role = isAdmin ? 'admin' : 'customer';
+    await user.save({ validateBeforeSave: false });
+
+    res.json({
+      success: true,
+      message: `User role updated the to ${user.role}`,
+      user: sanitizeUser(user)
+    });
+  } catch (error) {
+    logger.error('Error updating user role', { error: error.message });
+    res.status(500).json({ error: 'Failed to update user role' });
+  }
+};
+

@@ -52,26 +52,12 @@ const getSortOrder = (sort) => {
  */
 exports.getProducts = async (req, res) => {
   try {
-    // Use in-memory fallback if MongoDB is not connected
-    if (!isMongoDBConnected()) {
-      logger.warn('MongoDB not connected, using default products');
-      return res.json({
-        success: true,
-        data: defaultProducts,
-        pagination: {
-          page: 1,
-          limit: defaultProducts.length,
-          total: defaultProducts.length,
-          pages: 1
-        }
-      });
-    }
-
     // Check if database is empty and seed it
     const count = await Product.countDocuments();
     if (count === 0) {
       logger.info('Database is empty, seeding with default products');
       const productsToSeed = defaultProducts.map(p => ({
+        _id: p._id, // Preserve ID
         name: p.name,
         description: p.description,
         price: p.price,
@@ -81,7 +67,9 @@ exports.getProducts = async (req, res) => {
         isNew: false,
         inventoryCount: 100
       }));
-      await Product.insertMany(productsToSeed);
+      for (const p of productsToSeed) {
+        await Product.create(p); // Create one by one to trigger LocalDB hooks/save
+      }
       logger.info(`Seeded ${productsToSeed.length} products`);
     }
 
@@ -93,7 +81,7 @@ exports.getProducts = async (req, res) => {
     const sort = getSortOrder(req.query.sort);
 
     const [products, total] = await Promise.all([
-      Product.find(filters).sort(sort).skip(skip).limit(limit).lean(),
+      Product.find(filters).sort(sort).skip(skip).limit(limit), // Removed .lean()
       Product.countDocuments(filters)
     ]);
 
@@ -114,17 +102,10 @@ exports.getProducts = async (req, res) => {
       query: req.query
     });
 
-    // CONSISTENT fallback response
-    res.status(200).json({
-      success: true,
-      data: defaultProducts,
-      pagination: {
-        page: 1,
-        limit: defaultProducts.length,
-        total: defaultProducts.length,
-        pages: 1
-      },
-      fallback: true
+    res.status(500).json({
+      success: false,
+      error: 'Server Error',
+      data: []
     });
   }
 };
@@ -138,26 +119,7 @@ exports.getProductById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Use in-memory fallback if MongoDB is not connected
-    if (!isMongoDBConnected()) {
-      const product = defaultProducts.find(p => p._id === id);
-      if (!product) {
-        return res.status(404).json({
-          success: false,
-          error: 'Product not found.'
-        });
-      }
-      return res.json({ success: true, data: product });
-    }
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({
-        success: false,
-        error: 'Invalid product id.'
-      });
-    }
-
-    const product = await Product.findById(id).lean();
+    const product = await Product.findById(id);
     if (!product) {
       return res.status(404).json({
         success: false,
@@ -171,12 +133,6 @@ exports.getProductById = async (req, res) => {
       error: error.message,
       productId: req.params.id
     });
-
-    // Try fallback on error
-    const product = defaultProducts.find(p => p._id === req.params.id);
-    if (product) {
-      return res.json({ success: true, data: product, fallback: true });
-    }
 
     res.status(500).json({
       success: false,
@@ -374,10 +330,24 @@ exports.searchProducts = async (req, res) => {
  */
 exports.createProduct = async (req, res) => {
   try {
+    const { name, description, price, stock, category, image, isFeatured, isNew } = req.body;
+
     const payload = {
-      ...req.body,
-      category: req.body.category.toLowerCase()
+      name,
+      description,
+      price: Number(price),
+      stock: Number(stock), // Explicitly handle stock
+      category: category.toLowerCase(),
+      image,
+      isFeatured: isFeatured === true || isFeatured === 'true',
+      isNew: isNew === true || isNew === 'true',
+      reservedStock: 0 // Initialize reserved stock
     };
+
+    if (payload.price < 0 || payload.stock < 0) {
+      return res.status(400).json({ success: false, error: 'Price and stock cannot be negative.' });
+    }
+
     const product = await Product.create(payload);
     res.status(201).json({ success: true, data: product });
   } catch (error) {
@@ -396,23 +366,46 @@ exports.createProduct = async (req, res) => {
  */
 exports.updateProduct = async (req, res) => {
   try {
-    const updates = { ...req.body };
-    if (updates.category) {
-      updates.category = updates.category.toLowerCase();
-    }
-
-    const product = await Product.findByIdAndUpdate(req.params.id, updates, {
-      new: true,
-      runValidators: true
-    }).lean();
+    // 1. Find the product first (Explicitly)
+    let product = await Product.findById(req.params.id);
 
     if (!product) {
+      logger.warn('Update failed: Product not found', { id: req.params.id });
       return res.status(404).json({
         success: false,
         error: 'Product not found.'
       });
     }
 
+    // 2. Validate and Apply Updates Manually
+    const { name, description, price, stock, category, image, isFeatured, isNew } = req.body;
+
+    // Apply updates directly to the document object
+    if (name) product.name = name;
+    if (description) product.description = description;
+    if (category) product.category = category.toLowerCase();
+    if (image) product.image = image;
+
+    // Boolean flags - explicit check to allow filtering 'false'
+    if (isFeatured !== undefined) product.isFeatured = isFeatured === true || isFeatured === 'true';
+    if (isNew !== undefined) product.isNew = isNew === true || isNew === 'true';
+
+    // Numbers
+    if (price !== undefined) {
+      const p = Number(price);
+      if (p < 0) return res.status(400).json({ success: false, error: 'Price cannot be negative' });
+      product.price = p;
+    }
+    if (stock !== undefined) {
+      const s = Number(stock);
+      if (s < 0) return res.status(400).json({ success: false, error: 'Stock cannot be negative' });
+      product.stock = s;
+    }
+
+    // 3. Save using the instance method (more reliable in mocks)
+    await product.save();
+
+    logger.info('Product updated successfully', { id: product._id });
     res.json({ success: true, data: product });
   } catch (error) {
     logger.error('Error updating product', { error: error.message });

@@ -1,0 +1,182 @@
+Date : 2026-01-09 17:36:08
+Directory : c:\E-Commerce Website (Full)
+Total : 119 files,  4845 codes, -13 comments, 1170 blanks, all 6002 lines
+
+Languages
++--------------------+------------+------------+------------+------------+------------+
+| language           | files      | code       | comment    | blank      | total      |
++--------------------+------------+------------+------------+------------+------------+
+| CSS                |         19 |      2,922 |          0 |        436 |      3,358 |
+| JavaScript         |         55 |      1,073 |        -46 |        259 |      1,286 |
+| TypeScript JSX     |         27 |        760 |         33 |        279 |      1,072 |
+| Markdown           |          4 |        328 |          0 |        168 |        496 |
+| TypeScript         |          2 |        147 |          0 |         26 |        173 |
+| JSON with Comments |          1 |         -6 |          0 |          2 |         -4 |
+| JSON               |         11 |       -379 |          0 |          0 |       -379 |
++--------------------+------------+------------+------------+------------+------------+
+
+Directories
++-------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                | files      | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                   |        119 |      4,845 |        -13 |      1,170 |      6,002 |
+| . (Files)                                                                           |          4 |       -298 |          0 |         78 |       -220 |
+| api                                                                                 |          1 |         11 |          3 |          3 |         17 |
+| backend                                                                             |         61 |      1,438 |        -36 |        365 |      1,767 |
+| backend (Files)                                                                     |          8 |        445 |         25 |        136 |        606 |
+| backend\config                                                                      |          2 |        106 |          1 |         18 |        125 |
+| backend\controllers                                                                 |          8 |       -123 |        -47 |        -26 |       -196 |
+| backend\data                                                                        |          4 |         95 |          0 |          0 |         95 |
+| backend\docs                                                                        |          2 |         74 |          0 |         37 |        111 |
+| backend\jobs                                                                        |          1 |         97 |          5 |         19 |        121 |
+| backend\lib                                                                         |          1 |         34 |          1 |         10 |         45 |
+| backend\middleware                                                                  |          3 |        105 |         16 |         26 |        147 |
+| backend\models                                                                      |          4 |       -103 |          8 |          1 |        -94 |
+| backend\routes                                                                      |          7 |         54 |          3 |          4 |         61 |
+| backend\scripts                                                                     |          4 |        183 |          5 |         35 |        223 |
+| backend\services                                                                    |          9 |        161 |        -62 |         41 |        140 |
+| backend\tests                                                                       |          2 |        100 |          1 |         20 |        121 |
+| backend\tests\integration                                                           |          1 |         62 |          1 |         10 |         73 |
+| backend\tests\unit                                                                  |          1 |         38 |          0 |         10 |         48 |
+| backend\utils                                                                       |          5 |        218 |         14 |         45 |        277 |
+| backend\workers                                                                     |          1 |         -8 |         -6 |         -1 |        -15 |
+| frontend                                                                            |         53 |      3,694 |         20 |        724 |      4,438 |
+| frontend (Files)                                                                    |          3 |        -39 |          0 |          2 |        -37 |
+| frontend\src                                                                        |         50 |      3,733 |         20 |        722 |      4,475 |
+| frontend\src (Files)                                                                |          2 |        123 |          3 |         12 |        138 |
+| frontend\src\api                                                                    |          1 |          8 |          0 |          1 |          9 |
+| frontend\src\components                                                             |         13 |      1,493 |         15 |        227 |      1,735 |
+| frontend\src\components (Files)                                                     |         10 |      1,071 |         10 |        166 |      1,247 |
+| frontend\src\components\home                                                        |          3 |        422 |          5 |         61 |        488 |
+| frontend\src\config                                                                 |          1 |         -6 |          0 |          0 |         -6 |
+| frontend\src\context                                                                |          2 |        -55 |        -15 |         -2 |        -72 |
+| frontend\src\pages                                                                  |         28 |      2,110 |         17 |        489 |      2,616 |
+| frontend\src\styles                                                                 |          2 |        -79 |          0 |        -30 |       -109 |
+| frontend\src\utils                                                                  |          1 |        139 |          0 |         25 |        164 |
++-------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| filename                                                                            | language           | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| c:\E-Commerce Website (Full)\QUICK_START.md                                         | Markdown           |        142 |          0 |         78 |        220 |
+| c:\E-Commerce Website (Full)\api\index.js                                           | JavaScript         |         11 |          3 |          3 |         17 |
+| c:\E-Commerce Website (Full)\backend\MONGODB_SETUP.md                               | Markdown           |        112 |          0 |         53 |        165 |
+| c:\E-Commerce Website (Full)\backend\bootstrap.js                                   | JavaScript         |         73 |         11 |         19 |        103 |
+| c:\E-Commerce Website (Full)\backend\config\db.js                                   | JavaScript         |         -4 |          0 |          0 |         -4 |
+| c:\E-Commerce Website (Full)\backend\config\env.js                                  | JavaScript         |        110 |          1 |         18 |        129 |
+| c:\E-Commerce Website (Full)\backend\controllers\authController.js                  | JavaScript         |          5 |          1 |          3 |          9 |
+| c:\E-Commerce Website (Full)\backend\controllers\contactController.js               | JavaScript         |        -15 |         -4 |         -1 |        -20 |
+| c:\E-Commerce Website (Full)\backend\controllers\newsletterController.js            | JavaScript         |         -7 |         -3 |         -1 |        -11 |
+| c:\E-Commerce Website (Full)\backend\controllers\orderController.js                 | JavaScript         |        -34 |          1 |         -4 |        -37 |
+| c:\E-Commerce Website (Full)\backend\controllers\paymentController.js               | JavaScript         |        -44 |        -29 |        -14 |        -87 |
+| c:\E-Commerce Website (Full)\backend\controllers\productController.js               | JavaScript         |          6 |         -2 |          2 |          6 |
+| c:\E-Commerce Website (Full)\backend\controllers\userController.js                  | JavaScript         |         -1 |          0 |         -1 |         -2 |
+| c:\E-Commerce Website (Full)\backend\controllers\webhookController.js               | JavaScript         |        -33 |        -11 |        -10 |        -54 |
+| c:\E-Commerce Website (Full)\backend\data\admin_action_logs.json                    | JSON               |          1 |          0 |          0 |          1 |
+| c:\E-Commerce Website (Full)\backend\data\orders.json                               | JSON               |          1 |          0 |          0 |          1 |
+| c:\E-Commerce Website (Full)\backend\data\products.json                             | JSON               |         80 |          0 |          0 |         80 |
+| c:\E-Commerce Website (Full)\backend\data\users.json                                | JSON               |         13 |          0 |          0 |         13 |
+| c:\E-Commerce Website (Full)\backend\docs\API_OPERATIONS.md                         | Markdown           |         42 |          0 |         18 |         60 |
+| c:\E-Commerce Website (Full)\backend\docs\RUNBOOK_ARCHITECTURE.md                   | Markdown           |         32 |          0 |         19 |         51 |
+| c:\E-Commerce Website (Full)\backend\jobs\cleanupInitiatedOrders.js                 | JavaScript         |         97 |          5 |         19 |        121 |
+| c:\E-Commerce Website (Full)\backend\lib\dbConnect.js                               | JavaScript         |         34 |          1 |         10 |         45 |
+| c:\E-Commerce Website (Full)\backend\middleware\auth.js                             | JavaScript         |          1 |          3 |          2 |          6 |
+| c:\E-Commerce Website (Full)\backend\middleware\gatekeeper.js                       | JavaScript         |        102 |         13 |         22 |        137 |
+| c:\E-Commerce Website (Full)\backend\middleware\rateLimiter.js                      | JavaScript         |          2 |          0 |          2 |          4 |
+| c:\E-Commerce Website (Full)\backend\models\AdminActionLog.js                       | JavaScript         |        -21 |          1 |          0 |        -20 |
+| c:\E-Commerce Website (Full)\backend\models\Order.js                                | JavaScript         |        -58 |          1 |          0 |        -57 |
+| c:\E-Commerce Website (Full)\backend\models\Product.js                              | JavaScript         |          1 |          0 |         -2 |         -1 |
+| c:\E-Commerce Website (Full)\backend\models\User.js                                 | JavaScript         |        -25 |          6 |          3 |        -16 |
+| c:\E-Commerce Website (Full)\backend\package.json                                   | JSON               |          5 |          0 |          0 |          5 |
+| c:\E-Commerce Website (Full)\backend\routes\authRoutes.js                           | JavaScript         |          1 |          0 |          0 |          1 |
+| c:\E-Commerce Website (Full)\backend\routes\contactRoutes.js                        | JavaScript         |          1 |          0 |          0 |          1 |
+| c:\E-Commerce Website (Full)\backend\routes\healthRoutes.js                         | JavaScript         |         44 |          3 |          4 |         51 |
+| c:\E-Commerce Website (Full)\backend\routes\newsletterRoutes.js                     | JavaScript         |          1 |          0 |          0 |          1 |
+| c:\E-Commerce Website (Full)\backend\routes\orderRoutes.js                          | JavaScript         |          5 |          0 |          0 |          5 |
+| c:\E-Commerce Website (Full)\backend\routes\productRoutes.js                        | JavaScript         |          1 |          0 |          0 |          1 |
+| c:\E-Commerce Website (Full)\backend\routes\userRoutes.js                           | JavaScript         |          1 |          0 |          0 |          1 |
+| c:\E-Commerce Website (Full)\backend\scripts\check-env-leaks.js                     | JavaScript         |         35 |          0 |          8 |         43 |
+| c:\E-Commerce Website (Full)\backend\scripts\cleanup-port.js                        | JavaScript         |         32 |          5 |          5 |         42 |
+| c:\E-Commerce Website (Full)\backend\scripts\precheck.js                            | JavaScript         |         59 |          0 |         10 |         69 |
+| c:\E-Commerce Website (Full)\backend\scripts\set-admin.js                           | JavaScript         |         57 |          0 |         12 |         69 |
+| c:\E-Commerce Website (Full)\backend\server.js                                      | JavaScript         |        -45 |         -8 |         -6 |        -59 |
+| c:\E-Commerce Website (Full)\backend\services\dbService.js                          | JavaScript         |         60 |          0 |         12 |         72 |
+| c:\E-Commerce Website (Full)\backend\services\emailService.js                       | JavaScript         |        -45 |         -2 |         -2 |        -49 |
+| c:\E-Commerce Website (Full)\backend\services\logger.js                             | JavaScript         |          2 |          0 |          2 |          4 |
+| c:\E-Commerce Website (Full)\backend\services\mailblusterService.js                 | JavaScript         |         -3 |         -8 |         -1 |        -12 |
+| c:\E-Commerce Website (Full)\backend\services\memoryDbService.js                    | JavaScript         |         45 |          0 |         10 |         55 |
+| c:\E-Commerce Website (Full)\backend\services\paymentService.js                     | JavaScript         |          3 |          0 |          1 |          4 |
+| c:\E-Commerce Website (Full)\backend\services\queueService.js                       | JavaScript         |        -55 |        -60 |        -12 |       -127 |
+| c:\E-Commerce Website (Full)\backend\services\stateService.js                       | JavaScript         |        147 |          8 |         29 |        184 |
+| c:\E-Commerce Website (Full)\backend\services\whatsappService.js                    | JavaScript         |          7 |          0 |          2 |          9 |
+| c:\E-Commerce Website (Full)\backend\test-boundaries.js                             | JavaScript         |         93 |          8 |         19 |        120 |
+| c:\E-Commerce Website (Full)\backend\tests\integration\bootstrap.test.js            | JavaScript         |         62 |          1 |         10 |         73 |
+| c:\E-Commerce Website (Full)\backend\tests\unit\config.test.js                      | JavaScript         |         38 |          0 |         10 |         48 |
+| c:\E-Commerce Website (Full)\backend\utils\LocalDB.js                               | JavaScript         |        192 |         19 |         36 |        247 |
+| c:\E-Commerce Website (Full)\backend\utils\inventoryService.js                      | JavaScript         |          4 |          0 |          0 |          4 |
+| c:\E-Commerce Website (Full)\backend\utils\orderHashService.js                      | JavaScript         |         40 |          3 |          8 |         51 |
+| c:\E-Commerce Website (Full)\backend\utils\tokenService.js                          | JavaScript         |          2 |          0 |          1 |          3 |
+| c:\E-Commerce Website (Full)\backend\utils\whatsappService.js                       | JavaScript         |        -20 |         -8 |          0 |        -28 |
+| c:\E-Commerce Website (Full)\backend\verify-mongodb.js                              | JavaScript         |         96 |          3 |         23 |        122 |
+| c:\E-Commerce Website (Full)\backend\verify-order-fix.js                            | JavaScript         |         42 |          1 |          9 |         52 |
+| c:\E-Commerce Website (Full)\backend\verify-serverless.js                           | JavaScript         |         69 |         10 |         19 |         98 |
+| c:\E-Commerce Website (Full)\backend\workers\notificationWorker.js                  | JavaScript         |         -8 |         -6 |         -1 |        -15 |
+| c:\E-Commerce Website (Full)\frontend\package.json                                  | JSON               |         -2 |          0 |          0 |         -2 |
+| c:\E-Commerce Website (Full)\frontend\src\App.tsx                                   | TypeScript JSX     |         20 |          3 |          0 |         23 |
+| c:\E-Commerce Website (Full)\frontend\src\api\client.ts                             | TypeScript         |          8 |          0 |          1 |          9 |
+| c:\E-Commerce Website (Full)\frontend\src\components\AdminLayout.css                | CSS                |        160 |          0 |         22 |        182 |
+| c:\E-Commerce Website (Full)\frontend\src\components\AdminLayout.tsx                | TypeScript JSX     |         72 |          8 |          9 |         89 |
+| c:\E-Commerce Website (Full)\frontend\src\components\Footer.tsx                     | TypeScript JSX     |        109 |          5 |         12 |        126 |
+| c:\E-Commerce Website (Full)\frontend\src\components\Layout.css                     | CSS                |        331 |          0 |         51 |        382 |
+| c:\E-Commerce Website (Full)\frontend\src\components\Layout.tsx                     | TypeScript JSX     |        -37 |         -4 |         -5 |        -46 |
+| c:\E-Commerce Website (Full)\frontend\src\components\OmnoraLayout.css               | CSS                |        229 |          0 |         39 |        268 |
+| c:\E-Commerce Website (Full)\frontend\src\components\OmnoraPosterGallery.css        | CSS                |         18 |          0 |          4 |         22 |
+| c:\E-Commerce Website (Full)\frontend\src\components\RequireAdmin.tsx               | TypeScript JSX     |         16 |          1 |          6 |         23 |
+| c:\E-Commerce Website (Full)\frontend\src\components\WhatsAppConfirmationDialog.css | CSS                |        123 |          0 |         20 |        143 |
+| c:\E-Commerce Website (Full)\frontend\src\components\WhatsAppConfirmationDialog.tsx | TypeScript JSX     |         50 |          0 |          8 |         58 |
+| c:\E-Commerce Website (Full)\frontend\src\components\home\TechStack.css             | CSS                |        280 |          0 |         43 |        323 |
+| c:\E-Commerce Website (Full)\frontend\src\components\home\TrustSection.tsx          | TypeScript JSX     |        -12 |          0 |          0 |        -12 |
+| c:\E-Commerce Website (Full)\frontend\src\components\home\tech.tsx                  | TypeScript JSX     |        154 |          5 |         18 |        177 |
+| c:\E-Commerce Website (Full)\frontend\src\config\adConfig.json                      | JSON               |         -6 |          0 |          0 |         -6 |
+| c:\E-Commerce Website (Full)\frontend\src\context\AuthContext.tsx                   | TypeScript JSX     |        -27 |         -9 |         -1 |        -37 |
+| c:\E-Commerce Website (Full)\frontend\src\context\ToastContext.tsx                  | TypeScript JSX     |        -28 |         -6 |         -1 |        -35 |
+| c:\E-Commerce Website (Full)\frontend\src\index.css                                 | CSS                |        103 |          0 |         12 |        115 |
+| c:\E-Commerce Website (Full)\frontend\src\pages\About.css                           | CSS                |         -5 |          0 |         -1 |         -6 |
+| c:\E-Commerce Website (Full)\frontend\src\pages\About.tsx                           | TypeScript JSX     |        -95 |         -2 |         -2 |        -99 |
+| c:\E-Commerce Website (Full)\frontend\src\pages\AdminDashboard.css                  | CSS                |         48 |          0 |         10 |         58 |
+| c:\E-Commerce Website (Full)\frontend\src\pages\AdminDashboard.tsx                  | TypeScript JSX     |         -5 |          5 |          0 |          0 |
+| c:\E-Commerce Website (Full)\frontend\src\pages\AdminOrders.css                     | CSS                |        155 |          0 |         34 |        189 |
+| c:\E-Commerce Website (Full)\frontend\src\pages\AdminOrders.tsx                     | TypeScript JSX     |        136 |          2 |         13 |        151 |
+| c:\E-Commerce Website (Full)\frontend\src\pages\AdminProducts.css                   | CSS                |        231 |          0 |         34 |        265 |
+| c:\E-Commerce Website (Full)\frontend\src\pages\AdminProducts.tsx                   | TypeScript JSX     |        208 |          0 |         19 |        227 |
+| c:\E-Commerce Website (Full)\frontend\src\pages\AdminUsers.tsx                      | TypeScript JSX     |         10 |          1 |          3 |         14 |
+| c:\E-Commerce Website (Full)\frontend\src\pages\Checkout.css                        | CSS                |        106 |          0 |         16 |        122 |
+| c:\E-Commerce Website (Full)\frontend\src\pages\Checkout.tsx                        | TypeScript JSX     |        -97 |          2 |         -2 |        -97 |
+| c:\E-Commerce Website (Full)\frontend\src\pages\Collection.css                      | CSS                |        554 |          0 |         89 |        643 |
+| c:\E-Commerce Website (Full)\frontend\src\pages\Collection.tsx                      | TypeScript JSX     |       -337 |        -26 |        -48 |       -411 |
+| c:\E-Commerce Website (Full)\frontend\src\pages\Contact.css                         | CSS                |        136 |          0 |         22 |        158 |
+| c:\E-Commerce Website (Full)\frontend\src\pages\Contact.tsx                         | TypeScript JSX     |       -183 |        -12 |        -30 |       -225 |
+| c:\E-Commerce Website (Full)\frontend\src\pages\FAQ.css                             | CSS                |        148 |          0 |         25 |        173 |
+| c:\E-Commerce Website (Full)\frontend\src\pages\FAQ.tsx                             | TypeScript JSX     |       -119 |        -12 |        -19 |       -150 |
+| c:\E-Commerce Website (Full)\frontend\src\pages\Home.tsx                            | TypeScript JSX     |         17 |         -2 |          3 |         18 |
+| c:\E-Commerce Website (Full)\frontend\src\pages\HomeWithAds.tsx                     | TypeScript JSX     |        -17 |         -2 |          1 |        -18 |
+| c:\E-Commerce Website (Full)\frontend\src\pages\Login.tsx                           | TypeScript JSX     |        -83 |         20 |        179 |        116 |
+| c:\E-Commerce Website (Full)\frontend\src\pages\OmnoraCollection.tsx                | TypeScript JSX     |        337 |         26 |         48 |        411 |
+| c:\E-Commerce Website (Full)\frontend\src\pages\OmnoraContact.tsx                   | TypeScript JSX     |        183 |         12 |         30 |        225 |
+| c:\E-Commerce Website (Full)\frontend\src\pages\OmnoraFAQ.tsx                       | TypeScript JSX     |        119 |         12 |         19 |        150 |
+| c:\E-Commerce Website (Full)\frontend\src\pages\OmnoraFinal.css                     | CSS                |        365 |          0 |         43 |        408 |
+| c:\E-Commerce Website (Full)\frontend\src\pages\OrderConfirmation.tsx               | TypeScript JSX     |        373 |          6 |         19 |        398 |
+| c:\E-Commerce Website (Full)\frontend\src\pages\Product.css                         | CSS                |         19 |          0 |          3 |         22 |
+| c:\E-Commerce Website (Full)\frontend\src\pages\Wishlist.tsx                        | TypeScript JSX     |         -4 |          0 |          0 |         -4 |
+| c:\E-Commerce Website (Full)\frontend\src\pages\server.js                           | JavaScript         |        -90 |        -13 |        -19 |       -122 |
+| c:\E-Commerce Website (Full)\frontend\src\styles\Animations.css                     | CSS                |        -13 |          0 |        -11 |        -24 |
+| c:\E-Commerce Website (Full)\frontend\src\styles\theme.css                          | CSS                |        -66 |          0 |        -19 |        -85 |
+| c:\E-Commerce Website (Full)\frontend\src\utils\whatsappOrderService.ts             | TypeScript         |        139 |          0 |         25 |        164 |
+| c:\E-Commerce Website (Full)\frontend\tsconfig.json                                 | JSON with Comments |         -6 |          0 |          2 |         -4 |
+| c:\E-Commerce Website (Full)\frontend\vercel.json                                   | JSON               |        -31 |          0 |          0 |        -31 |
+| c:\E-Commerce Website (Full)\package-lock.json                                      | JSON               |       -444 |          0 |          0 |       -444 |
+| c:\E-Commerce Website (Full)\package.json                                           | JSON               |         -6 |          0 |          0 |         -6 |
+| c:\E-Commerce Website (Full)\vercel.json                                            | JSON               |         10 |          0 |          0 |         10 |
+| Total                                                                               |                    |      4,845 |        -13 |      1,170 |      6,002 |
++-------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
