@@ -1,34 +1,65 @@
-const stateService = require('../backend/services/stateService');
-const { LIFECYCLE, INFRA } = require('../backend/services/stateService');
+// NO TOP LEVEL REQUIRES
+// This ensures the function starts even if dependencies are missing/broken
 
-// Lazy load critical modules to catch initialization errors (e.g. missing env vars)
 let app;
 let dbConnect;
+let stateService;
+let constants;
 
 module.exports = async (req, res) => {
+    // 0. DIAGNOSTIC PING
+    // Access /api/any-route?ping=1 to verify the function is actually running
+    if (req.query && req.query.ping) {
+        return res.status(200).json({
+            status: 'pong',
+            env: {
+                hasJwtSecret: !!process.env.JWT_SECRET,
+                hasMongoUri: !!process.env.MONGODB_URI,
+                nodeEnv: process.env.NODE_ENV
+            }
+        });
+    }
+
     try {
-        // 1. Load Modules (if not loaded)
+        // 1. Manually Check Critical Env Vars specific to Vercel
+        if (!process.env.JWT_SECRET) {
+            const err = new Error('JWT_SECRET is not set in Vercel Environment Variables.');
+            err.code = 'ERR_ENV_MISSING_CRITICAL_SECRET';
+            throw err;
+        }
+
+        // 2. Lazy Load Modules
+        if (!stateService) {
+            stateService = require('../backend/services/stateService');
+            constants = require('../backend/services/stateService'); // Loads exports
+        }
         if (!dbConnect) dbConnect = require('../backend/lib/dbConnect');
         if (!app) app = require('../backend/server');
 
-        // 2. Handle DB Connection
+        // 3. Handle DB Connection
         await dbConnect();
 
-        // 3. Update Gatekeeper State
+        // 4. Update Gatekeeper State
+        // Use constants if destructured, or access directly
+        const INFRA = constants.INFRA || { DB: 'db' };
+        const LIFECYCLE = constants.LIFECYCLE || { READY: 'READY' };
+
         stateService.setInfraStatus(INFRA.DB, true);
         stateService.setLifecycle(LIFECYCLE.READY);
 
-        // 4. Forward to Express
+        // 5. Forward to Express
         return app(req, res);
 
     } catch (e) {
-        console.error('Server Extension Initialization Failed:', e);
-        // Return explicit error to helps debug Vercel env issues
-        return res.status(500).json({
-            error: 'Server Initialization Failed',
+        console.error('Server Initialization Crash:', e);
+        // Return simple JSON to avoid any formatting issues
+        // Use .send() with stringified JSON to ensure Content-Type handling doesn't interfere
+        res.setHeader('Content-Type', 'application/json');
+        return res.status(500).send(JSON.stringify({
+            error: 'CRITICAL_INIT_FAILURE',
             message: e.message,
-            code: e.code || 'INIT_ERROR',
-            suggestion: e.code === 'ERR_ENV_MISSING_CRITICAL_SECRET' ? 'Please check JWT_SECRET in Vercel Environment Variables' : 'Check logs'
-        });
+            stack: e.stack ? e.stack.split('\n')[0] : null, // First line of stack only
+            tip: 'If you see this, the backend failed to start. Check Vercel Logs.'
+        }, null, 2));
     }
 };
