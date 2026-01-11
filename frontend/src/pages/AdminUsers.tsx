@@ -22,9 +22,21 @@ const AdminUsers: React.FC = () => {
         setLoading(true);
         try {
             const { data } = await client.get('/users');
-            setUsers(Array.isArray(data) ? data : data.users || []);
+            const rawList = Array.isArray(data) ? data : data.users || [];
+
+            // Safe Data Mapping (Backend 'firstName' -> Frontend 'name', etc.)
+            const sanitizedUsers: User[] = rawList.map((u: any) => ({
+                _id: u._id,
+                name: u.name || `${u.firstName || ''} ${u.lastName || ''}`.trim() || 'Unknown Personnel',
+                email: u.email || 'No Contact',
+                isAdmin: u.isAdmin === true || u.role === 'admin',
+                createdAt: u.createdAt || new Date().toISOString()
+            })).filter((u: User) => u._id); // Filter invalid objects
+
+            setUsers(sanitizedUsers);
         } catch (error) {
             showToast('Failed to load personnel database', 'error');
+            console.error('Fetch Error:', error);
         } finally {
             setLoading(false);
         }
