@@ -81,6 +81,7 @@ const IngredientCard: React.FC<IngredientCardProps> = ({ image, name, descriptio
 export default function Home() {
   const [email, setEmail] = useState<string>('');
   const [isSubscribing, setIsSubscribing] = useState<boolean>(false);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
   const { showToast } = useToast();
 
   const handleNewsletterSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
