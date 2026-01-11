@@ -163,11 +163,6 @@ export default function Collection() {
         }
 
         setProducts(sorted);
-        import { FALLBACK_PRODUCTS } from '../data/fallbackProducts';
-
-        // ... (imports remain the same)
-
-        // Inside fetchProducts catch block:
       } catch (e) {
         console.error('Fetch error:', e);
         // Fallback Logic: Load local data instead of showing error
