@@ -1,16 +1,4 @@
-export interface Product {
-    _id: string;
-    name: string;
-    description: string;
-    price: number;
-    image: string;
-    category: string;
-    isFeatured: boolean;
-    isNew: boolean;
-}
-
-// Fallback product data for offline mode
-export const fallbackProducts: Product[] = [
+export const FALLBACK_PRODUCTS = [
     {
         _id: '1',
         name: 'Calm Lavender Bath Bomb',
@@ -18,8 +6,13 @@ export const fallbackProducts: Product[] = [
         price: 899,
         image: '/images/main/calm lavender.png',
         category: 'bath-bombs',
-        isFeatured: true,
-        isNew: false
+        featured: true,
+        details: 'A gentle, skin-kind bath bomb infused with natural lavender essential oil, chamomile extract, and shea butter. pH-balanced and suitable for sensitive skin.',
+        ingredients: ['Sodium Bicarbonate', 'Citric Acid', 'Lavender Oil', 'Chamomile Extract', 'Shea Butter'],
+        size: '180g',
+        skinType: 'All skin types',
+        isNew: false,
+        isFeatured: true
     },
     {
         _id: '2',
@@ -28,8 +21,13 @@ export const fallbackProducts: Product[] = [
         price: 949,
         image: '/images/main/breath bath.png',
         category: 'bath-bombs',
-        isFeatured: true,
-        isNew: false
+        featured: true,
+        details: 'Refreshing blend with eucalyptus and peppermint essential oils to awaken the senses. Enriched with cocoa butter to leave skin soft.',
+        ingredients: ['Sodium Bicarbonate', 'Citric Acid', 'Eucalyptus Oil', 'Peppermint Oil', 'Cocoa Butter'],
+        size: '180g',
+        skinType: 'Normal to oily',
+        isNew: false,
+        isFeatured: true
     },
     {
         _id: '3',
@@ -38,8 +36,13 @@ export const fallbackProducts: Product[] = [
         price: 899,
         image: '/images/main/Glow Citrus Bath Bomb.png',
         category: 'bath-bombs',
-        isFeatured: true,
-        isNew: false
+        featured: true,
+        details: 'Uplifting notes of orange and lemon with vitamin E and sweet almond oil to nourish and soften skin.',
+        ingredients: ['Sodium Bicarbonate', 'Citric Acid', 'Orange Oil', 'Lemon Oil', 'Vitamin E', 'Almond Oil'],
+        size: '180g',
+        skinType: 'All skin types',
+        isNew: true,
+        isFeatured: true
     },
     {
         _id: '4',
@@ -48,8 +51,13 @@ export const fallbackProducts: Product[] = [
         price: 999,
         image: '/images/main/rose.png',
         category: 'bath-bombs',
-        isFeatured: false,
-        isNew: false
+        featured: false,
+        details: 'Calming blend of rose and vanilla with kaolin clay to soothe and oat kernel flour to calm the skin barrier.',
+        ingredients: ['Sodium Bicarbonate', 'Citric Acid', 'Rose Oil', 'Vanilla', 'Kaolin Clay', 'Colloidal Oat'],
+        size: '180g',
+        skinType: 'Dry & sensitive',
+        isNew: false,
+        isFeatured: false
     },
     {
         _id: '5',
@@ -58,8 +66,13 @@ export const fallbackProducts: Product[] = [
         price: 949,
         image: '/images/main/green tea.png',
         category: 'bath-bombs',
-        isFeatured: false,
-        isNew: false
+        featured: false,
+        details: 'Green tea extract and jojoba oil help support a healthy skin barrier while offering a serene soak.',
+        ingredients: ['Sodium Bicarbonate', 'Citric Acid', 'Green Tea Extract', 'Jojoba Oil'],
+        size: '180g',
+        skinType: 'Combination',
+        isNew: false,
+        isFeatured: false
     },
     {
         _id: '6',
@@ -68,7 +81,12 @@ export const fallbackProducts: Product[] = [
         price: 899,
         image: '/images/main/unvind.png',
         category: 'bath-bombs',
-        isFeatured: false,
-        isNew: false
+        featured: false,
+        details: 'Chamomile and calendula extracts help soothe while coconut oil leaves skin soft and comfortable.',
+        ingredients: ['Sodium Bicarbonate', 'Citric Acid', 'Chamomile Extract', 'Calendula Extract', 'Coconut Oil'],
+        size: '180g',
+        skinType: 'Sensitive',
+        isNew: false,
+        isFeatured: false
     }
 ];

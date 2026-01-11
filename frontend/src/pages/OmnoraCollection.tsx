@@ -5,6 +5,7 @@ import { useScrollReveal } from '../hooks/useScrollReveal';
 import { useToast } from '../context/ToastContext';
 import { ShoppingBag, Filter, ChevronDown, WifiOff, PackageOpen } from 'lucide-react';
 import SmartImage from '../components/SmartImage';
+import { FALLBACK_PRODUCTS } from '../data/fallbackProducts';
 import './OmnoraCollection.css';
 
 // Types
@@ -162,10 +163,16 @@ export default function Collection() {
         }
 
         setProducts(sorted);
+        import { FALLBACK_PRODUCTS } from '../data/fallbackProducts';
+
+        // ... (imports remain the same)
+
+        // Inside fetchProducts catch block:
       } catch (e) {
         console.error('Fetch error:', e);
-        // Fallback Logic could go here, or just show error state
-        setError('Unable to retrieve collection data.');
+        // Fallback Logic: Load local data instead of showing error
+        setProducts(FALLBACK_PRODUCTS);
+        showToast('Running in offline mode', 'info');
       } finally {
         if (isMounted) setLoading(false);
       }
