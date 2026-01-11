@@ -28,7 +28,7 @@ async function dbConnect() {
     if (!cached.promise) {
         const opts = {
             bufferCommands: false, // Disable Mongoose buffering to fail fast if no connection
-            // serverSelectionTimeoutMS: 5000, // Fail fast if DB down (Vercel constraint)
+            serverSelectionTimeoutMS: 3000, // Fail fast (3s) if DB down to trigger local fallback
         };
 
         cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {

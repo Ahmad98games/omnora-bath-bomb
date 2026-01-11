@@ -156,7 +156,7 @@ exports.createOrder = async (req, res) => {
     if (req.user) {
       orderData.user = req.user.id;
     } else if (customerInfo) {
-      orderData.guestCustomer = {
+      orderData.customer = {
         name: customerInfo.name,
         email: customerInfo.email,
         phone: customerInfo.phone
@@ -282,8 +282,8 @@ exports.cancelOrder = async (req, res) => {
 
     // Queue WhatsApp notification
     try {
-      const customerName = order.guestCustomer?.name || (req.user ? req.user.name : 'Customer');
-      const phone = order.guestCustomer?.phone || (req.user ? req.user.phone : '');
+      const customerName = order.customer?.name || (req.user ? req.user.name : 'Customer');
+      const phone = order.customer?.phone || (req.user ? req.user.phone : '');
 
       if (phone) {
         await queueWhatsApp(phone, 'order_cancelled', [
@@ -362,8 +362,8 @@ exports.updateOrderStatus = async (req, res) => {
 
     // Queue WhatsApp notification for status changes
     try {
-      const customerName = order.guestCustomer?.name || 'Customer';
-      const phone = order.guestCustomer?.phone || '';
+      const customerName = order.customer?.name || 'Customer';
+      const phone = order.customer?.phone || '';
 
       if (phone) {
         if (status === 'shipped' && trackingNumber) {
@@ -587,8 +587,8 @@ exports.approveOrder = async (req, res) => {
 
     // Queue WhatsApp Notification
     try {
-      const customerName = order.guestCustomer?.name || 'Customer';
-      const phone = order.guestCustomer?.phone || '';
+      const customerName = order.customer?.name || 'Customer';
+      const phone = order.customer?.phone || '';
 
       if (phone) {
         await queueWhatsApp(
