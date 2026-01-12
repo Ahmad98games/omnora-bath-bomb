@@ -65,12 +65,18 @@ function getOrderTotal(orderData: OrderData): string {
  */
 function formatOrderDetailsBody(orderData: OrderData): string {
     const { orderNumber, customerInfo, guestCustomer, shippingAddress, items, paymentMethod, notes } = orderData;
-    
+
     // Fallbacks
     const name = customerInfo?.name || guestCustomer?.name || 'Guest';
+    const email = customerInfo?.email || guestCustomer?.email || 'N/A';
     const phone = customerInfo?.phone || guestCustomer?.phone || 'N/A';
-    const city = shippingAddress?.city || 'Unknown City';
-    const address = shippingAddress?.address || '';
+
+    // Address Composition
+    const addr = shippingAddress?.address || 'N/A';
+    const city = shippingAddress?.city || 'Unknown';
+    const state = shippingAddress?.state || '';
+    const country = shippingAddress?.country || 'Pakistan';
+    // const fullAddress = `${addr}, ${city}${state ? `, ${state}` : ''}, ${country}`;
 
     // Items List
     const itemsList = items?.map(i => `• ${i.name} (x${i.quantity})`).join('\n') || 'No items listed';
@@ -83,9 +89,13 @@ function formatOrderDetailsBody(orderData: OrderData): string {
 --------------------------------
 *CUSTOMER DATA*
 👤 Name: ${name}
+📧 Email: ${email}
 📞 Contact: ${phone}
-📍 Location: ${city}
-🏠 Address: ${address}
+
+*SHIPPING DETAILS*
+🏠 Address: ${addr}
+📍 City: ${city}
+🌍 Country: ${country}
 
 *MANIFEST*
 ${itemsList}
@@ -134,8 +144,8 @@ export function generateWhatsAppURL(message: string): string {
  */
 export function openWhatsApp(orderData: OrderData, type: 'payment' | 'automation' = 'automation'): boolean {
     try {
-        const message = type === 'payment' 
-            ? generatePaymentReceiptMessage(orderData) 
+        const message = type === 'payment'
+            ? generatePaymentReceiptMessage(orderData)
             : generateNewOrderMessage(orderData);
 
         const url = generateWhatsAppURL(message);

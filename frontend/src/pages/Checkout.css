@@ -505,59 +505,44 @@
 
 
 /* Update the base input style */
-
 .form-input {
-
   width: 100%;
-
   padding: 1rem 1.2rem;
-
-  background: var(--void-depth);
-
+  background-color: var(--void-depth) !important;
+  /* Force dark bg */
   border: 1px solid rgba(255, 255, 255, 0.15);
-
   border-radius: 0;
-
   color: var(--text-primary) !important;
-
-  /* Forces text to remain light grey/white */
-
+  /* Force light text */
   font-size: 1rem;
-
   transition: all 0.3s var(--ease-smooth);
-
   font-family: var(--font-sans);
-
+  -webkit-appearance: none;
+  /* Remove default styling */
 }
-
-
 
 /* Fix the white-out issue on focus */
-
 .form-input:focus {
-
   outline: none;
-
   border-color: var(--neon-cyan);
-
   box-shadow: 0 0 25px rgba(0, 240, 255, 0.2);
-
-  background: #050505;
-
-  /* Keeps it very dark so white text is visible */
-
+  background-color: #050505 !important;
   color: #ffffff !important;
-
 }
 
-
+/* Fix Autofill Background (Chrome/Safari) */
+.form-input:-webkit-autofill,
+.form-input:-webkit-autofill:hover,
+.form-input:-webkit-autofill:focus,
+.form-input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px var(--void-depth) inset !important;
+  -webkit-text-fill-color: var(--text-primary) !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
 
 .form-input::placeholder {
-
   color: var(--text-muted);
-
   opacity: 0.5;
-
 }
 
 

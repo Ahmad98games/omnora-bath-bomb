@@ -15,9 +15,11 @@ interface Order {
     orderNumber?: string;
     user?: { name: string; email: string };
     guestCustomer?: { name: string; email: string };
+    customer?: { name: string; email: string; phone?: string }; // New Unified Structure
     items: OrderItem[];
     totalAmount: number;
     status: 'INITIATED' | 'pending' | 'receipt_submitted' | 'approved' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+    paymentMethod?: string;
     createdAt: string;
 }
 
@@ -137,7 +139,9 @@ export default function AdminOrders() {
                     <thead>
                         <tr>
                             <th>Order ID</th>
+                            <th>Date</th>
                             <th>Customer</th>
+                            <th>Payment</th>
                             <th>Items</th>
                             <th>Total</th>
                             <th>Status</th>
@@ -149,20 +153,36 @@ export default function AdminOrders() {
                             const config = STATUS_CONFIG[order.status] || STATUS_CONFIG.INITIATED;
                             const StatusIcon = config.icon;
 
+                            // Data Normalization
+                            const customerName = order.customer?.name || order.user?.name || order.guestCustomer?.name || 'Guest User';
+                            const customerEmail = order.customer?.email || order.user?.email || order.guestCustomer?.email || 'N/A';
+                            const paymentMethod = order.paymentMethod ? order.paymentMethod.toUpperCase() : 'COD';
+                            const dateStr = new Date(order.createdAt).toLocaleDateString('en-US', {
+                                month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+                            });
+
                             return (
                                 <tr key={order._id}>
                                     <td className="font-mono text-accent">
                                         #{order.orderNumber || order._id.slice(-6).toUpperCase()}
                                     </td>
+                                    <td className="text-muted text-sm">
+                                        {dateStr}
+                                    </td>
                                     <td>
                                         <div className="customer-cell">
                                             <div className="customer-name">
-                                                {order.user?.name || order.guestCustomer?.name || 'Guest'}
+                                                {customerName}
                                             </div>
                                             <div className="customer-email">
-                                                {order.user?.email || order.guestCustomer?.email || 'N/A'}
+                                                {customerEmail}
                                             </div>
                                         </div>
+                                    </td>
+                                    <td>
+                                        <span className={`badge-payment ${paymentMethod === 'COD' ? 'cod' : 'online'}`}>
+                                            {paymentMethod}
+                                        </span>
                                     </td>
                                     <td>
                                         <div className="items-cell">
@@ -204,12 +224,12 @@ export default function AdminOrders() {
                         })}
                         {orders.length === 0 && !loading && (
                             <tr>
-                                <td colSpan={6} className="empty-state">No active orders found.</td>
+                                <td colSpan={8} className="empty-state">No active orders found.</td>
                             </tr>
                         )}
                         {loading && (
                             <tr>
-                                <td colSpan={6} className="empty-state">Syncing Data Stream...</td>
+                                <td colSpan={8} className="empty-state">Syncing Data Stream...</td>
                             </tr>
                         )}
                     </tbody>

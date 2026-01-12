@@ -9,7 +9,7 @@ const client = axios.create({
   // Dev: handled by Vite Proxy (vite.config.ts) -> localhost:5000
   // Prod: handled by Vercel Rewrites (vercel.json) -> Serverless Function
   baseURL: '/api',
-  timeout: 30000,
+  timeout: 10000, // Reduced to 10s for faster fallback
   headers: {
     'Content-Type': 'application/json',
     'X-Api-Version': '1'

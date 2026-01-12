@@ -31,15 +31,15 @@ interface CartItem {
 type PriceRange = 'all' | 'under-500' | '500-1000' | 'over-1000';
 type SortOption = 'default' | 'new' | 'price-low' | 'price-high' | 'name-asc' | 'name-desc';
 
-// --- SUB-COMPONENT: Product Card ---
-const ProductCard = ({ product, onAddToCart }: { product: Product, onAddToCart: (p: Product) => void }) => (
+// --- SUB-COMPONENT: ProductCard (Memoized) ---
+const ProductCard = React.memo(({ product, onAddToCart }: { product: Product, onAddToCart: (p: Product) => void }) => (
   <article className="card-magnum animate-fade-in-up">
     <Link to={`/product/${product._id}`} className="card-img-box">
       <SmartImage
         src={product.image}
         alt={product.name}
         className="card-img"
-        aspectRatio="3/4" // Locks the ratio to prevent layout shift
+        aspectRatio="3/4"
         priority={false}
       />
 
@@ -82,7 +82,7 @@ const ProductCard = ({ product, onAddToCart }: { product: Product, onAddToCart: 
       </button>
     </div>
   </article>
-);
+));
 
 // --- SUB-COMPONENT: Skeleton Loader ---
 // Matches the ProductCard structure for seamless loading transition
@@ -96,13 +96,10 @@ const CollectionSkeleton = () => (
   </div>
 );
 
-// ============================================================================
-// MAIN COMPONENT
-// ============================================================================
-
 export default function Collection() {
   const [searchParams] = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
+  const [visibleCount, setVisibleCount] = useState(12); // Soft Pagination Limit
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -114,9 +111,15 @@ export default function Collection() {
   useScrollReveal();
 
   useEffect(() => {
+    setVisibleCount(12); // Reset page on filter change
+  }, [searchParams, sortBy, priceRange]);
+
+  useEffect(() => {
+    // ... existing fetch logic ...
     let isMounted = true;
 
     async function fetchProducts() {
+      // ... same fetch logic ...
       setLoading(true);
       setError(null);
 
@@ -125,7 +128,6 @@ export default function Collection() {
         const category = searchParams.get('category');
         let response;
 
-        // Determine Endpoint
         if (query) {
           response = await client.get('/products/search', { params: { q: query } });
         } else if (category) {
@@ -136,14 +138,12 @@ export default function Collection() {
 
         if (!isMounted) return;
 
-        // Data Normalization
         let data = response.data || [];
         if (data.data && Array.isArray(data.data)) data = data.data;
-        else if (data.products && Array.isArray(data.products)) data = data.products; // Handle { products: [...] } format
+        else if (data.products && Array.isArray(data.products)) data = data.products;
 
         const fetchedData: Product[] = Array.isArray(data) ? data : [];
 
-        // --- Client-Side Processing ---
         // 1. Filtering
         const filtered = fetchedData.filter((p) => {
           if (priceRange === 'under-500') return p.price < 500;
@@ -159,13 +159,12 @@ export default function Collection() {
           case 'price-high': sorted.sort((a, b) => b.price - a.price); break;
           case 'name-asc': sorted.sort((a, b) => a.name.localeCompare(b.name)); break;
           case 'new': sorted.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0)); break;
-          default: break; // Default (Featured logic typically handled by backend or default order)
+          default: break;
         }
 
         setProducts(sorted);
       } catch (e) {
         console.error('Fetch error:', e);
-        // Fallback Logic: Load local data instead of showing error
         setProducts(FALLBACK_PRODUCTS);
         showToast('Running in offline mode', 'info');
       } finally {
@@ -175,9 +174,10 @@ export default function Collection() {
 
     fetchProducts();
     return () => { isMounted = false; };
-  }, [searchParams, sortBy, priceRange]);
+  }, [searchParams, sortBy, priceRange]); // Keep dependency array
 
-  const handleAddToCart = (product: Product) => {
+  // Memoized Handler
+  const handleAddToCart = React.useCallback((product: Product) => {
     try {
       const cart: CartItem[] = JSON.parse(localStorage.getItem('cart') || '[]');
       const existing = cart.find((item) => item.id === product._id);
@@ -195,7 +195,7 @@ export default function Collection() {
       }
 
       localStorage.setItem('cart', JSON.stringify(cart));
-      window.dispatchEvent(new Event('cart-updated')); // Update Navbar Badge
+      window.dispatchEvent(new Event('cart-updated'));
 
       trackEvent({
         type: 'add_to_cart',
@@ -207,11 +207,13 @@ export default function Collection() {
     } catch (error) {
       showToast('System error. Please try again.', 'error');
     }
-  };
+  }, [showToast]);
 
   const activeFilterLabel = searchParams.get('q')
     ? `Results for "${searchParams.get('q')}"`
     : searchParams.get('category') || 'Full Collection';
+
+  const visibleProducts = products.slice(0, visibleCount);
 
   return (
     <div className="collection-page">
@@ -219,16 +221,16 @@ export default function Collection() {
 
       {/* 1. HERO */}
       <header className="collection-hero">
+        {/* ... (Keep existing hero content) ... */}
         <div className="hero-bg">
-          {/* Use a high-res texture or product shot here */}
           <img
             src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=80&w=1920&auto=format&fit=crop"
             srcSet={`
-              https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=60&w=480&auto=format&fit=crop 480w,
-              https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=70&w=800&auto=format&fit=crop 800w,
-              https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=80&w=1200&auto=format&fit=crop 1200w,
-              https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=80&w=1920&auto=format&fit=crop 1920w
-            `}
+               https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=60&w=480&auto=format&fit=crop 480w,
+               https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=70&w=800&auto=format&fit=crop 800w,
+               https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=80&w=1200&auto=format&fit=crop 1200w,
+               https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=80&w=1920&auto=format&fit=crop 1920w
+             `}
             sizes="(max-width: 600px) 100vw, (max-width: 1200px) 100vw, 1920px"
             alt="Omnora Collection"
             loading="eager"
@@ -248,8 +250,9 @@ export default function Collection() {
 
       <div className="container">
 
-        {/* 2. TOOLBAR */}
+        {/* 2. TOOLBAR (Keep visible) */}
         <div className="toolbar-sticky">
+          {/* ... (Keep existing toolbar) ... */}
           <div className="toolbar-inner">
             <div className="toolbar-count">
               {products.length} <span className="text-muted">ARTIFACTS FOUND</span>
@@ -307,11 +310,25 @@ export default function Collection() {
               <button onClick={() => setPriceRange('all')} className="btn-retry">RESET FILTERS</button>
             </div>
           ) : (
-            products.map(product => (
-              <ProductCard key={product._id} product={product} onAddToCart={handleAddToCart} />
-            ))
+            <>
+              {visibleProducts.map(product => (
+                <ProductCard key={product._id} product={product} onAddToCart={handleAddToCart} />
+              ))}
+            </>
           )}
         </main>
+
+        {/* soft pagination load more */}
+        {!loading && visibleCount < products.length && (
+          <div style={{ textAlign: 'center', padding: '2rem' }}>
+            <button
+              onClick={() => setVisibleCount(p => p + 12)}
+              className="btn-load-more"
+            >
+              LOAD MORE ARTIFACTS
+            </button>
+          </div>
+        )}
 
       </div>
     </div>

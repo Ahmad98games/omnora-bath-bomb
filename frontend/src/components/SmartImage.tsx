@@ -42,13 +42,13 @@ export default function SmartImage({
     const finalSrc = status === 'error' ? FALLBACK_IMAGE : src;
 
     return (
-        <div 
-            className={`smart-image-container ${className}`} 
+        <div
+            className={`smart-image-container ${className}`}
             style={{ aspectRatio }} // Aspect Ratio is the ONLY inline style allowed because it's dynamic
         >
             {/* 1. The "Stealth" Skeleton Overlay */}
-            <div 
-                className={`smart-skeleton ${status === 'loaded' ? 'hidden' : ''}`} 
+            <div
+                className={`smart-skeleton ${status === 'loaded' ? 'hidden' : ''}`}
                 aria-hidden="true"
             />
 
@@ -59,6 +59,7 @@ export default function SmartImage({
                 alt={alt}
                 className={`smart-img ${status === 'loaded' ? 'visible' : ''}`}
                 loading={priority ? 'eager' : 'lazy'}
+                decoding="async"
                 onLoad={handleLoad}
                 onError={handleError}
             />
